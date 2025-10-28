@@ -1,1 +1,1501 @@
-# chrismunnps.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christopher Munn | Cloud Infrastructure Consultant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #7c3aed;
+            --tertiary: #2563eb;
+            --accent: #06b6d4;
+            --gold: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text: #1e293b;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(37, 99, 235, 0.3), transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Glassmorphism Header */
+        header {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 50px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.5);
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeInUp 1s ease 0.3s both;
+            font-weight: 300;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 500;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Certification Badges with 3D effect */
+        .cert-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease 0.9s both;
+            perspective: 1000px;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .badge:hover {
+            transform: translateY(-5px) rotateX(10deg);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.8);
+        }
+
+        .badge:hover::before {
+            left: 100%;
+        }
+
+        /* Main Content with Glass Cards */
+        main {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 80px;
+        }
+
+        section {
+            padding: 80px 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 50px;
+            color: white;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        /* Glass Summary Card */
+        .summary {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.9;
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.95);
+            transition: all 0.4s ease;
+        }
+
+        .summary:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 70px rgba(79, 70, 229, 0.4);
+        }
+
+        .summary strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Skills Grid with 3D Cards */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .skill-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(37, 99, 235, 0.2));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.6);
+            border-color: var(--accent);
+        }
+
+        .skill-card:hover::before {
+            opacity: 1;
+        }
+
+        .skill-card h3 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-card p {
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
+        }
+
+        /* Stats with Counter Animation */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(124, 58, 237, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 50px 30px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 15px 50px rgba(79, 70, 229, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 25px 70px rgba(124, 58, 237, 0.8);
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            display: block;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Timeline with Modern Design */
+        .timeline {
+            position: relative;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        .timeline-item {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.6);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .job-title {
+            font-size: 1.7rem;
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        .company {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .date {
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .achievements {
+            list-style: none;
+            margin-top: 25px;
+        }
+
+        .achievements li {
+            padding: 15px 0 15px 40px;
+            position: relative;
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        .achievements li:hover {
+            transform: translateX(10px);
+            color: var(--accent);
+        }
+
+        .achievements li:before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .achievements li:hover:before {
+            left: 5px;
+        }
+
+        .achievements strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Scroll Progress Indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 9999;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10, 10, 15, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 30px rgba(79, 70, 229, 0.6);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            text-decoration: none;
+        }
+
+        .fab:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.8);
+        }
+
+        .fab-tooltip {
+            position: absolute;
+            right: 75px;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .fab:hover .fab-tooltip {
+            opacity: 1;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            gap: 10px;
+            animation: fadeInDown 1s ease 1.2s both;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Skills Progress Bars */
+        .skill-progress {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            border-radius: 10px;
+            transition: width 1.5s ease;
+            width: 0;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Testimonials Section */
+        .testimonial-card {
+            backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            color: white;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.5);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Tech Stack Icons */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .tech-icon {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tech-icon:hover {
+            transform: translateY(-10px) rotate(5deg);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .quick-link-btn {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-link-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .job-header {
+                flex-direction: column;
+            }
+
+            .summary, .skill-card, .timeline-item {
+                padding: 30px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab" id="downloadCV" title="Download CV">
+            <span>📄</span>
+            <span class="fab-tooltip">Download CV</span>
+        </button>
+        <button class="fab" id="printCV" title="Print CV">
+            <span>🖨️</span>
+            <span class="fab-tooltip">Print CV</span>
+        </button>
+        <a href="#about" class="fab" title="Back to Top">
+            <span>↑</span>
+            <span class="fab-tooltip">Back to Top</span>
+        </a>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <div class="hero-content">
+            <h1>Christopher Munn</h1>
+            <p class="tagline">Independent Systems & Cloud Infrastructure Consultant | Microsoft Certified Professional</p>
+            <p style="max-width: 850px; margin: 20px auto; font-size: 1.15rem; font-weight: 300;">Specializing in Automation, Security, and Hybrid Cloud Transformation</p>
+            
+            <div class="contact-info">
+                <a href="mailto:chris.munn@outlook.com" class="contact-item">
+                    <span>✉</span> chris.munn@outlook.com
+                </a>
+                <a href="https://github.com/chrismunnPS" target="_blank" class="contact-item">
+                    <span>💻</span> GitHub
+                </a>
+                <a href="https://linkedin.com/in/chrismunn/" target="_blank" class="contact-item">
+                    <span>🔗</span> LinkedIn
+                </a>
+                <span class="contact-item">
+                    <span>📍</span> London, UK
+                </span>
+            </div>
+
+            <div class="cert-badges">
+                <span class="badge">AZ-104</span>
+                <span class="badge">SC-900</span>
+                <span class="badge">MS-900</span>
+                <span class="badge">AZ-900</span>
+            </div>
+
+            <div class="quick-links">
+                <a href="#experience" class="quick-link-btn">
+                    <span>💼</span> View Experience
+                </a>
+                <a href="#skills" class="quick-link-btn">
+                    <span>⚡</span> See Skills
+                </a>
+                <a href="mailto:chris.munn@outlook.com" class="quick-link-btn">
+                    <span>📧</span> Get in Touch
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about">
+            <div class="container">
+                <h2>Professional Summary</h2>
+                <div class="summary">
+                    <p>Accomplished Senior Systems Administrator with over <strong>15 years of experience</strong> architecting, securing, and optimizing Microsoft-based enterprise and hybrid cloud infrastructures. Demonstrated expertise in modernizing legacy systems, enhancing virtualisation performance, and driving automation through PowerShell and Azure technologies.</p>
+                    <p style="margin-top: 20px;">Recognized for aligning IT strategy with organizational goals, reducing operational risk, and delivering scalable, high-availability solutions that elevate performance and resilience.</p>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">70%</span>
+                        <span class="stat-label">Workload Reduction</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Users Supported</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">Zero</span>
+                        <span class="stat-label">Migration Downtime</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <h2>Core Competencies</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>☁️ Cloud & Infrastructure</h3>
+                        <p>Azure Administration, Hybrid Cloud Architecture, VMware vSphere, Hyper-V, Infrastructure Modernization</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3>🔐 Security & Compliance</h3>
+                        <p>Cybersecurity Operations, Identity Management, Conditional Access, XDR Implementation, IT Governance</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3>⚡ Automation & Scripting</h3>
+                        <p>PowerShell Automation, Active Directory Management, Process Optimization, DevOps Practices</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3>📧 Messaging & Collaboration</h3>
+                        <p>Exchange Server, Exchange Online, Microsoft 365, Azure AD, Intune, Hybrid Integration</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3>💾 Backup & Recovery</h3>
+                        <p>Veeam, Rapid Recovery, Disaster Recovery Planning, Business Continuity, RTO/RPO Management</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3>👥 Leadership</h3>
+                        <p>Technical Mentorship, Team Training, Project Management, Strategic IT Planning</p>
+                        <div class="skill-progress">
+                            <div class="skill-progress-bar" data-width="88"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 80px;">Technology Stack</h2>
+                <div class="tech-stack">
+                    <div class="tech-icon" title="Azure">☁️</div>
+                    <div class="tech-icon" title="PowerShell">💻</div>
+                    <div class="tech-icon" title="Microsoft 365">📧</div>
+                    <div class="tech-icon" title="VMware">🖥️</div>
+                    <div class="tech-icon" title="Security">🔒</div>
+                    <div class="tech-icon" title="Active Directory">📁</div>
+                    <div class="tech-icon" title="Automation">⚙️</div>
+                    <div class="tech-icon" title="GitHub">🐙</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="container">
+                <h2>Professional Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Independent Consultant & Developer</div>
+                                <div class="company">Professional Development</div>
+                            </div>
+                            <span class="date">May 2024 - Present</span>
+                        </div>
+                        <ul class="achievements">
+                            <li>Developed enterprise-grade PowerShell automation scripts published on GitHub, reducing manual workload by <strong>70%</strong> and improving system reliability</li>
+                            <li>Built comprehensive Hybrid Infrastructure Lab integrating Active Directory, Azure AD, Intune, and Exchange Online for secure enterprise environment simulation</li>
+                            <li>Created open-source IT administration tools and documentation, promoting automation best practices across the global technical community</li>
+                            <li>Validated hybrid cloud and identity management frameworks ensuring compliance with Microsoft Azure governance and security baselines</li>
+                            <li>Earned multiple Microsoft certifications (AZ-104, SC-900, MS-900, AZ-900) demonstrating commitment to continuous learning</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Senior Systems Administrator</div>
+                                <div class="company">United Grand Lodge of England</div>
+                            </div>
+                            <span class="date">Nov 2014 - May 2024</span>
+                        </div>
+                        <ul class="achievements">
+                            <li>Engineered multi-phase Microsoft Exchange migration (2010 → 2019) with hybrid Exchange Online integration for 500+ users, achieving <strong>zero downtime</strong> and reducing maintenance costs by 20%</li>
+                            <li>Automated Active Directory provisioning using PowerShell, cutting setup time by <strong>75%</strong> and eliminating manual errors</li>
+                            <li>Modernized virtual infrastructure across VMware vSphere and Hyper-V (6.x → 7.x), increasing VM density by <strong>30%</strong> and reducing host failures by 20%</li>
+                            <li>Implemented robust disaster recovery framework using Veeam and Rapid Recovery, maintaining RTO ≤ 4 hours and RPO ≤ 15 minutes</li>
+                            <li>Deployed Palo Alto XDR across enterprise systems, achieving <strong>40% reduction</strong> in phishing and malware incidents</li>
+                            <li>Improved first-call resolution by 25% through comprehensive staff mentorship and escalation support</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">IT Systems Administrator</div>
+                                <div class="company">prIME Oncology</div>
+                            </div>
+                            <span class="date">Apr 2010 - Aug 2013</span>
+                        </div>
+                        <ul class="achievements">
+                            <li>Administered Active Directory and GPO for 250+ users across three international offices (Atlanta, The Hague, Moscow)</li>
+                            <li>Developed standardized laptop imaging framework, reducing deployment time from one day to <strong>under 4 hours</strong></li>
+                            <li>Consolidated decentralized PST-based mail into centralized Exchange environment, cutting restore times by <strong>60%</strong></li>
+                            <li>Deployed VOIP and softphone solutions across multiple sites, lowering telecom costs by 30%</li>
+                            <li>Automated patching and monitoring using Kaseya, achieving 95%+ patch compliance and reclaiming 10+ hours per week</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">Network Adapter Information Tool</div>
+                            </div>
+                        </div>
+                        <p>PowerShell tool with graphical interface for viewing, managing, and exporting network adapter information. Displays adapter details (IP, MAC, SSID, status) in organized tabs for WiFi, Ethernet, Virtual, and Diagnostics. Features adapter control, network troubleshooting tools, WiFi report generation, and theme switching.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">PowerShell</span>
+                            <span class="project-tag">Networking</span>
+                            <span class="project-tag">GUI</span>
+                        </div>
+                        <a href="https://github.com/ChrisMunnPS/GetAdapter" target="_blank" class="project-link">
+                            View on GitHub →
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">Active Directory Health Dashboard</div>
+                            </div>
+                        </div>
+                        <p>Visual dashboard providing comprehensive overview of Active Directory domain controller health across enterprise environments. Generates HTML and Markdown reports highlighting system status, error trends, and diagnostic results. Built for infrastructure transparency, operational resilience, and proactive monitoring.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Active Directory</span>
+                            <span class="project-tag">Monitoring</span>
+                            <span class="project-tag">Reporting</span>
+                        </div>
+                        <a href="https://github.com/ChrisMunnPS/DomainControllerHealthDashboard" target="_blank" class="project-link">
+                            View on GitHub →
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">OnVUE System Preparation Script</div>
+                            </div>
+                        </div>
+                        <p>Automated system preparation tool for Pearson VUE OnVUE online proctoring. Closes interfering processes, stops services, disables notifications, clears temporary files, and checks for high-risk software. Features user-friendly menu-driven interface for seamless exam preparation.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">PowerShell</span>
+                            <span class="project-tag">Automation</span>
+                            <span class="project-tag">System Prep</span>
+                        </div>
+                        <a href="https://github.com/ChrisMunnPS/OnVue_System_Preperation" target="_blank" class="project-link">
+                            View on GitHub →
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">Active Directory Security Audit Script</div>
+                            </div>
+                        </div>
+                        <p>Automated security auditing solution for Microsoft Active Directory environments. Identifies potential security risks, generates professional reports with visual dashboards, and helps organizations maintain compliance with security best practices and regulatory requirements.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Security</span>
+                            <span class="project-tag">Active Directory</span>
+                            <span class="project-tag">Compliance</span>
+                        </div>
+                        <a href="https://github.com/ChrisMunnPS/ActiveDirectory_Flag_Scanner" target="_blank" class="project-link">
+                            View on GitHub →
+                        </a>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div>
+                                <div class="project-title">Application Import/Export with winget</div>
+                            </div>
+                        </div>
+                        <p>GUI-based PowerShell tool simplifying the export and import of installed Windows applications using winget. Provides an efficient way to back up application lists and restore them on different machines, streamlining system migrations and deployments.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">PowerShell</span>
+                            <span class="project-tag">winget</span>
+                            <span class="project-tag">Migration</span>
+                        </div>
+                        <a href="https://github.com/ChrisMunnPS/ApplicationImportExport" target="_blank" class="project-link">
+                            View on GitHub →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="github-activity">
+                    <h3 style="color: var(--accent); margin-bottom: 25px; font-size: 1.8rem;">Recent GitHub Activity</h3>
+                    <div class="activity-item">
+                        <div class="activity-icon">🔧</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Updated Network Adapter Tool</div>
+                            <div class="activity-time">Enhanced GUI and added export formats</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🛡️</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Published Security Audit Script</div>
+                            <div class="activity-time">AD security scanning and compliance reporting</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">📊</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Released Health Dashboard</div>
+                            <div class="activity-time">Domain controller monitoring solution</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="container">
+                <h2>Education & Certifications</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Microsoft Certified: Azure Administrator Associate</div>
+                                <div class="company">AZ-104</div>
+                            </div>
+                            <span class="date">Sep 2025</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Microsoft Security, Compliance, and Identity Fundamentals</div>
+                                <div class="company">SC-900</div>
+                            </div>
+                            <span class="date">Jul 2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Microsoft 365 Fundamentals</div>
+                                <div class="company">MS-900</div>
+                            </div>
+                            <span class="date">Jul 2024</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">Azure Fundamentals</div>
+                                <div class="company">AZ-900</div>
+                            </div>
+                            <span class="date">Aug 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section id="contact" style="padding: 80px 20px; background: rgba(15, 23, 42, 0.5);">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required placeholder="Your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+                <div id="formSuccess" style="display: none; color: var(--accent); text-align: center; margin-top: 20px; font-weight: 600;">
+                    ✓ Thank you! Your message has been received. I'll get back to you soon!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-size: 1.1rem;">&copy; 2024 Christopher Munn. All rights reserved.</p>
+        <p style="margin-top: 15px; opacity: 0.8;">London, United Kingdom | British National</p>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Generate floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 5 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = Math.random() * 10 + 15 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and timeline items
+        document.querySelectorAll('.skill-card, .timeline-item, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Parallax effect on scroll
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    const parallaxElements = document.querySelectorAll('.hero-content');
+                    parallaxElements.forEach(el => {
+                        el.style.transform = `translateY(${scrolled * 0.3}px)`;
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add cursor trail effect
+        let coords = { x: 0, y: 0 };
+        let circles = [];
+
+        for (let i = 0; i < 12; i++) {
+            const circle = document.createElement('div');
+            circle.style.position = 'fixed';
+            circle.style.width = '20px';
+            circle.style.height = '20px';
+            circle.style.borderRadius = '50%';
+            circle.style.background = `rgba(6, 182, 212, ${0.5 - i * 0.04})`;
+            circle.style.pointerEvents = 'none';
+            circle.style.zIndex = '9998';
+            circle.style.transition = 'transform 0.1s ease';
+            document.body.appendChild(circle);
+            circles.push(circle);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            coords.x = e.clientX;
+            coords.y = e.clientY;
+        });
+
+        function animateCircles() {
+            let x = coords.x;
+            let y = coords.y;
+
+            circles.forEach((circle, index) => {
+                circle.style.left = x - 10 + 'px';
+                circle.style.top = y - 10 + 'px';
+                circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
+
+                const nextCircle = circles[index + 1] || circles[0];
+                x += (parseInt(nextCircle.style.left) - x) * 0.3;
+                y += (parseInt(nextCircle.style.top) - y) * 0.3;
+            });
+
+            requestAnimationFrame(animateCircles);
+        }
+
+        animateCircles();
+
+        // Download CV functionality
+        document.getElementById('downloadCV').addEventListener('click', function() {
+            // Create CV content
+            const cvContent = `
+CHRISTOPHER MUNN
+Independent Systems & Cloud Infrastructure Consultant
+Microsoft Certified Professional
+
+📧 chris.munn@outlook.com
+📍 London, UK
+💻 github.com/chrismunnPS
+🔗 linkedin.com/in/chrismunn
+
+PROFESSIONAL SUMMARY
+Accomplished Senior Systems Administrator with over 15 years of experience architecting, securing, and optimizing Microsoft-based enterprise and hybrid cloud infrastructures. Demonstrated expertise in modernizing legacy systems, enhancing virtualisation performance, and driving automation through PowerShell and Azure technologies.
+
+KEY ACHIEVEMENTS
+• 70% reduction in manual workload through automation
+• Zero downtime migration for 500+ users
+• 75% reduction in setup time with PowerShell automation
+• 40% reduction in security incidents with XDR implementation
+
+CERTIFICATIONS
+• Azure Administrator Associate (AZ-104) - Sep 2025
+• Security, Compliance, and Identity Fundamentals (SC-900) - Jul 2024
+• Microsoft 365 Fundamentals (MS-900) - 8 Jul 2024
+• Azure Fundamentals (AZ-900) - 5 Aug 2024
+
+PROFESSIONAL EXPERIENCE
+
+Independent Consultant & Developer | May 2024 - Present
+• Developed enterprise-grade PowerShell automation scripts on GitHub
+• Built Hybrid Infrastructure Lab integrating AD, Azure AD, Intune, Exchange Online
+• Created open-source IT administration tools and documentation
+
+Senior Systems Administrator | United Grand Lodge of England | Nov 2014 - May 2024
+• Engineered Microsoft Exchange migration (2010 → 2019) with zero downtime
+• Automated Active Directory provisioning, cutting setup time by 75%
+• Modernized virtual infrastructure, increasing VM density by 30%
+• Deployed Palo Alto XDR, achieving 40% reduction in security incidents
+
+IT Systems Administrator | prIME Oncology | Apr 2010 - Aug 2013
+• Administered Active Directory for 250+ users across 3 international offices
+• Reduced deployment time from 1 day to under 4 hours
+• Consolidated mail systems, cutting restore times by 60%
+• Achieved 95%+ patch compliance through automation
+
+CORE COMPETENCIES
+Cloud & Infrastructure: Azure, VMware vSphere, Hyper-V, Hybrid Cloud
+Security & Compliance: Cybersecurity Ops, Identity Management, XDR, IT Governance
+Automation: PowerShell, Active Directory Management, DevOps
+Messaging: Exchange Server, Exchange Online, Microsoft 365, Azure AD, Intune
+Backup & Recovery: Veeam, Disaster Recovery, Business Continuity
+Leadership: Technical Mentorship, Team Training, Project Management
+            `.trim();
+
+            // Create blob and download
+            const blob = new Blob([cvContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Christopher_Munn_CV.txt';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            // Visual feedback
+            const btn = this;
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span>✓</span>';
+            btn.style.background = 'linear-gradient(135deg, #14b8a6, #10b981)';
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.style.background = '';
+            }, 2000);
+        });
+
+        // Animate skill progress bars when in view
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const width = bar.getAttribute('data-width');
+                    setTimeout(() => {
+                        bar.style.width = width + '%';
+                    }, 200);
+                    progressObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.skill-progress-bar').forEach(bar => {
+            progressObserver.observe(bar);
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            themeIcon.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Print CV
+        document.getElementById('printCV').addEventListener('click', () => {
+            window.print();
+        });
+
+        // Animate stat numbers
+        const animateNumbers = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const text = target.textContent;
+                    
+                    if (text.includes('+')) {
+                        const num = parseInt(text);
+                        let current = 0;
+                        const increment = num / 50;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= num) {
+                                target.textContent = text;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = Math.floor(current) + '+';
+                            }
+                        }, 30);
+                    } else if (text.includes('%')) {
+                        const num = parseInt(text);
+                        let current = 0;
+                        const increment = num / 50;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= num) {
+                                target.textContent = text;
+                                clearInterval(timer);
+                            } else {
+                                target.textContent = Math.floor(current) + '%';
+                            }
+                        }, 30);
+                    }
+                    
+                    observer.unobserve(target);
+                }
+            });
+        };
+
+        const numberObserver = new IntersectionObserver(animateNumbers, {
+            threshold: 0.5
+        });
+
+        document.querySelectorAll('.stat-number').forEach(num => {
+            numberObserver.observe(num);
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            // Simulate form submission
+            console.log('Form submitted:', formData);
+            
+            // Show success message
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('formSuccess').style.display = 'block';
+            
+            // Reset after 5 seconds
+            setTimeout(() => {
+                document.getElementById('contactForm').style.display = 'block';
+                document.getElementById('formSuccess').style.display = 'none';
+                document.getElementById('contactForm').reset();
+            }, 5000);
+        });
