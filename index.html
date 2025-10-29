@@ -3,453 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christopher Munn | Cloud Infrastructure Consultant</title>
+    <meta name="description" content="Christopher Munn - Cloud Infrastructure Consultant specializing in Microsoft Azure, automation, and security.">
+    <title>Christopher Munn - Cloud Innovator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #4f46e5;
-            --secondary: #7c3aed;
-            --tertiary: #2563eb;
-            --accent: #06b6d4;
-            --gold: #f59e0b;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --text: #1e293b;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--dark);
-            overflow-x: hidden;
-        }
-
-        /* ... all your original CSS from index.txt remains unchanged here ... */
-
-        /* Konami + Pixel UI styles */
-        body.konami-mode {
-            background: #000 !important;
-            font-family: 'Press Start 2P', monospace !important;
-            color: #0f0 !important;
-            text-shadow: 0 0 5px #0f0;
-            cursor: url('controller.png'), auto;
-        }
-
-        #matrix {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 9998;
-            pointer-events: none;
-        }
-
-        #konamiEffect {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 9999;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .controller {
-            position: absolute;
-            width: 100px;
-            animation: moveAcross 10s linear infinite, rotate 5s linear infinite;
-        }
-
-        @keyframes moveAcross {
-            0% { transform: translateX(-200px); }
-            100% { transform: translateX(120vw); }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        body { font-family: 'Poppins', sans-serif; background: #0a192f; color: #ccd6f6; scroll-behavior: smooth; transition: all 0.5s; }
+        .gaming-mode { filter: brightness(1.2) contrast(1.2) hue-rotate(90deg) saturate(1.5); background: #000 !important; }
+        .gaming-mode * { color: #0f0 !important; text-shadow: 0 0 5px #0f0; }
+        .navbar { background: #112240 !important; position: sticky; top: 0; z-index: 1000; border-radius: 0 0 20px 20px; }
+        .navbar-brand, .nav-link { color: #60a5fa !important; }
+        .nav-link:hover { color: #fff !important; }
+        .hero { height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
+        section { padding: 60px 0; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        .card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); color: #ccd6f6; transition: transform 0.3s ease, box-shadow 0.3s ease; border-radius: 10px; height: 100%; }
+        .card:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(96, 165, 250, 0.5); }
+        .skill-icon { font-size: 2em; margin-bottom: 15px; color: #60a5fa; }
+        .accordion-button { background: #112240; color: #ccd6f6; }
+        .accordion-button:not(.collapsed) { background: #1e40af; color: #fff; }
+        .accordion-item { border: none; margin-bottom: 20px; }
+        .cert-badge { background: #6f42c1; padding: 5px 15px; border-radius: 20px; margin: 5px; box-shadow: 0 0 10px rgba(111, 66, 193, 0.5); color: #fff; }
+        footer { background: #112240; padding: 20px; text-align: center; }
+        .btn-primary { background: #60a5fa; border: none; }
+        #back-to-top { position: fixed; bottom: 20px; right: 20px; display: none; }
+        #portfolio { cursor: url('https://static.vecteezy.com/system/resources/thumbnails/070/958/470/small/create-3d-pixel-cursor-modeling-a-retro-pointer-digitally-with-a-transparent-background-png.png'), auto; }
+        #portfolio .card:hover { cursor: url('https://static.vecteezy.com/system/resources/thumbnails/070/958/470/small/create-3d-pixel-cursor-modeling-a-retro-pointer-digitally-with-a-transparent-background-png.png'), pointer; }
+        #konamiEffect { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none; overflow: hidden; }
+        .controller { position: absolute; width: 100px; animation: moveRandom 10s linear infinite, rotate 5s linear infinite; }
+        @keyframes moveRandom { 0% { transform: translate(0, 0); } 25% { transform: translate(20vw, 20vh); } 50% { transform: translate(-20vw, 20vh); } 75% { transform: translate(-20vw, -20vh); } 100% { transform: translate(0, 0); } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #matrix { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998; pointer-events: none; }
+        .stats { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat { text-align: center; }
+        .tech-stack { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 20px 0; }
+        .tech-icon { font-size: 2em; margin: 10px; }
+        .action-btn { background: #343a40; border-radius: 20px; margin: 5px; color: #fff; }
+        .action-btn:hover { background: #495057; }
     </style>
 </head>
-
 <body>
-    <!-- Konami Easter Egg Elements -->
-    <audio id="eightBitMusic" src="the-return-of-the-8-bit-era-301292.mp3" preload="auto"></audio>
-    <canvas id="matrix"></canvas>
-    <div id="konamiEffect"></div>
-
-    <!-- Scroll Progress Bar -->
-    <div class="progress-bar" id="progressBar"></div>
-
-    <!-- Theme Toggle -->
-    <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
-        <span id="themeIcon">🌙</span>
-    </button>
-
-    <!-- Navigation -->
-    <nav>
-        <a href="#top" class="nav-link">🏠 Home</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#certifications" class="nav-link">Certifications</a>
-        <a href="#top" class="nav-link">Contact</a>
-    </nav>
-
-    <!-- Floating Action Buttons -->
-    <div class="fab-container">
-        <!-- ✅ Fixed CV download button -->
-        <button class="fab" id="downloadCV" title="Download CV" onclick="downloadCV()">
-            <span>📄</span>
-            <span class="fab-tooltip">Download CV</span>
-        </button>
-        <button class="fab" id="printCV" title="Print CV">
-            <span>🖨️</span>
-            <span class="fab-tooltip">Print CV</span>
-        </button>
-        <a href="#top" class="fab" title="Back to Top">
-            <span>↑</span>
-            <span class="fab-tooltip">Back to Top</span>
-        </a>
-    </div>
-
-    <!-- Animated Background -->
-    <div class="bg-animation"></div>
-    
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
-
-    <header id="top">
-        <div class="hero-content">
-            <h1>Christopher Munn</h1>
-            <p class="tagline">Independent Systems & Cloud Infrastructure Consultant | Microsoft Certified Professional</p>
-            <p style="max-width: 850px; margin: 20px auto; font-size: 1.15rem; font-weight: 300;">
-                Specializing in Automation, Security, and Hybrid Cloud Transformation
-            </p>
-            
-            <div class="contact-info">
-                <a href="mailto:chris.munn@outlook.com" class="contact-item">
-                    <span>✉</span> chris.munn@outlook.com
-                </a>
-                <a href="https://github.com/chrismunnPS" target="_blank" class="contact-item">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 ..."/></svg>
-                    <span style="margin-left: 5px;">GitHub</span>
-                </a>
-                <a href="https://linkedin.com/in/chrismunn/" target="_blank" class="contact-item">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569 ..."/></svg>
-                    <span style="margin-left: 5px;">LinkedIn</span>
-                </a>
-                <span class="contact-item">
-                    <span>📍</span> London, UK
-                </span>
-            </div>
-
-            <div class="cert-badges">
-                <span class="badge">AZ-104</span>
-                <span class="badge">SC-900</span>
-                <span class="badge">MS-900</span>
-                <span class="badge">AZ-900</span>
-                <span class="badge">MCSE</span>
-                <span class="badge">A+</span>
-                <span class="badge">Network+</span>
-                <span class="badge">Security+</span>
-            </div>
-
-            <div class="quick-links">
-                <a href="#experience" class="quick-link-btn">
-                    <span>💼</span> View Experience
-                </a>
-                <a href="#skills" class="quick-link-btn">
-                    <span>⚡</span> See Skills
-                </a>
-                <a href="mailto:chris.munn@outlook.com" class="quick-link-btn">
-                    <span>📧</span> Get in Touch
-                </a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Chris Munn</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#summary">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#summary">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#portfolio">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certifications">Certifications</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
             </div>
         </div>
-    </header>
-	
-	    <main>
-        <section id="about">
-            <div class="container">
-                <h2>Professional Summary</h2>
-                <div class="summary">
-                    <p>Accomplished Senior Systems Administrator with over <strong>15 years of experience</strong> architecting, securing, and optimizing Microsoft-based enterprise and hybrid cloud infrastructures. Demonstrated expertise in modernizing legacy systems, enhancing virtualisation performance, and driving automation through PowerShell and Azure technologies.</p>
-                    <p style="margin-top: 20px;">Recognized for aligning IT strategy with organizational goals, reducing operational risk, and delivering scalable, high-availability solutions that elevate performance and resilience.</p>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-card">
-                        <span class="stat-number">15+</span>
-                        <span class="stat-label">Years Experience</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">70%</span>
-                        <span class="stat-label">Workload Reduction</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">500+</span>
-                        <span class="stat-label">Users Supported</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">Zero</span>
-                        <span class="stat-label">Migration Downtime</span>
-                    </div>
-                </div>
+    </nav>
+    <div class="hero">
+        <div class="hero-content">
+            <h1 class="display-3 fw-bold" style="color: #60a5fa;">Christopher Munn</h1>
+            <p class="lead">Independent Systems & Cloud Infrastructure Consultant | Microsoft Certified Professional</p>
+            <p>Specializing in Automation, Security, and Hybrid Cloud Transformation</p>
+            <p><i class="fas fa-envelope"></i> chris.munn@outlook.com | <i class="fab fa-github"></i> <a href="https://www.github.com/chrismunnPS" style="color: #ccd6f6;">GitHub</a> | <i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/chrismunn/" style="color: #ccd6f6;">LinkedIn</a> | <i class="fas fa-map-marker-alt"></i> London, UK</p>
+            <div class="d-flex justify-content-center flex-wrap">
+                <div class="cert-badge">AZ-104</div>
+                <div class="cert-badge">SC-900</div>
+                <div class="cert-badge">MS-900</div>
+                <div class="cert-badge">AZ-900</div>
+                <div class="cert-badge">MCSE</div>
+                <div class="cert-badge">A+</div>
+                <div class="cert-badge">Network+</div>
+                <div class="cert-badge">Security+</div>
             </div>
-        </section>
-
-        <section id="skills">
-            <div class="container">
-                <h2>Core Competencies</h2>
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <h3>☁️ Cloud & Infrastructure</h3>
+            <a href="#experience" class="btn action-btn btn-sm me-2"><i class="fas fa-briefcase"></i> View Experience</a>
+            <a href="#skills" class="btn action-btn btn-sm me-2"><i class="fas fa-lightbulb"></i> See Skills</a>
+            <a href="#contact" class="btn action-btn btn-sm"><i class="fas fa-envelope"></i> Get in Touch</a>
+        </div>
+    </div>
+    <section id="summary" class="container">
+        <h2 class="text-center mb-5">Professional Summary</h2>
+        <div class="card p-4">
+            <p>Accomplished Senior Systems Administrator with over 15 years architecting, securing, and optimizing Microsoft-based infrastructures. Expert in Azure, PowerShell automation, and hybrid cloud. Proven track record in reducing risks, boosting efficiency, and aligning IT with business goals. Ready to elevate your operations.</p>
+        </div>
+    </section>
+    <section id="skills" class="bg-dark py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" style="border-bottom: 2px solid #60a5fa; padding-bottom: 10px;">Core Competencies</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-cloud skill-icon"></i>
+                        <h5>Cloud & Infrastructure</h5>
                         <p>Azure Administration, Hybrid Cloud Architecture, VMware vSphere, Hyper-V, Infrastructure Modernization</p>
-                        <div class="skill-progress">
-                            <div class="skill-progress-bar" data-width="95"></div>
-                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>🔐 Security & Compliance</h3>
+                </div>
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-lock skill-icon"></i>
+                        <h5>Security & Compliance</h5>
                         <p>Cybersecurity Operations, Identity Management, Conditional Access, XDR Implementation, IT Governance</p>
-                        <div class="skill-progress">
-                            <div class="skill-progress-bar" data-width="90"></div>
-                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>⚡ Automation & Scripting</h3>
+                </div>
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-bolt skill-icon"></i>
+                        <h5>Automation & Scripting</h5>
                         <p>PowerShell Automation, Active Directory Management, Process Optimization, DevOps Practices</p>
-                        <div class="skill-progress">
-                            <div class="skill-progress-bar" data-width="95"></div>
-                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>📧 Messaging & Collaboration</h3>
+                </div>
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-envelope skill-icon"></i>
+                        <h5>Messaging & Collaboration</h5>
                         <p>Exchange Server, Exchange Online, Microsoft 365, Azure AD, Intune, Hybrid Integration</p>
-                        <div class="skill-progress">
-                            <div class="skill-progress-bar" data-width="90"></div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-life-ring skill-icon"></i>
+                        <h5>Backup & Recovery</h5>
+                        <p>Veeam, Rapid Recovery, Disaster Recovery Planning, Business Continuity, RTO/RPO Management</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-3">
+                        <i class="fas fa-users skill-icon"></i>
+                        <h5>Leadership</h5>
+                        <p>Technical Mentorship, Team Training, Project Management, Strategic IT Planning</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="portfolio" class="container">
+        <h2 class="text-center mb-5">Some Featured Projects</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card p-4">
+                    <h4>Network Adapter Information Tool</h4>
+                    <p>PowerShell tool with graphical interface for viewing, managing, and exporting network adapter information. Displays adapter details (IP, MAC, SSID, status) in organized tabs for WiFi, Ethernet, Virtual, and Diagnostics. Features adapter control, network troubleshooting tools, WiFi report generation, and theme switching.</p>
+                    <p>PowerShell Networking GUI</p>
+                    <a href="https://github.com/ChrisMunnPS/GetAdapter" class="btn btn-primary">View on GitHub</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card p-4">
+                    <h4>Active Directory Health Dashboard</h4>
+                    <p>Visual dashboard providing comprehensive overview of Active Directory domain controller health across enterprise environments. Generates HTML and Markdown reports highlighting system status, error trends, and diagnostic results. Built for infrastructure transparency, operational resilience, and proactive monitoring.</p>
+                    <p>Active Directory Monitoring Reporting</p>
+                    <a href="https://github.com/ChrisMunnPS/DomainControllerHealthDashboard" class="btn btn-primary">View on GitHub</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card p-4">
+                    <h4>OnVUE System Preparation Script</h4>
+                    <p>Automated system preparation tool for Pearson VUE OnVUE online proctoring. Closes interfering processes, stops services, disables notifications, clears temporary files, and checks for high-risk software. Features user-friendly menu-driven interface for seamless exam preparation.</p>
+                    <p>PowerShell Automation System Prep</p>
+                    <a href="https://github.com/ChrisMunnPS/OnVue_System_Preperation" class="btn btn-primary">View on GitHub</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card p-4">
+                    <h4>Active Directory Security Audit Script</h4>
+                    <p>Automated security auditing solution for Microsoft Active Directory environments. Identifies potential security risks, generates professional reports with visual dashboards, and helps organizations maintain compliance with security best practices and regulatory requirements.</p>
+                    <p>Security Active Directory Compliance</p>
+                    <a href="https://github.com/ChrisMunnPS/ActiveDirectory_Flag_Scanner" class="btn btn-primary">View on GitHub</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card p-4">
+                    <h4>Application Import/Export with winget</h4>
+                    <p>GUI-based PowerShell tool simplifying the export and import of installed Windows applications using winget. Provides an efficient way to back up application lists and restore them on different machines, streamlining system migrations and deployments.</p>
+                    <p>PowerShell winget Migration</p>
+                    <a href="https://github.com/ChrisMunnPS/ApplicationImportExport" class="btn btn-primary">View on GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="experience" class="bg-dark py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Professional Experience</h2>
+            <div class="accordion" id="experienceAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            <i class="fas fa-laptop-code me-2"></i> Independent Projects & Professional Development (05/2024 - Current, London, UK)
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#experienceAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Developed and published enterprise-grade PowerShell automation scripts on GitHub to streamline onboarding, offboarding, and Active Directory health monitoring, reducing manual workload by 70%, and improving system reliability.</li>
+                                <li>Built and maintained a Hybrid Infrastructure Lab, integrating Active Directory, Azure AD, Intune, and Exchange Online, enabling secure simulation of enterprise hybrid environments for testing and optimization.</li>
+                                <li>Created and shared open-source IT administration tools and process documentation with the global technical community, promoting automation best practices, and secure infrastructure deployment standards.</li>
+                                <li>Tested and validated hybrid cloud and identity management frameworks to ensure compliance with Microsoft Azure governance, Conditional Access, and security baseline configurations.</li>
+                                <li>Earned multiple Microsoft certifications (AZ-104, SC-900, MS-900, AZ-900), demonstrating a strong commitment to continuous learning and applied technical excellence in cloud administration and automation.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                            <i class="fas fa-server me-2"></i> Senior Systems Administrator, United Grand Lodge of England (11/2014 - 05/2024, London, UK)
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#experienceAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Engineered and executed a multi-phase Microsoft Exchange migration (2010 → 2019) with hybrid Exchange Online integration for 500+ users, achieving zero downtime, and reducing maintenance costs by 20%.</li>
+                                <li>Automated Active Directory user provisioning and deprovisioning using PowerShell, cutting setup time by 75%, eliminating manual errors, and enhancing operational efficiency.</li>
+                                <li>Modernized virtual infrastructure across VMware vSphere and Hyper-V platforms (6.x → 7.x), increasing VM density by 30%, and reducing host failure rates by 20%.</li>
+                                <li>Designed and implemented a robust disaster recovery and backup framework using Veeam and Rapid Recovery, consistently maintaining RTO ≤ 4 hours and RPO ≤ 15 minutes, in compliance with enterprise standards.</li>
+                                <li>Strengthened endpoint security by deploying Palo Alto XDR across enterprise systems, achieving a 40% reduction in phishing and malware incidents, and improving first-call resolution by 25% through staff mentorship and escalation support.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                            <i class="fas fa-stethoscope me-2"></i> IT Systems Administrator, prIME Oncology (04/2010 - 08/2013, Atlanta, GA, USA)
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#experienceAccordion">
+                        <div class="accordion-body">
+                            <ul>
+                                <li>Administered and maintained Active Directory and Group Policy Objects (GPO) for over 250 users across three international offices (Atlanta, The Hague, and Moscow), ensuring secure and consistent identity management.</li>
+                                <li>Developed and implemented a standardized laptop imaging and deployment framework, reducing system rollout time from one day to under four hours, and accelerating employee onboarding.</li>
+                                <li>Consolidated decentralized PST-based mail systems into a centralized Microsoft Exchange environment, improving data governance, strengthening compliance, and cutting restore times by 60%.</li>
+                                <li>Deployed and configured VOIP and softphone solutions across multiple sites, enhancing communication reliability and lowering telecom costs by 30%.</li>
+                                <li>Automated patching, endpoint monitoring, and system updates using Kaseya achieve over 95% patch compliance, reduce vulnerabilities, and reclaim more than 10 hours per week in manual IT labour.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section id="experience">
-            <div class="container">
-                <h2>Professional Experience</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Independent Consultant</div>
-                                <div class="company">Freelance / Personal Projects</div>
-                            </div>
-                            <div class="date">2024 – Present</div>
-                        </div>
-                        <ul class="achievements">
-                            <li>Developed modular PowerShell tools for infrastructure automation and reporting</li>
-                            <li>Built interactive personal portfolio site with retro UI, GitHub integration, and Konami Easter eggs</li>
-                            <li>Created AD Health Dashboards, Security Audits, and OnVUE readiness scripts</li>
-                        </ul>
+        </div>
+    </section>
+    <section id="education" class="container">
+        <h2 class="text-center mb-5">Education</h2>
+        <div class="card p-4">
+            <h4>University of Maine, Orono</h4>
+            <p>Finance</p>
+            <p>Transitioned into IT career via certifications and enterprise experience.</p>
+        </div>
+    </section>
+    <section id="certifications" class="bg-dark py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Certifications</h2>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>Azure Administrator Associate (AZ-104)</h5>
+                        <p>09/2025</p>
                     </div>
-
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Senior Systems Administrator</div>
-                                <div class="company">United Grand Lodge of England</div>
-                            </div>
-                            <div class="date">2014 – 2024</div>
-                        </div>
-                        <ul class="achievements">
-                            <li>Led hybrid cloud migration and modernization of legacy infrastructure</li>
-                            <li>Automated AD, Exchange, and M365 tasks using advanced PowerShell scripting</li>
-                            <li>Reduced downtime and improved security posture through proactive monitoring and remediation</li>
-                        </ul>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>Security, compliance, and identity fundamentals (SC-900)</h5>
+                        <p>07/2024</p>
                     </div>
-
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">IT Systems Administrator</div>
-                                <div class="company">prIME Oncology</div>
-                            </div>
-                            <div class="date">2010 – 2013</div>
-                        </div>
-                        <ul class="achievements">
-                            <li>Managed Windows infrastructure, user support, and system upgrades</li>
-                            <li>Implemented backup and disaster recovery procedures</li>
-                        </ul>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>Microsoft 365 Fundamentals (MS-900)</h5>
+                        <p>07/2024</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>Azure Fundamentals (AZ-900)</h5>
+                        <p>08/2024</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>Microsoft Certified Systems Engineer (MCSE)</h5>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>CompTIA A+</h5>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>CompTIA Network+</h5>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card p-4 text-center">
+                        <h5>CompTIA Security+</h5>
+                        <p></p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section id="projects">
-            <div class="container">
-                <h2>Projects</h2>
-                <div class="skills-grid">
-                    <div class="skill-card">
-                        <h3>🧰 Network Adapter Info Tool</h3>
-                        <p>PowerShell GUI that displays adapter details, IPs, and DNS settings with export options</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>📊 AD Health Dashboard</h3>
-                        <p>Modular script that audits AD health, replication, stale objects, and GPOs</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>🧪 OnVUE Prep Script</h3>
-                        <p>Pre-exam system check tool that validates hardware, services, and network readiness</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>🔍 AD Security Audit</h3>
-                        <p>Script that checks for risky accounts, open shares, and misconfigurations</p>
-                    </div>
-                    <div class="skill-card">
-                        <h3>📦 Winget App Export/Import</h3>
-                        <p>Exports installed apps and automates reinstallation using winget and PowerShell</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="certifications">
-            <div class="container">
-                <h2>Certifications</h2>
-                <div class="cert-badges">
-                    <span class="badge">AZ-104</span>
-                    <span class="badge">SC-900</span>
-                    <span class="badge">MS-900</span>
-                    <span class="badge">AZ-900</span>
-                    <span class="badge">MCSE</span>
-                    <span class="badge">A+</span>
-                    <span class="badge">Network+</span>
-                    <span class="badge">Security+</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="education">
-            <div class="container">
-                <h2>Education</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">University of Maine, Orono</div>
-                                <div class="company">Bachelor of Science in Finance</div>
-                            </div>
-                            <div class="date">2002 – 2006</div>
-                        </div>
-                        <ul class="achievements">
-                            <li>Transitioned into IT through certifications and hands-on experience</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-	
-	    <footer>
-        <p>&copy; 2025 Christopher Munn. All rights reserved.</p>
-        <p>Built with ❤️, PowerShell, and a touch of retro creativity.</p>
+        </div>
+    </section>
+    <section id="contact" class="container">
+        <div class="text-center">
+            <h2 class="mb-5">Get in Touch</h2>
+            <p>London W11 1AY, UK | 0771 596 1218 | chris.munn@outlook.com</p>
+            <p><a href="https://www.github.com/chrismunnPS" class="text-light"><i class="fab fa-github"></i> GitHub</a> | <a href="https://www.linkedin.com/in/chrismunn/" class="text-light"><i class="fab fa-linkedin"></i> LinkedIn</a></p>
+            <a href="Christopher Munn - CV.pdf" download class="btn btn-primary">Download CV</a>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Christopher Munn</p>
+        <p><img src="controller.png" alt="Controller" style="width: 50px; height: auto;"> Try the Konami Code</p>
     </footer>
-	
-	    <script>
-        function downloadCV() {
-            const link = document.createElement('a');
-            link.href = 'Christopher Munn - CV.pdf';
-            link.download = 'Christopher Munn - CV.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+    <a id="back-to-top" href="#" class="btn btn-primary"><i class="fas fa-arrow-up"></i></a>
+    <audio id="eightBitMusic" src="the-return-of-the-8-bit-era-301292.mp3" preload="auto"></audio>
+    <div id="konamiEffect"></div>
+    <canvas id="matrix"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.onscroll = function() { 
+            document.getElementById("back-to-top").style.display = (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) ? "block" : "none";
+        };
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
 
-        const konamiPattern = [
-            'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
-            'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'
-        ];
-        let konamiIndex = 0;
-        let konamiActive = false;
-        let matrixInterval;
-
+        // Konami Code
+        let pattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        let current = 0;
         document.addEventListener('keydown', function(event) {
-            if (event.code === 'Escape' && konamiActive) {
-                cancelKonamiMode();
-            } else if (event.code === konamiPattern[konamiIndex]) {
-                konamiIndex++;
-                if (konamiIndex === konamiPattern.length) {
-                    activateKonamiMode();
-                    konamiIndex = 0;
+            if (pattern[current] === event.code) {
+                current++;
+                if (current === pattern.length) {
+                    current = 0;
+                    document.body.classList.add('gaming-mode');
+                    document.getElementById('matrix').style.display = 'block';
+                    initMatrix();
+                    initControllers();
+                    document.getElementById('eightBitMusic').play();
+                    setTimeout(() => { 
+                        document.getElementById('eightBitMusic').pause();
+                        document.getElementById('eightBitMusic').currentTime = 0;
+                        document.getElementById('matrix').style.display = 'none';
+                        document.getElementById('konamiEffect').innerHTML = '';
+                        document.body.classList.remove('gaming-mode');
+                    }, 10000);
                 }
             } else {
-                konamiIndex = 0;
+                current = 0;
             }
         });
-
-        function activateKonamiMode() {
-            konamiActive = true;
-            document.body.classList.add('konami-mode');
-            document.getElementById('matrix').style.display = 'block';
-            document.getElementById('konamiEffect').style.display = 'block';
-            initMatrix();
-            initControllers();
-            document.getElementById('eightBitMusic').play();
-        }
-
-        function cancelKonamiMode() {
-            konamiActive = false;
-            document.body.classList.remove('konami-mode');
-            document.getElementById('eightBitMusic').pause();
-            document.getElementById('eightBitMusic').currentTime = 0;
-            document.getElementById('matrix').style.display = 'none';
-            document.getElementById('konamiEffect').innerHTML = '';
-            document.getElementById('konamiEffect').style.display = 'none';
-            clearInterval(matrixInterval);
-        }
 
         function initMatrix() {
             const canvas = document.getElementById('matrix');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            canvas.width = window.innerWidth;
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             const fontSize = 16;
             const columns = canvas.width / fontSize;
             const drops = Array.from({length: columns}, () => Math.random() * canvas.height / fontSize);
 
-            function drawMatrix() {
+            function draw() {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#0F0';
                 ctx.font = fontSize + 'px monospace';
                 drops.forEach((y, i) => {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const text = characters[Math.floor(Math.random() * characters.length)];
                     ctx.fillText(text, i * fontSize, y * fontSize);
                     drops[i] = y > canvas.height / fontSize ? 0 : y + 1;
                 });
             }
-
-            matrixInterval = setInterval(drawMatrix, 33);
+            const interval = setInterval(draw, 33);
+            setTimeout(() => clearInterval(interval), 10000);
         }
 
         function initControllers() {
             const container = document.getElementById('konamiEffect');
+            container.style.display = 'block';
             for (let i = 0; i < 100; i++) {
                 const img = document.createElement('img');
                 img.src = 'controller.png';
                 img.classList.add('controller');
+                img.style.left = `${Math.random() * 100}%`;
                 img.style.top = `${Math.random() * 100}%`;
-                img.style.left = `-150px`;
                 img.style.animationDuration = `${Math.random() * 5 + 3}s`;
                 container.appendChild(img);
             }
