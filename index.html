@@ -10,7 +10,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --primary: #4f46e5;
             --secondary: #7c3aed;
@@ -22,7 +21,6 @@
             --text: #1e293b;
             --glass: rgba(255, 255, 255, 0.1);
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
@@ -30,7 +28,6 @@
             background: var(--dark);
             overflow-x: hidden;
         }
-
         /* Animated Background */
         .bg-animation {
             position: fixed;
@@ -41,7 +38,6 @@
             z-index: 0;
             background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
         }
-
         .bg-animation::before {
             content: '';
             position: absolute;
@@ -49,18 +45,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.3), transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.3), transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(37, 99, 235, 0.3), transparent 50%);
             animation: bgPulse 15s ease-in-out infinite;
         }
-
         @keyframes bgPulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.8; transform: scale(1.1); }
         }
-
         /* Floating particles */
         .particles {
             position: fixed;
@@ -71,21 +65,18 @@
             z-index: 1;
             pointer-events: none;
         }
-
         .particle {
             position: absolute;
             background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             animation: float 20s infinite;
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -93,7 +84,6 @@
             position: relative;
             z-index: 2;
         }
-
         /* Glassmorphism Header */
         header {
             backdrop-filter: blur(20px) saturate(180%);
@@ -106,12 +96,10 @@
             margin-bottom: 50px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-
         .hero-content {
             position: relative;
             z-index: 3;
         }
-
         h1 {
             font-size: clamp(2.5rem, 5vw, 4.5rem);
             margin-bottom: 20px;
@@ -124,7 +112,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .tagline {
             font-size: clamp(1.1rem, 2vw, 1.5rem);
             margin-bottom: 30px;
@@ -132,7 +119,6 @@
             animation: fadeInUp 1s ease 0.3s both;
             font-weight: 300;
         }
-
         .contact-info {
             display: flex;
             justify-content: center;
@@ -141,7 +127,6 @@
             margin-top: 40px;
             animation: fadeInUp 1s ease 0.6s both;
         }
-
         .contact-item {
             display: flex;
             align-items: center;
@@ -156,13 +141,11 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-weight: 500;
         }
-
         .contact-item:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-
         /* Certification Badges with 3D effect */
         .cert-badges {
             display: flex;
@@ -173,7 +156,6 @@
             animation: fadeIn 1s ease 0.9s both;
             perspective: 1000px;
         }
-
         .badge {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -186,7 +168,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .badge::before {
             content: '';
             position: absolute;
@@ -197,28 +178,23 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             transition: left 0.5s;
         }
-
         .badge:hover {
             transform: translateY(-5px) rotateX(10deg);
             box-shadow: 0 15px 40px rgba(124, 58, 237, 0.8);
         }
-
         .badge:hover::before {
             left: 100%;
         }
-
         /* Main Content with Glass Cards */
         main {
             position: relative;
             z-index: 2;
             padding-bottom: 80px;
         }
-
         section {
             padding: 80px 20px;
             animation: fadeIn 1s ease;
         }
-
         h2 {
             font-size: clamp(2rem, 4vw, 3rem);
             margin-bottom: 50px;
@@ -228,7 +204,6 @@
             padding-bottom: 20px;
             font-weight: 800;
         }
-
         h2::after {
             content: '';
             position: absolute;
@@ -241,7 +216,6 @@
             border-radius: 3px;
             box-shadow: 0 0 20px var(--accent);
         }
-
         /* Glass Summary Card */
         .summary {
             backdrop-filter: blur(20px) saturate(180%);
@@ -257,17 +231,14 @@
             color: rgba(255, 255, 255, 0.95);
             transition: all 0.4s ease;
         }
-
         .summary:hover {
             transform: translateY(-10px);
             box-shadow: 0 25px 70px rgba(79, 70, 229, 0.4);
         }
-
         .summary strong {
             color: var(--accent);
             font-weight: 700;
         }
-
         /* Skills Grid with 3D Cards */
         .skills-grid {
             display: grid;
@@ -275,7 +246,6 @@
             gap: 30px;
             margin-top: 50px;
         }
-
         .skill-card {
             backdrop-filter: blur(20px) saturate(180%);
             background: rgba(15, 23, 42, 0.8);
@@ -288,7 +258,6 @@
             overflow: hidden;
             color: rgba(255, 255, 255, 0.95);
         }
-
         .skill-card::before {
             content: '';
             position: absolute;
@@ -300,17 +269,14 @@
             opacity: 0;
             transition: opacity 0.4s;
         }
-
         .skill-card:hover {
             transform: translateY(-15px) scale(1.03);
             box-shadow: 0 20px 60px rgba(79, 70, 229, 0.6);
             border-color: var(--accent);
         }
-
         .skill-card:hover::before {
             opacity: 1;
         }
-
         .skill-card h3 {
             color: var(--accent);
             margin-bottom: 20px;
@@ -319,13 +285,11 @@
             position: relative;
             z-index: 1;
         }
-
         .skill-card p {
             position: relative;
             z-index: 1;
             line-height: 1.7;
         }
-
         /* Stats with Counter Animation */
         .stats {
             display: grid;
@@ -333,7 +297,6 @@
             gap: 30px;
             margin-top: 50px;
         }
-
         .stat-card {
             backdrop-filter: blur(20px) saturate(180%);
             background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(124, 58, 237, 0.95));
@@ -347,7 +310,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .stat-card::before {
             content: '';
             position: absolute;
@@ -358,17 +320,14 @@
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: rotate 10s linear infinite;
         }
-
         @keyframes rotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .stat-card:hover {
             transform: translateY(-15px) scale(1.05);
             box-shadow: 0 25px 70px rgba(124, 58, 237, 0.8);
         }
-
         .stat-number {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
@@ -377,7 +336,6 @@
             z-index: 1;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-
         .stat-label {
             font-size: 1.1rem;
             margin-top: 15px;
@@ -385,14 +343,12 @@
             z-index: 1;
             font-weight: 500;
         }
-
         /* Timeline with Modern Design */
         .timeline {
             position: relative;
             max-width: 1100px;
             margin: 50px auto;
         }
-
         .timeline-item {
             backdrop-filter: blur(20px) saturate(180%);
             background: rgba(15, 23, 42, 0.8);
@@ -406,7 +362,6 @@
             overflow: hidden;
             color: rgba(255, 255, 255, 0.95);
         }
-
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -417,12 +372,10 @@
             background: linear-gradient(180deg, var(--primary), var(--accent));
             box-shadow: 0 0 20px var(--accent);
         }
-
         .timeline-item:hover {
             transform: translateX(15px) scale(1.02);
             box-shadow: 0 20px 60px rgba(79, 70, 229, 0.6);
         }
-
         .job-header {
             display: flex;
             justify-content: space-between;
@@ -431,19 +384,16 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-
         .job-title {
             font-size: 1.7rem;
             color: var(--accent);
             font-weight: 800;
         }
-
         .company {
             font-size: 1.3rem;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
         }
-
         .date {
             color: rgba(255, 255, 255, 0.8);
             font-style: italic;
@@ -453,24 +403,20 @@
             font-weight: 500;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .achievements {
             list-style: none;
             margin-top: 25px;
         }
-
         .achievements li {
             padding: 15px 0 15px 40px;
             position: relative;
             line-height: 1.8;
             transition: all 0.3s ease;
         }
-
         .achievements li:hover {
             transform: translateX(10px);
             color: var(--accent);
         }
-
         .achievements li:before {
             content: '▸';
             position: absolute;
@@ -480,16 +426,13 @@
             font-size: 1.4rem;
             transition: all 0.3s ease;
         }
-
         .achievements li:hover:before {
             left: 5px;
         }
-
         .achievements strong {
             color: var(--accent);
             font-weight: 700;
         }
-
         /* Scroll Progress Indicator */
         .progress-bar {
             position: fixed;
@@ -501,7 +444,6 @@
             transition: width 0.1s ease;
             box-shadow: 0 0 10px var(--accent);
         }
-
         /* Footer */
         footer {
             backdrop-filter: blur(20px) saturate(180%);
@@ -513,7 +455,6 @@
             position: relative;
             z-index: 2;
         }
-
         /* Floating Action Buttons */
         .fab-container {
             position: fixed;
@@ -524,7 +465,6 @@
             flex-direction: column;
             gap: 15px;
         }
-
         .fab {
             width: 60px;
             height: 60px;
@@ -541,12 +481,10 @@
             border: none;
             text-decoration: none;
         }
-
         .fab:hover {
             transform: scale(1.15) rotate(10deg);
             box-shadow: 0 12px 40px rgba(124, 58, 237, 0.8);
         }
-
         .fab-tooltip {
             position: absolute;
             right: 75px;
@@ -560,11 +498,9 @@
             transition: opacity 0.3s ease;
             font-size: 0.9rem;
         }
-
         .fab:hover .fab-tooltip {
             opacity: 1;
         }
-
         /* Navigation Bar */
         nav {
             position: fixed;
@@ -580,7 +516,6 @@
             gap: 10px;
             animation: fadeInDown 1s ease 1.2s both;
         }
-
         .nav-link {
             color: white;
             text-decoration: none;
@@ -590,11 +525,9 @@
             font-weight: 500;
             font-size: 0.95rem;
         }
-
         .nav-link:hover {
             background: rgba(255, 255, 255, 0.2);
         }
-
         /* Skills Progress Bars */
         .skill-progress {
             margin-top: 15px;
@@ -604,7 +537,6 @@
             overflow: hidden;
             position: relative;
         }
-
         .skill-progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--accent), var(--gold));
@@ -613,7 +545,6 @@
             width: 0;
             box-shadow: 0 0 10px var(--accent);
         }
-
         /* Testimonials Section */
         .testimonial-card {
             backdrop-filter: blur(20px) saturate(180%);
@@ -626,24 +557,20 @@
             margin-bottom: 30px;
             transition: all 0.4s ease;
         }
-
         .testimonial-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(79, 70, 229, 0.5);
         }
-
         .testimonial-text {
             font-style: italic;
             font-size: 1.1rem;
             line-height: 1.8;
             margin-bottom: 20px;
         }
-
         .testimonial-author {
             font-weight: 700;
             color: var(--accent);
         }
-
         /* Tech Stack Icons */
         .tech-stack {
             display: flex;
@@ -652,7 +579,6 @@
             justify-content: center;
             margin-top: 40px;
         }
-
         .tech-icon {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.1);
@@ -667,13 +593,11 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
         .tech-icon:hover {
             transform: translateY(-10px) rotate(5deg);
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
         }
-
         /* Quick Links */
         .quick-links {
             display: flex;
@@ -682,7 +606,6 @@
             margin-top: 30px;
             flex-wrap: wrap;
         }
-
         .quick-link-btn {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.15);
@@ -697,13 +620,11 @@
             align-items: center;
             gap: 10px;
         }
-
         .quick-link-btn:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
         }
-
         /* Animations */
         @keyframes fadeInDown {
             from {
@@ -715,7 +636,6 @@
                 transform: translateY(0);
             }
         }
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -726,48 +646,95 @@
                 transform: translateY(0);
             }
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         /* Responsive */
         @media (max-width: 768px) {
             .contact-info {
                 flex-direction: column;
                 gap: 15px;
             }
-
             .job-header {
                 flex-direction: column;
             }
-
             .summary, .skill-card, .timeline-item {
                 padding: 30px;
             }
-
             section {
                 padding: 60px 20px;
             }
         }
-
         /* Loading Animation */
         @keyframes shimmer {
             0% { background-position: -1000px 0; }
             100% { background-position: 1000px 0; }
+        }
+        /* Konami Styles */
+        .konami-message {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 30px;
+            border-radius: 20px;
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            z-index: 10001;
+            box-shadow: 0 0 50px rgba(0,255,0,0.5);
+        }
+        .close-konami {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        .controller {
+            position: fixed;
+            width: 60px;
+            height: auto;
+            animation: moveRandom linear infinite, spin linear infinite;
+            pointer-events: none;
+            z-index: 10001;
+            will-change: transform;
+        }
+        @keyframes moveRandom {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy));
+            }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <!-- Scroll Progress Bar -->
     <div class="progress-bar" id="progressBar"></div>
-
     <!-- Theme Toggle -->
     <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
         <span id="themeIcon">🌙</span>
     </button>
-
     <!-- Navigation -->
     <nav>
         <a href="#top" class="nav-link">🏠 Home</a>
@@ -778,35 +745,28 @@
         <a href="#certifications" class="nav-link">Certifications</a>
         <a href="#top" class="nav-link">Contact</a>
     </nav>
-
     <!-- Floating Action Buttons -->
     <div class="fab-container">
-        <button class="fab" id="downloadCV" title="Download CV">
+        <button class="fab" id="downloadCV" title="Download CV" onclick="downloadCV()">
             <span>📄</span>
             <span class="fab-tooltip">Download CV</span>
-        </button>
-        <button class="fab" id="printCV" title="Print CV">
-            <span>🖨️</span>
-            <span class="fab-tooltip">Print CV</span>
         </button>
         <a href="#top" class="fab" title="Back to Top">
             <span>↑</span>
             <span class="fab-tooltip">Back to Top</span>
         </a>
     </div>
-
     <!-- Animated Background -->
     <div class="bg-animation"></div>
-    
+   
     <!-- Floating Particles -->
     <div class="particles" id="particles"></div>
-
     <header id="top">
         <div class="hero-content">
             <h1>Christopher Munn</h1>
             <p class="tagline">Independent Systems & Cloud Infrastructure Consultant | Microsoft Certified Professional</p>
             <p style="max-width: 850px; margin: 20px auto; font-size: 1.15rem; font-weight: 300;">Specializing in Automation, Security, and Hybrid Cloud Transformation</p>
-            
+           
             <div class="contact-info">
                 <a href="mailto:chris.munn@outlook.com" class="contact-item">
                     <span>✉</span> chris.munn@outlook.com
@@ -823,7 +783,6 @@
                     <span>📍</span> London, UK
                 </span>
             </div>
-
             <div class="cert-badges">
                 <span class="badge">AZ-104</span>
                 <span class="badge">SC-900</span>
@@ -834,7 +793,6 @@
                 <span class="badge">Network+</span>
                 <span class="badge">Security+</span>
             </div>
-
             <div class="quick-links">
                 <a href="#experience" class="quick-link-btn">
                     <span>💼</span> View Experience
@@ -848,7 +806,6 @@
             </div>
         </div>
     </header>
-
     <main>
         <section id="about">
             <div class="container">
@@ -857,7 +814,6 @@
                     <p>Accomplished Senior Systems Administrator with over <strong>15 years of experience</strong> architecting, securing, and optimizing Microsoft-based enterprise and hybrid cloud infrastructures. Demonstrated expertise in modernizing legacy systems, enhancing virtualisation performance, and driving automation through PowerShell and Azure technologies.</p>
                     <p style="margin-top: 20px;">Recognized for aligning IT strategy with organizational goals, reducing operational risk, and delivering scalable, high-availability solutions that elevate performance and resilience.</p>
                 </div>
-
                 <div class="stats">
                     <div class="stat-card">
                         <span class="stat-number">15+</span>
@@ -878,7 +834,6 @@
                 </div>
             </div>
         </section>
-
         <section id="skills">
             <div class="container">
                 <h2>Core Competencies</h2>
@@ -926,7 +881,6 @@
                         </div>
                     </div>
                 </div>
-
                 <h2 style="margin-top: 80px;">Technology Stack</h2>
                 <div class="tech-stack">
                     <div class="tech-icon" title="Azure">☁️</div>
@@ -940,7 +894,6 @@
                 </div>
             </div>
         </section>
-
         <section id="experience">
             <div class="container">
                 <h2>Professional Experience</h2>
@@ -961,7 +914,6 @@
                             <li>Earned multiple Microsoft certifications (AZ-104, SC-900, MS-900, AZ-900) demonstrating commitment to continuous learning</li>
                         </ul>
                     </div>
-
                     <div class="timeline-item">
                         <div class="job-header">
                             <div>
@@ -979,7 +931,6 @@
                             <li>Improved first-call resolution by 25% through comprehensive staff mentorship and escalation support</li>
                         </ul>
                     </div>
-
                     <div class="timeline-item">
                         <div class="job-header">
                             <div>
@@ -999,7 +950,6 @@
                 </div>
             </div>
         </section>
-
         <section id="projects">
             <div class="container">
                 <h2>Featured Projects</h2>
@@ -1008,22 +958,18 @@
                         <h3>💻 Network Adapter Information Tool</h3>
                         <p>PowerShell tool with graphical interface for viewing, managing, and exporting network adapter information. Displays adapter details (IP, MAC, SSID, status) in organized tabs for WiFi, Ethernet, Virtual, and Diagnostics. Features adapter control, network troubleshooting tools, WiFi report generation, and theme switching.</p>
                     </a>
-
                     <a href="https://github.com/ChrisMunnPS/DomainControllerHealthDashboard" target="_blank" class="skill-card" style="text-decoration: none;">
                         <h3>📊 Active Directory Health Dashboard</h3>
                         <p>Visual dashboard providing comprehensive overview of Active Directory domain controller health across enterprise environments. Generates HTML and Markdown reports highlighting system status, error trends, and diagnostic results. Built for infrastructure transparency, operational resilience, and proactive monitoring.</p>
                     </a>
-
                     <a href="https://github.com/ChrisMunnPS/OnVue_System_Preperation" target="_blank" class="skill-card" style="text-decoration: none;">
                         <h3>🎯 OnVUE System Preparation Script</h3>
                         <p>Automated system preparation tool for Pearson VUE OnVUE online proctoring. Closes interfering processes, stops services, disables notifications, clears temporary files, and checks for high-risk software. Features user-friendly menu-driven interface for seamless exam preparation.</p>
                     </a>
-
                     <a href="https://github.com/ChrisMunnPS/ActiveDirectory_Flag_Scanner" target="_blank" class="skill-card" style="text-decoration: none;">
                         <h3>🔒 Active Directory Security Audit Script</h3>
                         <p>Automated security auditing solution for Microsoft Active Directory environments. Identifies potential security risks, generates professional reports with visual dashboards, and helps organizations maintain compliance with security best practices and regulatory requirements.</p>
                     </a>
-
                     <a href="https://github.com/ChrisMunnPS/ApplicationImportExport" target="_blank" class="skill-card" style="text-decoration: none;">
                         <h3>📦 Application Import/Export with winget</h3>
                         <p>GUI-based PowerShell tool simplifying the export and import of installed Windows applications using winget. Provides an efficient way to back up application lists and restore them on different machines, streamlining system migrations and deployments.</p>
@@ -1031,67 +977,41 @@
                 </div>
             </div>
         </section>
-
         <section id="certifications">
             <div class="container">
                 <h2>Certifications</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Microsoft Certified: Azure Administrator Associate</div>
-                                <div class="company">AZ-104</div>
-                            </div>
-                            <span class="date">Sep 2025</span>
-                        </div>
+                <div class="skills-grid">
+                    <a href="https://learn.microsoft.com/en-us/certifications/azure-administrator/" target="_blank" class="skill-card" style="text-decoration: none;">
+                        <h3>🏆 Azure Administrator Associate</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">AZ-104</p>
+                        <p style="margin-top: 10px;">September 2025</p>
+                    </a>
+                    <a href="https://learn.microsoft.com/en-us/certifications/security-compliance-and-identity-fundamentals/" target="_blank" class="skill-card" style="text-decoration: none;">
+                        <h3>🔐 Security, Compliance, and Identity Fundamentals</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">SC-900</p>
+                        <p style="margin-top: 10px;">July 2024</p>
+                    </a>
+                    <a href="https://learn.microsoft.com/en-us/certifications/microsoft-365-fundamentals/" target="_blank" class="skill-card" style="text-decoration: none;">
+                        <h3>☁️ Microsoft 365 Fundamentals</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">MS-900</p>
+                        <p style="margin-top: 10px;">July 2024</p>
+                    </a>
+                    <a href="https://learn.microsoft.com/en-us/certifications/azure-fundamentals/" target="_blank" class="skill-card" style="text-decoration: none;">
+                        <h3>⚡ Azure Fundamentals</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">AZ-900</p>
+                        <p style="margin-top: 10px;">August 2024</p>
+                    </a>
+                    <div class="skill-card">
+                        <h3>💼 Microsoft Certified Systems Engineer</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">MCSE</p>
                     </div>
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Microsoft Security, Compliance, and Identity Fundamentals</div>
-                                <div class="company">SC-900</div>
-                            </div>
-                            <span class="date">Jul 2024</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Microsoft 365 Fundamentals</div>
-                                <div class="company">MS-900</div>
-                            </div>
-                            <span class="date">Jul 2024</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Azure Fundamentals</div>
-                                <div class="company">AZ-900</div>
-                            </div>
-                            <span class="date">Aug 2024</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">Microsoft Certified Systems Engineer</div>
-                                <div class="company">MCSE</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="job-header">
-                            <div>
-                                <div class="job-title">CompTIA Certifications</div>
-                                <div class="company">A+, Network+, Security+</div>
-                            </div>
-                        </div>
+                    <div class="skill-card">
+                        <h3>🛡️ CompTIA Certifications</h3>
+                        <p style="font-weight: 600; color: var(--accent); margin-top: 10px;">A+, Network+, Security+</p>
                     </div>
                 </div>
             </div>
         </section>
-
         <section id="education" style="background: rgba(15, 23, 42, 0.3);">
             <div class="container">
                 <h2>Education</h2>
@@ -1109,7 +1029,6 @@
             </div>
         </section>
     </main>
-
     <footer>
         <p style="font-size: 1.1rem;">&copy; 2024 Christopher Munn. All rights reserved.</p>
         <p style="margin-top: 15px; opacity: 0.9;">📍 London W11 1AY, UK | 📞 0771 596 1218 | ✉️ chris.munn@outlook.com</p>
@@ -1125,8 +1044,27 @@
         </div>
         <p style="margin-top: 30px; opacity: 0.5; font-size: 0.85rem;">🎮 Try the Konami Code...</p>
     </footer>
-
     <script>
+        // Global functions for onclick handlers
+        window.downloadCV = function() {
+            const a = document.createElement('a');
+            a.href = 'Christopher Munn - CV.pdf';
+            a.download = 'Christopher Munn - CV.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            // Visual feedback
+            const btn = document.getElementById('downloadCV');
+            if (btn) {
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<span>✓</span>';
+                btn.style.background = 'linear-gradient(135deg, #14b8a6, #10b981)';
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = '';
+                }, 2000);
+            }
+        }
         // Scroll Progress Bar
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1134,7 +1072,6 @@
             const scrolled = (winScroll / height) * 100;
             document.getElementById('progressBar').style.width = scrolled + '%';
         });
-
         // Generate floating particles
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
@@ -1147,13 +1084,11 @@
             particle.style.animationDuration = Math.random() * 10 + 15 + 's';
             particlesContainer.appendChild(particle);
         }
-
         // Intersection Observer for fade-in animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1162,7 +1097,6 @@
                 }
             });
         }, observerOptions);
-
         // Observe all cards and timeline items
         document.querySelectorAll('.skill-card, .timeline-item, .stat-card').forEach(el => {
             el.style.opacity = '0';
@@ -1170,7 +1104,6 @@
             el.style.transition = 'all 0.6s ease';
             observer.observe(el);
         });
-
         // Parallax effect on scroll
         let ticking = false;
         window.addEventListener('scroll', () => {
@@ -1186,7 +1119,6 @@
                 ticking = true;
             }
         });
-
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1200,11 +1132,9 @@
                 }
             });
         });
-
         // Add cursor trail effect
         let coords = { x: 0, y: 0 };
         let circles = [];
-
         for (let i = 0; i < 12; i++) {
             const circle = document.createElement('div');
             circle.style.position = 'fixed';
@@ -1218,115 +1148,24 @@
             document.body.appendChild(circle);
             circles.push(circle);
         }
-
         window.addEventListener('mousemove', (e) => {
             coords.x = e.clientX;
             coords.y = e.clientY;
         });
-
         function animateCircles() {
             let x = coords.x;
             let y = coords.y;
-
             circles.forEach((circle, index) => {
                 circle.style.left = x - 10 + 'px';
                 circle.style.top = y - 10 + 'px';
                 circle.style.transform = `scale(${(circles.length - index) / circles.length})`;
-
                 const nextCircle = circles[index + 1] || circles[0];
                 x += (parseInt(nextCircle.style.left) - x) * 0.3;
                 y += (parseInt(nextCircle.style.top) - y) * 0.3;
             });
-
             requestAnimationFrame(animateCircles);
         }
-
         animateCircles();
-
-        // Download CV functionality
-        document.getElementById('downloadCV').addEventListener('click', function() {
-            // Create CV content
-            const cvContent = `
-CHRISTOPHER MUNN
-Independent Systems & Cloud Infrastructure Consultant
-Microsoft Certified Professional
-
-📧 chris.munn@outlook.com
-📍 London, UK
-💻 github.com/chrismunnPS
-🔗 linkedin.com/in/chrismunn
-
-PROFESSIONAL SUMMARY
-Accomplished Senior Systems Administrator with over 15 years of experience architecting, securing, and optimizing Microsoft-based enterprise and hybrid cloud infrastructures. Demonstrated expertise in modernizing legacy systems, enhancing virtualisation performance, and driving automation through PowerShell and Azure technologies.
-
-KEY ACHIEVEMENTS
-• 70% reduction in manual workload through automation
-• Zero downtime migration for 500+ users
-• 75% reduction in setup time with PowerShell automation
-• 40% reduction in security incidents with XDR implementation
-
-CERTIFICATIONS
-• Azure Administrator Associate (AZ-104) - Sep 2025
-• Security, Compliance, and Identity Fundamentals (SC-900) - Jul 2024
-• Microsoft 365 Fundamentals (MS-900) - 8 Jul 2024
-• Azure Fundamentals (AZ-900) - 5 Aug 2024
-• Microsoft Certified Systems Engineer (MCSE)
-• CompTIA A+, Network+, Security+
-
-EDUCATION
-• University of Maine, Orono - Studied Finance
-• Transitioned into IT career via certifications and enterprise experience
-
-PROFESSIONAL EXPERIENCE
-
-Independent Consultant & Developer | May 2024 - Present
-• Developed enterprise-grade PowerShell automation scripts on GitHub
-• Built Hybrid Infrastructure Lab integrating AD, Azure AD, Intune, Exchange Online
-• Created open-source IT administration tools and documentation
-
-Senior Systems Administrator | United Grand Lodge of England | Nov 2014 - May 2024
-• Engineered Microsoft Exchange migration (2010 → 2019) with zero downtime
-• Automated Active Directory provisioning, cutting setup time by 75%
-• Modernized virtual infrastructure, increasing VM density by 30%
-• Deployed Palo Alto XDR, achieving 40% reduction in security incidents
-
-IT Systems Administrator | prIME Oncology | Apr 2010 - Aug 2013
-• Administered Active Directory for 250+ users across 3 international offices
-• Reduced deployment time from 1 day to under 4 hours
-• Consolidated mail systems, cutting restore times by 60%
-• Achieved 95%+ patch compliance through automation
-
-CORE COMPETENCIES
-Cloud & Infrastructure: Azure, VMware vSphere, Hyper-V, Hybrid Cloud
-Security & Compliance: Cybersecurity Ops, Identity Management, XDR, IT Governance
-Automation: PowerShell, Active Directory Management, DevOps
-Messaging: Exchange Server, Exchange Online, Microsoft 365, Azure AD, Intune
-Backup & Recovery: Veeam, Disaster Recovery, Business Continuity
-Leadership: Technical Mentorship, Team Training, Project Management
-            `.trim();
-
-            // Create blob and download
-            const blob = new Blob([cvContent], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Christopher Munn - CV.pdf';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-
-            // Visual feedback
-            const btn = this;
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<span>✓</span>';
-            btn.style.background = 'linear-gradient(135deg, #14b8a6, #10b981)';
-            setTimeout(() => {
-                btn.innerHTML = originalContent;
-                btn.style.background = '';
-            }, 2000);
-        });
-
         // Animate skill progress bars when in view
         const progressObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1340,203 +1179,156 @@ Leadership: Technical Mentorship, Team Training, Project Management
                 }
             });
         }, { threshold: 0.5 });
-
         document.querySelectorAll('.skill-progress-bar').forEach(bar => {
             progressObserver.observe(bar);
         });
-
         // Konami Code Easter Egg
-        // Up, Up, Down, Down, Left, Right, Left, Right, B, A
-        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-        let konamiPosition = 0;
-        let konamiActivated = false;
-
-        document.addEventListener('keydown', (e) => {
-            // Prevent if already activated
-            if (konamiActivated) return;
-            
-            // Check for arrow keys or letter keys
-            const key = e.code;
-            console.log('Key pressed:', key, 'Position:', konamiPosition, 'Expected:', konamiCode[konamiPosition]);
-            
-            if (key === konamiCode[konamiPosition]) {
-                konamiPosition++;
-                console.log('Correct! Position now:', konamiPosition);
-                
-                if (konamiPosition === konamiCode.length) {
-                    console.log('KONAMI CODE COMPLETE!');
+        let konamiSequence = [];
+        const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+        let konamiActive = false;
+        let konamiAudio = null;
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && konamiActive) {
+                closeKonami();
+                return;
+            }
+            if (konamiActive) return;
+            konamiSequence.push(e.key.toLowerCase());
+            if (konamiSequence.length > 10) {
+                konamiSequence.shift();
+            }
+            if (konamiSequence.length === 10) {
+                let matches = true;
+                for (let i = 0; i < 10; i++) {
+                    if (konamiSequence[i] !== konamiCode[i]) {
+                        matches = false;
+                        break;
+                    }
+                }
+                if (matches) {
                     activateKonamiCode();
-                    konamiPosition = 0;
+                    konamiSequence = [];
                 }
-            } else {
-                // Reset if wrong key
-                if (konamiPosition > 0) {
-                    console.log('Wrong key! Resetting...');
-                }
-                konamiPosition = 0;
             }
         });
-
         function activateKonamiCode() {
-            konamiActivated = true;
-            console.log('🎮 ACTIVATING KONAMI CODE! 🎮');
-            
-            // Play 8-bit audio
-            const audio = new Audio('the-return-of-the-8-bit-era-301292.mp3');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log('Audio play failed:', e));
-            
-            // Add rainbow effect to body
-            document.body.classList.add('konami-active');
-            
-            // Create message
+            konamiActive = true;
+            konamiAudio = new Audio('./the-return-of-the-8-bit-era-301292.mp3');
+            konamiAudio.volume = 0.5;
+            konamiAudio.play().catch(e => {});
             const message = document.createElement('div');
             message.className = 'konami-message';
-            message.innerHTML = '🎮 KONAMI CODE ACTIVATED! 🎮<br><span style="font-size: 1.2rem; margin-top: 10px; display: block;">PowerShell Master Level Unlocked!</span>';
+            message.innerHTML = `
+                <button class="close-konami" onclick="closeKonami()">✕</button>
+                Congrats on unlocking the secret Code<br>
+                <div style="font-size: 0.9rem; margin-top: 15px; opacity: 0.8;">Press ESC to exit</div>
+            `;
             document.body.appendChild(message);
-            
-            // Create matrix rain effect
             createMatrixRain();
-            
-            // Launch fireworks across screen
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => createFirework(), i * 200);
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => createController(), i * 120);
             }
-            
-            // Launch spinning controllers
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => createController(), i * 300);
-            }
-            
-            // Remove effects after 8 seconds
             setTimeout(() => {
-                audio.pause();
-                audio.currentTime = 0;
-                document.body.classList.remove('konami-active');
-                message.style.animation = 'konamiPop 0.3s ease reverse';
-                setTimeout(() => {
-                    message.remove();
-                    document.querySelectorAll('.matrix-rain, .firework, .controller').forEach(el => el.remove());
-                    konamiActivated = false;
-                }, 300);
-            }, 8000);
+                closeKonami();
+            }, 10000);
         }
-
+        window.closeKonami = function() {
+            if (!konamiActive) return;
+            if (konamiAudio) {
+                konamiAudio.pause();
+                konamiAudio.currentTime = 0;
+                konamiAudio = null;
+            }
+            const message = document.querySelector('.konami-message');
+            if (message) {
+                message.remove();
+            }
+            document.querySelectorAll('.matrix-rain, .controller').forEach(el => el.remove());
+            konamiActive = false;
+            konamiSequence = [];
+        }
         function createMatrixRain() {
             const canvas = document.createElement('canvas');
             canvas.className = 'matrix-rain';
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
             document.body.appendChild(canvas);
-            
             const ctx = canvas.getContext('2d');
             const chars = '01POWERSHELLAZURE'.split('');
             const fontSize = 14;
             const columns = canvas.width / fontSize;
             const drops = Array(Math.floor(columns)).fill(1);
-            
             function draw() {
+                if (!konamiActive) return;
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
                 ctx.fillStyle = '#0F0';
                 ctx.font = fontSize + 'px monospace';
-                
                 for (let i = 0; i < drops.length; i++) {
                     const text = chars[Math.floor(Math.random() * chars.length)];
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    
                     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
                     drops[i]++;
                 }
             }
-            
             const interval = setInterval(draw, 33);
-            setTimeout(() => clearInterval(interval), 8000);
+            setTimeout(() => clearInterval(interval), 10000);
         }
-
-        function createFirework() {
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            const colors = ['#ff0080', '#00ff80', '#0080ff', '#ff8000', '#8000ff', '#00ffff'];
-            
-            for (let i = 0; i < 30; i++) {
-                const firework = document.createElement('div');
-                firework.className = 'firework';
-                firework.style.left = x + 'px';
-                firework.style.top = y + 'px';
-                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                const angle = (Math.PI * 2 * i) / 30;
-                const velocity = 50 + Math.random() * 100;
-                const xVel = Math.cos(angle) * velocity;
-                const yVel = Math.sin(angle) * velocity;
-                
-                firework.style.setProperty('--x', xVel + 'px');
-                firework.style.setProperty('--y', yVel + 'px');
-                firework.style.animation = 'explode 1s ease-out forwards';
-                
-                document.body.appendChild(firework);
-                
-                setTimeout(() => firework.remove(), 1000);
-            }
-        }
-
         function createController() {
+            if (!konamiActive) return;
             const controller = document.createElement('img');
             controller.src = 'controller.png';
             controller.className = 'controller';
+            controller.style.left = Math.random() * window.innerWidth + 'px';
             controller.style.top = Math.random() * window.innerHeight + 'px';
+            const dx = (Math.random() - 0.5) * window.innerWidth * 2;
+            const dy = (Math.random() - 0.5) * window.innerHeight * 2;
+            controller.style.setProperty('--dx', dx + 'px');
+            controller.style.setProperty('--dy', dy + 'px');
+            const duration = 6 + Math.random() * 4;
+            const spinDuration = Math.random() * 2 + 1;
+            controller.style.animationDuration = `${duration}s, ${spinDuration}s`;
+            controller.alt = 'Game Controller';
             controller.onerror = function() {
-                // Fallback to emoji if image not found
                 const div = document.createElement('div');
                 div.className = 'controller';
                 div.innerHTML = '🎮';
-                div.style.fontSize = '80px';
-                div.style.top = Math.random() * window.innerHeight + 'px';
+                div.style.fontSize = '60px';
+                div.style.left = controller.style.left;
+                div.style.top = controller.style.top;
+                div.style.setProperty('--dx', dx + 'px');
+                div.style.setProperty('--dy', dy + 'px');
+                div.style.animationDuration = `${duration}s, ${spinDuration}s`;
                 document.body.appendChild(div);
-                setTimeout(() => div.remove(), 8000);
+                setTimeout(() => div.remove(), duration * 1000);
+                controller.remove();
             };
             document.body.appendChild(controller);
-            setTimeout(() => controller.remove(), 8000);
+            setTimeout(() => controller.remove(), duration * 1000);
         }
-
         // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const body = document.body;
-
-        // Check for saved theme preference
         const savedTheme = localStorage.getItem('theme') || 'dark';
         if (savedTheme === 'light') {
             body.classList.add('light-mode');
             themeIcon.textContent = '☀️';
         }
-
         themeToggle.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             const isLight = body.classList.contains('light-mode');
             themeIcon.textContent = isLight ? '☀️' : '🌙';
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
-
-        // Print CV
-        document.getElementById('printCV').addEventListener('click', () => {
-            window.print();
-        });
-
         // Animate stat numbers
         const animateNumbers = (entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const target = entry.target;
                     const text = target.textContent;
-                    
                     if (text.includes('+')) {
                         const num = parseInt(text);
                         let current = 0;
@@ -1564,42 +1356,16 @@ Leadership: Technical Mentorship, Team Training, Project Management
                             }
                         }, 30);
                     }
-                    
                     observer.unobserve(target);
                 }
             });
         };
-
         const numberObserver = new IntersectionObserver(animateNumbers, {
             threshold: 0.5
         });
-
         document.querySelectorAll('.stat-number').forEach(num => {
             numberObserver.observe(num);
         });
-
-        // Contact Form
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
-
-            // Simulate form submission
-            console.log('Form submitted:', formData);
-            
-            // Show success message
-            document.getElementById('contactForm').style.display = 'none';
-            document.getElementById('formSuccess').style.display = 'block';
-            
-            // Reset after 5 seconds
-            setTimeout(() => {
-                document.getElementById('contactForm').style.display = 'block';
-                document.getElementById('formSuccess').style.display = 'none';
-                document.getElementById('contactForm').reset();
-            }, 5000);
-        });
+    </script>
+</body>
+</html>
