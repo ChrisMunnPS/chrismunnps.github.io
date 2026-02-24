@@ -37,62 +37,62 @@ export const CERTIFICATIONS: Certification[] = [
 
 export const PROJECTS: Project[] = [
   {
-    id: 'lab-kit',
-    name: "Windows 11 Office 365 Lab Kit",
-    description: "Complete automation kit for deploying a hybrid Windows 11 and Office 365 lab environment.",
-    url: "https://github.com/ChrisMunnPS/windows-11-office-365-lab-kit",
-    tags: ["PowerShell", "Hyper-V", "Lab"]
-  },
-  {
-    id: 'event-id-checker-v2',
-    name: "Enhanced Event Log Viewer v2.0",
-    description: "Comprehensive PowerShell-based GUI application that simplifies the analysis of Windows Event Logs for security incidents, troubleshooting, and forensic analysis.",
-    url: "https://github.com/ChrisMunnPS/EventIDCheckerV2",
-    tags: ["PowerShell", "Event Logs", "GUI", "Forensics"]
-  },
-  {
-    id: 'delete-profile',
-    name: "Remote Profile Manager",
-    description: "Windows PowerShell application for IT administrators to efficiently manage, monitor, and remove user profiles across corporate networks without physical access.",
-    url: "https://github.com/ChrisMunnPS/DeleteProfile",
-    tags: ["PowerShell", "Remote Management", "GUI"]
-  },
-  {
-    id: 'clear-logs',
-    name: "ClearLogs",
-    description: "Efficient utility for managing and clearing Windows Event Logs for system maintenance.",
-    url: "https://github.com/ChrisMunnPS/ClearLogs",
-    tags: ["PowerShell", "Maintenance"]
-  },
-  {
-    id: 'winget-application-manager',
-    name: "WingetAppMgr",
-    description: "WinGet Application Manager transforms Microsoft's command-line WinGet package manager into a beautiful, user-friendly desktop application",
-    url: "https://github.com/ChrisMunnPS/WinGet-Application-Manager",
-    tags: ["winget", "powershell", "windows", "package-manager", "gui", "wpf", "windows-11", "application-management", "winget-gui", "powershell-gui", "sysadmin", "automation"]
-  },
-  {
-    id: 'dc-health',
-    name: "DomainControllerHealthDashboard",
-    description: "A dashboard solution for visualising and monitoring the health status of Domain Controllers.",
-    url: "https://github.com/ChrisMunnPS/DomainControllerHealthDashboard",
-    tags: ["PowerShell", "Active Directory", "Dashboard"]
-  },
-  {
-    id: 'ad-flag-scanner',
-    name: "ActiveDirectory_Flag_Scanner",
-    description: "Scanner to identify specific user account flags and security attributes within Active Directory.",
-    url: "https://github.com/ChrisMunnPS/ActiveDirectory_Flag_Scanner",
-    tags: ["PowerShell", "Security", "Auditing"]
-  },
-  {
-    id: 'event-id-checker',
-    name: "EventIDChecker",
-    description: "Rapid diagnostic tool for querying specific Windows Event IDs to troubleshoot issues.",
-    url: "https://github.com/ChrisMunnPS/EventIDChecker",
-    tags: ["PowerShell", "Troubleshooting"]
-  }
-];
+          id: 'lab-kit',
+          name: "Windows 11 Office 365 Lab Kit",
+          description: "Complete automation kit for deploying a hybrid Windows 11 and Office 365 lab environment.",
+          url: "https://github.com/ChrisMunnPS/windows-11-office-365-lab-kit",
+          tags: ["windows-11", "office-365", "lab-environment", "homelab", "powershell", "virtualization", "active-directory", "intune", "azure-ad", "test-lab", "it-training", "deployment-kit"]
+        },
+        {
+          id: 'event-id-checker-v2',
+          name: "Enhanced Event Log Viewer v2.0",
+          description: "Comprehensive PowerShell-based GUI application that simplifies the analysis of Windows Event Logs for security incidents, troubleshooting, and forensic analysis.",
+          url: "https://github.com/ChrisMunnPS/EventIDCheckerV2",
+          tags: ["powershell", "windows-event-log", "eventlog-analyzer", "powershell-gui", "incident-response", "threat-hunting", "forensic-analysis", "soc-tool", "sysmon", "kerberos", "evtx", "security-monitoring", "active-directory", "windows-security"]
+        },
+        {
+          id: 'delete-profile',
+          name: "Remote Profile Manager",
+          description: "Windows PowerShell application for IT administrators to efficiently manage, monitor, and remove user profiles across corporate networks without physical access.",
+          url: "https://github.com/ChrisMunnPS/DeleteProfile",
+          tags: ["powershell", "windows-administration", "user-profile", "profile-management", "remote-administration", "powershell-gui", "wpf", "it-automation", "system-administration", "disk-space", "winrm", "wmi", "corporate-it", "endpoint-management"]
+        },
+        {
+          id: 'clear-logs',
+          name: "ClearLogs",
+          description: "Efficient utility for managing and clearing Windows Event Logs for system maintenance.",
+          url: "https://github.com/ChrisMunnPS/ClearLogs",
+          tags: ["powershell", "windows-event-log", "eventlog", "log-management", "log-clearing", "wevtutil", "system-administration", "security-audit", "forensics", "compliance", "automation", "windows-powershell", "log-cleanup", "it-tools"]
+        },
+        {
+          id: 'winget-application-manager',
+          name: "WingetAppMgr",
+          description: "WinGet Application Manager transforms Microsoft's command-line WinGet package manager into a beautiful, user-friendly desktop application",
+          url: "https://github.com/ChrisMunnPS/WinGet-Application-Manager",
+          tags: ["winget", "powershell", "windows", "package-manager", "gui", "wpf", "windows-11", "application-management", "winget-gui", "powershell-gui", "sysadmin", "automation"]
+        },
+        {
+          id: 'dc-health',
+          name: "DomainControllerHealthDashboard",
+          description: "A dashboard solution for visualising and monitoring the health status of Domain Controllers.",
+          url: "https://github.com/ChrisMunnPS/DomainControllerHealthDashboard",
+          tags: ["powershell", "active-directory", "ad-monitoring", "health-check", "domain-controller", "powershell-automation", "security-audit", "reporting", "performance-monitoring", "windows-server", "sysadmin", "alerting", "compliance", "kerberos", "active-directory-security"]
+        },
+        {
+          id: 'ad-flag-scanner',
+          name: "ActiveDirectory_Flag_Scanner",
+          description: "Scanner to identify specific user account flags and security attributes within Active Directory.",
+          url: "https://github.com/ChrisMunnPS/ActiveDirectory_Flag_Scanner",
+          tags: ["powershell", "active-directory", "ad-monitoring", "health-check", "domain-controller", "powershell-automation", "security-audit", "reporting", "performance-monitoring", "windows-server", "sysadmin", "alerting", "compliance", "kerberos", "active-directory-security"]
+        },
+        {
+          id: 'get-adapter',
+          name: "GetAdapter",
+          description: "This PowerShell tool provides a graphical interface to view, manage, and export network adapter information on Windows systems.",
+          url: "https://github.com/ChrisMunnPS/GetAdapter",
+          tags: ["powershell", "network-adapter", "networking", "windows", "powershell-gui", "winforms", "troubleshooting", "it-tools", "sysadmin", "network-diagnostics", "wifi", "ethernet", "ip-configuration", "adapter-management", "export-tool", "dark-mode"]
+        }
+      ];
 
 export const WORK_HISTORY: WorkExperience[] = [
   {
