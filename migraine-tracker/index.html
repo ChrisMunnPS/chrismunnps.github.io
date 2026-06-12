@@ -3,11 +3,12 @@
 <head>
   <title>Migraine Tracker</title>
 
-  <!-- React -->
-  <script src="https://unpkg.com/react@18/umd/react.development.jsc="https://unpkg.com/react-dom@18/umd/react-domjs
+  <!-- ✅ React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <!-- Recharts -->
-  <script src="https://unpkg.com/recharts/umd/Re
+  <!-- ✅ Recharts -->
+  <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
 </head>
 
 <body>
@@ -18,57 +19,8 @@ const { useState } = React;
 const { LineChart, Line, XAxis, YAxis, Tooltip } = Recharts;
 
 function App() {
-  const [data, setData] = useState([]);
-
-  const loadData = async () => {
-    const input = document.getElementById("sheet").value;
-
-    // Convert to CSV URL
-    const csvUrl = input.replace(/\\/edit.*$/, "/export?format=csv");
-
-    try {
-      const res = await fetch(csvUrl);
-      const text = await res.text();
-
-      const rows = text.split("\\n").map(r => r.split(","));
-      const headers = rows[0];
-
-      const parsed = rows.slice(1).map(row => {
-        let obj = {};
-        headers.forEach((h,i) => obj[h.trim()] = row[i]);
-        return obj;
-      });
-
-      setData(parsed);
-    } catch (e) {
-      alert("Failed to load data");
-      console.error(e);
-    }
-  };
-
-  const timeline = data.map(r => ({
-    date: r["Date"],
-    severity: Number(r["Severity"]) || 0
-  }));
-
   return React.createElement("div", {},
-    React.createElement("h1", {}, "Migraine Tracker"),
-
-    React.createElement("input", {
-      id: "sheet",
-      placeholder: "Paste Google Sheet URL",
-      style: { width: "300px", marginRight: "10px" }
-    }),
-
-    React.createElement("button", { onClick: loadData }, "Load"),
-
-    timeline.length > 0 &&
-      React.createElement(LineChart, { width: 600, height: 300, data: timeline },
-        React.createElement(XAxis, { dataKey: "date" }),
-        React.createElement(YAxis),
-        React.createElement(Tooltip),
-        React.createElement(Line, { dataKey: "severity", stroke: "#ff0000" })
-      )
+    React.createElement("h1", {}, "✅ Migraine Tracker Loaded")
   );
 }
 
