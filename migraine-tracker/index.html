@@ -25,27 +25,7 @@
 <script>
 let timelineChart, corrChart;
 
-// ✅ Improved CSV parser
-function parseCSV(text) {
-  const rows = text.trim().split("\\n");
-
-  const headers = rows[0].split(",");
-
-  return rows.slice(1).map(row => {
-    const values = row.match(/(".*?"|[^",\\s]+)(?=,|$)/g);
-
-    if (!values) return null;
-
-    let obj = {};
-    headers.forEach((h, i) => {
-      obj[h.trim()] = values[i]?.replace(/"/g, "") || "";
-    });
-
-    return obj;
-  }).filter(r => r !== null);
-}
-
-// ✅ Correlation function
+// ✅ Correlation
 function correlation(x, y) {
   const n = x.length;
   const avgX = x.reduce((a,b)=>a+b,0)/n;
@@ -60,7 +40,7 @@ function correlation(x, y) {
   return num / Math.sqrt(dx*dy || 1);
 }
 
-// ✅ Load data from Google Sheets
+// ✅ MAIN LOAD (FIXED VERSION)
 async function loadData() {
   try {
     const input = document.getElementById("sheet").value;
@@ -76,26 +56,30 @@ async function loadData() {
     const id = idMatch[1];
     const gid = gidMatch ? gidMatch[1] : "0";
 
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`;
+    const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&gid=${gid}`;
 
-    console.log("Fetching:", csvUrl);
+    console.log("Fetching JSON:", url);
 
-    const res = await fetch("https://corsproxy.io/?" + encodeURIComponent(csvUrl));
-
-
-    if (!res.ok) {
-      throw new Error("Network error");
-    }
-
+    const res = await fetch(url);
     const text = await res.text();
 
-    console.log("CSV preview:", text.substring(0, 200));
+    // ✅ Remove Google's JSON wrapper
+    const json = JSON.parse(text.substring(47).slice(0, -2));
 
-    const data = parseCSV(text);
+    const rows = json.table.rows;
+    const cols = json.table.cols.map(c => c.label);
+
+    const data = rows.map(r => {
+      let obj = {};
+      r.c.forEach((cell, i) => {
+        obj[cols[i]] = cell ? cell.v : "";
+      });
+      return obj;
+    });
 
     console.log("Parsed rows:", data.length);
 
-    if (data.length === 0) {
+    if (!data.length) {
       alert("No data found");
       return;
     }
@@ -104,11 +88,11 @@ async function loadData() {
 
   } catch (e) {
     console.error(e);
-    alert("Error: " + e.message);
+    alert("Error loading data");
   }
 }
 
-// ✅ Process your migraine data
+// ✅ PROCESS DATA
 function processData(data) {
   const severity = data.map(r => Number(r["Severity"]) || 0);
   const labels = data.map(r => r["Date"]);
@@ -149,7 +133,7 @@ function processData(data) {
     Math.round((risk / 4) * 100);
 }
 
-// ✅ Draw timeline chart
+// ✅ DRAW TIMELINE
 function drawTimeline(labels, data) {
   if (timelineChart) timelineChart.destroy();
 
@@ -167,7 +151,7 @@ function drawTimeline(labels, data) {
   });
 }
 
-// ✅ Draw correlation chart
+// ✅ DRAW CORRELATION
 function drawCorrelation(labels, data) {
   if (corrChart) corrChart.destroy();
 
