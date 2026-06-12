@@ -1,9 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Test</title>
+  <title>Migraine Dashboard</title>
+
+  <!-- Chart.js (safe, GitHub-friendly) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <h1>✅ GitHub Pages is working</h1>
+
+<body style="font-family: Arial; padding:20px;">
+
+<h1>Migraine Analytics</h1>
+
+<input id="sheet" placeholder="Paste Google Sheet URL" style="width:350px;">
+<button onclick="loadData()">Load Data</button>
+
+<h2>Risk Score: <span id="risk">-</span>%</h2>
+
+<h3>Severity Over Time</h3>
+<canvas id="timeline" width="600" height="300"></canvas>
+
+<h3>Correlation with Severity</h3>
+<canvas id="corr" width="600" height="300"></canvas>
+
+<script>
+let timelineChart, corrChart;
+
+function parseCSV(text) {
+  const rows = text.split("\\n").map(r => r.split(","));
+  const headers = rows[0];
+  return rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((h,i) => obj[h.trim()] = row[i]);
+    return obj;
+  });
+}
+
+function correlation(x, y) {
+  const n = x.length;
+  const avgX = x.reduce((a,b)=>a+b,0)/n;
+  const avgY = y.reduce((a,b)=>a+b,0)/n;
+
+  let num=0, dx=0, dy=0;
+  for (let i=0;i<n;i++) {
+    num += (x[i]-avgX)*(y[i]-avgY);
+    dx += (x[i]-avgX)**2;
+    dy += (y[i]-avgY)**2;
+  }
+  return num / Math.sqrt(dx*dy || 1);
+}
+
+async function loadData() {
+  const input = document.getElementById("sheet").value;
+
+  const csvUrl = input.replace(/\/edit.*$/, "/export?format=csv");
+
+  const res = await fetch(csvUrl);
+  const text = await res.text();
+  const data = parseCSV(text);
+
+  // --- SEVERITY ---
+  const severity = data.map(r => Number(r["Severity"]) || 0);
+
+  // --- TIMELINE ---
+  const labels = data.map(r => r["Date"]);
+  drawTimeline(labels, severity);
+
+  // --- CORRELATIONS ---
+  const metrics = [
+    "Pressure Change (Δ)",
+    "Humidity (%)",
+    "Temperature (°C)",
+    "Temp Change (Δ)",
+    "Sleep Duration (hrs)",
+    "Sleep Efficiency (%)",
+    "HRV"
+  ];
+
+  const corrValues = metrics.map(m => {
+    const values = data.map(r => Number(r[m]) || 0);
+    return correlation(values, severity).toFixed(2);
+  });
+
+  drawCorrelation(metrics, corrValues);
+
+  // --- RISK SCORE ---
+  const latest = data[data.length - 1] || {};
+  let risk = 0;
+
+  if ((Number(latest["Sleep Duration (hrs)"]) || 0) < 6) risk++;
+  if ((Number(latest["Sleep Efficiency (%)"]) || 0) < 80) risk++;
+  if ((Number(latest["HRV"]) || 0) < 40) risk++;
+  if (Math.abs(Number(latest["Pressure Change (Δ)"]) || 0) > 5) risk++;
+
+  document.getElementById("risk").textContent = Math.round((risk/4)*100);
+}
+
+function drawTimeline(labels, data) {
+  if (timelineChart) timelineChart.destroy();
+
+  timelineChart = new Chart(document.getElementById("timeline"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Severity",
+        data: data,
+        borderColor: "red"
+      }]
+    }
+  });
+}
+
+function drawCorrelation(labels, data) {
+  if (corrChart) corrChart.destroy();
+
+  corrChart = new Chart(document.getElementById("corr"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Correlation",
+        data: data,
+        backgroundColor: "blue"
+      }]
+    }
+  });
+}
+</script>
+
 </body>
 </html>
