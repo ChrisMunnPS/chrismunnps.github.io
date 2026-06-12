@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Migraine Tracker</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/recharts/umd/Recharts.min.js"></script>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script>
+const { useState } = React;
+const { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip } = Recharts;
+
+function App() {
+  const [data, setData] = useState([]);
+
+  const loadData = async () => {
+    const url = document.getElementById("sheet").value;
+
+    const csvUrl = url.replace(/\/edit.*$/, "/export?format=csv");
+
+    const res = await fetch(csvUrl);
+    const text = await res.text();
+
+    const rows = text.split("\\n").map(r => r.split(","));
+    const headers = rows[0];
+
+    const parsed = rows.slice(1).map(row => {
+      let obj = {};
+      headers.forEach((h,i) => obj[h] = row[i]);
+      return obj;
+    });
+
+    setData(parsed);
+  };
+
+  const timeline = data.map(r => ({
+    date: r["Date"],
+    severity: Number(r["Severity"]) || 0
+  }));
+
+  return (
+    React.createElement("div", {},
+      React.createElement("h1", {}, "Migraine Tracker"),
+
+      React.createElement("input", { id:"sheet", placeholder:"Paste Google Sheet URL" }),
+      React.createElement("button", { onClick: loadData }, "Load"),
+
+      React.createElement(LineChart, { width:600, height:300, data:timeline },
+        React.createElement(XAxis, { dataKey:"date" }),
+        React.createElement(YAxis),
+        React.createElement(Tooltip),
+        React.createElement(Line, { dataKey:"severity" })
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+
+</body>
+</html>
