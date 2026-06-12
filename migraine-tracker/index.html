@@ -1,173 +1,718 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Migraine Analytics Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Migraine Tracker</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <!-- ✅ Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  :root {
+    --bg: #0f1117;
+    --bg2: #181c27;
+    --bg3: #1e2333;
+    --border: rgba(255,255,255,.08);
+    --border2: rgba(255,255,255,.14);
+    --text: #e8eaf0;
+    --text2: #8b91a8;
+    --text3: #555d78;
+    --purple: #7c6ff7;
+    --purple-dim: rgba(124,111,247,.15);
+    --red: #e04b4b;
+    --red-dim: rgba(224,75,75,.12);
+    --blue: #4a9edd;
+    --blue-dim: rgba(74,158,221,.12);
+    --green: #3db87a;
+    --green-dim: rgba(61,184,122,.12);
+    --amber: #e09a2f;
+    --amber-dim: rgba(224,154,47,.12);
+    --teal: #2abfb0;
+    --teal-dim: rgba(42,191,176,.12);
+    --pink: #d4537e;
+    --pink-dim: rgba(212,83,126,.12);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .app { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Header */
+  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 44px; height: 44px; border-radius: var(--radius); background: var(--purple-dim); border: 1px solid rgba(124,111,247,.3); display: flex; align-items: center; justify-content: center; color: var(--purple); font-size: 22px; flex-shrink: 0; }
+  .title { font-size: 20px; font-weight: 600; color: var(--text); }
+  .subtitle { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 5px 12px; border-radius: 20px; background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+  .pill.active { color: var(--green); border-color: rgba(61,184,122,.3); background: var(--green-dim); }
+
+  /* Import */
+  .import-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .import-label { font-size: 11px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); margin-bottom: .75rem; }
+  .import-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .import-row input {
+    flex: 1; min-width: 220px; font-size: 13px; padding: 9px 13px;
+    border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text); outline: none;
+  }
+  .import-row input:focus { border-color: var(--purple); }
+  .btn {
+    font-size: 13px; padding: 9px 16px; border-radius: var(--radius-sm); cursor: pointer;
+    border: 1px solid var(--border2); background: var(--bg3); color: var(--text);
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+    transition: background .15s;
+  }
+  .btn:hover { background: var(--bg2); border-color: var(--border2); }
+  .btn.primary { background: var(--purple-dim); border-color: rgba(124,111,247,.4); color: var(--purple); }
+  .btn.primary:hover { background: rgba(124,111,247,.25); }
+  .import-msg { font-size: 12px; color: var(--text2); margin-top: .6rem; min-height: 16px; }
+  .import-msg.error { color: var(--red); }
+
+  /* Metrics */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; }
+  .metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 600; }
+  .metric-sub { font-size: 11px; color: var(--text2); margin-top: 3px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab { font-size: 13px; padding: 8px 16px; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; transition: color .15s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--purple); border-bottom-color: var(--purple); font-weight: 500; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Cards */
+  .chart-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .card-desc { font-size: 11px; color: var(--text3); margin-bottom: 1rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+  /* Correlations */
+  .corr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .corr-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.1rem; display: flex; align-items: center; gap: 12px; }
+  .corr-icon { width: 38px; height: 38px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .corr-name { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
+  .corr-val { font-size: 20px; font-weight: 600; }
+  .corr-dir { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  /* Legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 11px; color: var(--text2); }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; padding: 8px 10px; font-weight: 500; color: var(--text3); border-bottom: 1px solid var(--border2); white-space: nowrap; font-size: 11px; letter-spacing: .04em; }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .b-high { background: var(--red-dim); color: var(--red); }
+  .b-med { background: var(--amber-dim); color: var(--amber); }
+  .b-low { background: var(--green-dim); color: var(--green); }
+  .b-none { background: var(--bg3); color: var(--text3); }
+
+  .empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 13px; }
+
+  /* Section label */
+  .section-label { font-size: 11px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); margin-bottom: .75rem; }
+
+  @media (max-width: 640px) {
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    .app { padding: 1rem 1rem 3rem; }
+  }
+</style>
 </head>
+<body>
+<div class="app">
 
-<body style="font-family: Arial; padding:20px;">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo"><i class="ti ti-brain"></i></div>
+      <div>
+        <div class="title">Migraine Tracker</div>
+        <div class="subtitle">Correlation analysis &amp; pattern explorer</div>
+      </div>
+    </div>
+    <div id="data-pill" class="pill"><i class="ti ti-database"></i> No data loaded</div>
+  </div>
 
-<h1>Migraine Analytics Dashboard</h1>
+  <div class="import-section">
+    <div class="import-label">Import data</div>
+    <div class="import-row">
+      <input id="sheet-url" type="text"
+        placeholder="Paste Google Sheets URL…"
+        value="https://docs.google.com/spreadsheets/d/1gFqZ3ADEtZpX9037oMYMYdi362l-6MUXsEMOlwlHwHE/edit?gid=0#gid=0" />
+      <button class="btn primary" id="load-btn"><i class="ti ti-refresh"></i> Load sheet</button>
+      <button class="btn" id="sample-btn"><i class="ti ti-flask"></i> Sample data</button>
+    </div>
+    <div id="import-msg" class="import-msg"></div>
+  </div>
 
-<input id="sheet" placeholder="Paste Google Sheet URL" style="width:350px;">
-<button onclick="loadData()">Load Data</button>
+  <div id="main-content" style="display:none">
 
-<h2>Risk Score: <span id="risk">-</span>%</h2>
+    <div class="metrics" id="metrics-row"></div>
 
-<h3>Severity Over Time</h3>
-<canvas id="timeline" width="600" height="300"></canvas>
+    <div class="tabs">
+      <div class="tab active" data-tab="overview">Overview</div>
+      <div class="tab" data-tab="weather">Weather</div>
+      <div class="tab" data-tab="sleep">Sleep</div>
+      <div class="tab" data-tab="triggers">Triggers</div>
+      <div class="tab" data-tab="log">Log</div>
+    </div>
 
-<h3>Correlation with Severity</h3>
-<canvas id="corr" width="600" height="300"></canvas>
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="view active">
+      <div class="section-label">Correlations with severity (Pearson r)</div>
+      <div class="corr-grid" id="corr-grid"></div>
+
+      <div class="chart-card">
+        <div class="card-title">Migraine timeline</div>
+        <div class="card-desc">Severity bars with atmospheric pressure overlay</div>
+        <div class="legend">
+          <span><span class="ldot" style="background:#e04b4b"></span>Severity</span>
+          <span><span class="ldot" style="background:#4a9edd"></span>Pressure (hPa)</span>
+        </div>
+        <div style="position:relative;height:240px"><canvas id="timelineChart" role="img" aria-label="Timeline of migraine severity and pressure"></canvas></div>
+      </div>
+
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">Severity distribution</div>
+          <div class="card-desc">How often each severity level occurs</div>
+          <div style="position:relative;height:200px"><canvas id="sevDistChart" role="img" aria-label="Severity distribution bar chart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">By day of week</div>
+          <div class="card-desc">Average severity per day</div>
+          <div style="position:relative;height:200px"><canvas id="dowChart" role="img" aria-label="Migraines by day of week"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEATHER -->
+    <div id="tab-weather" class="view">
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">Pressure vs severity</div>
+          <div class="card-desc">Does low pressure predict worse migraines?</div>
+          <div style="position:relative;height:220px"><canvas id="pressureScatter" role="img" aria-label="Scatter: pressure vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Pressure change (Δ) vs severity</div>
+          <div class="card-desc">Rapid pressure drops as a trigger</div>
+          <div style="position:relative;height:220px"><canvas id="pressureChangeScatter" role="img" aria-label="Scatter: pressure change vs severity"></canvas></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">Humidity vs severity</div>
+          <div class="card-desc">High humidity on migraine days?</div>
+          <div style="position:relative;height:200px"><canvas id="humidityScatter" role="img" aria-label="Scatter: humidity vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Temperature change (Δ) vs severity</div>
+          <div class="card-desc">Temperature swings and migraine impact</div>
+          <div style="position:relative;height:200px"><canvas id="tempChangeScatter" role="img" aria-label="Scatter: temperature change vs severity"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="card-title">Rain vs dry days</div>
+        <div class="card-desc">Average severity on rainy vs dry days</div>
+        <div style="position:relative;height:160px"><canvas id="rainChart" role="img" aria-label="Rain vs dry day severity comparison"></canvas></div>
+      </div>
+    </div>
+
+    <!-- SLEEP -->
+    <div id="tab-sleep" class="view">
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">Sleep duration vs severity</div>
+          <div class="card-desc">Less sleep → worse migraines?</div>
+          <div style="position:relative;height:220px"><canvas id="sleepDurScatter" role="img" aria-label="Sleep duration vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Sleep efficiency vs severity</div>
+          <div class="card-desc">Quality of sleep vs migraine outcome</div>
+          <div style="position:relative;height:220px"><canvas id="sleepEffScatter" role="img" aria-label="Sleep efficiency vs severity"></canvas></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">REM duration vs severity</div>
+          <div class="card-desc">Less REM → higher severity?</div>
+          <div style="position:relative;height:200px"><canvas id="remScatter" role="img" aria-label="REM vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Deep sleep vs severity</div>
+          <div class="card-desc">Deep sleep restorative effect</div>
+          <div style="position:relative;height:200px"><canvas id="deepScatter" role="img" aria-label="Deep sleep vs severity"></canvas></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">HRV vs severity</div>
+          <div class="card-desc">Heart rate variability as a stress indicator</div>
+          <div style="position:relative;height:200px"><canvas id="hrvScatter" role="img" aria-label="HRV vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Awake time vs severity</div>
+          <div class="card-desc">Fragmented sleep and migraines</div>
+          <div style="position:relative;height:200px"><canvas id="awakeScatter" role="img" aria-label="Awake time vs severity"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRIGGERS -->
+    <div id="tab-triggers" class="view">
+      <div class="chart-card">
+        <div class="card-title">Other symptoms frequency</div>
+        <div class="card-desc">Associated symptoms ranked by occurrence</div>
+        <div id="symptom-wrap" style="position:relative;min-height:120px"><canvas id="symptomChart" role="img" aria-label="Symptom frequency"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="card-title">Medications used</div>
+        <div class="card-desc">Frequency of each medication taken</div>
+        <div id="med-wrap" style="position:relative;min-height:120px"><canvas id="medChart" role="img" aria-label="Medication frequency"></canvas></div>
+      </div>
+      <div class="grid2">
+        <div class="chart-card">
+          <div class="card-title">Avg HR vs severity</div>
+          <div class="card-desc">Resting heart rate relationship</div>
+          <div style="position:relative;height:200px"><canvas id="hrScatter" role="img" aria-label="HR vs severity"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="card-title">Medications taken (count) vs severity</div>
+          <div class="card-desc">Number of doses on migraine days</div>
+          <div style="position:relative;height:200px"><canvas id="meds-taken-scatter" role="img" aria-label="Meds taken vs severity"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOG -->
+    <div id="tab-log" class="view">
+      <div class="chart-card" style="padding:0;overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="log-head"></tr></thead>
+            <tbody id="log-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /app -->
 
 <script>
-let timelineChart, corrChart;
+let rows = [];
+let charts = {};
 
-// ✅ Correlation
-function correlation(x, y) {
-  const n = x.length;
-  const avgX = x.reduce((a,b)=>a+b,0)/n;
-  const avgY = y.reduce((a,b)=>a+b,0)/n;
+/* ── helpers ─────────────────────────────────────────────────────── */
+function n(v){ return (v===''||v==null)?null:parseFloat(v); }
 
-  let num=0, dx=0, dy=0;
-  for (let i=0;i<n;i++) {
-    num += (x[i]-avgX)*(y[i]-avgY);
-    dx += (x[i]-avgX)**2;
-    dy += (y[i]-avgY)**2;
-  }
-  return num / Math.sqrt(dx*dy || 1);
+function destroyChart(id){
+  if(charts[id]){ charts[id].destroy(); delete charts[id]; }
 }
 
-// ✅ MAIN LOAD (FIXED VERSION)
-async function loadData() {
-  try {
-    const input = document.getElementById("sheet").value;
+function pearson(xs, ys){
+  const pairs = xs.map((x,i)=>[x,ys[i]]).filter(p=>p[0]!=null&&p[1]!=null&&!isNaN(p[0])&&!isNaN(p[1]));
+  if(pairs.length < 5) return null;
+  const N = pairs.length;
+  const mx = pairs.reduce((s,p)=>s+p[0],0)/N;
+  const my = pairs.reduce((s,p)=>s+p[1],0)/N;
+  const num = pairs.reduce((s,p)=>s+(p[0]-mx)*(p[1]-my),0);
+  const dx = Math.sqrt(pairs.reduce((s,p)=>s+(p[0]-mx)**2,0));
+  const dy = Math.sqrt(pairs.reduce((s,p)=>s+(p[1]-my)**2,0));
+  return (dx===0||dy===0)?null:num/(dx*dy);
+}
 
-    const idMatch = input.match(/\/d\/(.*?)\//);
-    const gidMatch = input.match(/gid=(\d+)/);
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  const headers = parseCSVRow(lines[0]);
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const vals = parseCSVRow(line);
+    const obj = {};
+    headers.forEach((h,i)=>{ obj[h] = (vals[i]||'').trim(); });
+    return obj;
+  });
+}
 
-    if (!idMatch) {
-      alert("Invalid Google Sheets URL");
-      return;
+function parseCSVRow(line){
+  const vals=[]; let cur=''; let inQ=false;
+  for(let c of line){
+    if(c==='"'){ inQ=!inQ; }
+    else if(c===','&&!inQ){ vals.push(cur.trim()); cur=''; }
+    else cur+=c;
+  }
+  vals.push(cur.trim());
+  return vals.map(v=>v.replace(/^"|"$/g,''));
+}
+
+function sheetUrlToCSV(url){
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!m) return null;
+  const gid = (url.match(/gid=(\d+)/)||[])[1]||'0';
+  return `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=csv&gid=${gid}`;
+}
+
+/* ── load ─────────────────────────────────────────────────────────── */
+async function loadSheet(url){
+  const msg = document.getElementById('import-msg');
+  msg.className = 'import-msg';
+  msg.textContent = 'Loading…';
+  try{
+    const csvUrl = url.includes('docs.google.com') ? sheetUrlToCSV(url) : url;
+    if(!csvUrl){ msg.className='import-msg error'; msg.textContent='Invalid URL.'; return; }
+    const resp = await fetch(csvUrl);
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    const text = await resp.text();
+    rows = parseCSV(text).filter(r=>r['Date']&&r['Date'].trim());
+    msg.textContent = `Loaded ${rows.length} rows.`;
+    setPill(rows.length+' entries loaded', true);
+    render();
+  }catch(e){
+    msg.className = 'import-msg error';
+    msg.textContent = 'Could not load. Make sure the sheet is shared as "Anyone with the link can view". Error: '+e.message;
+  }
+}
+
+function setPill(text, active){
+  const p = document.getElementById('data-pill');
+  p.className = 'pill'+(active?' active':'');
+  p.innerHTML = `<i class="ti ti-${active?'check':'database'}"></i> ${text}`;
+}
+
+/* ── scatter helper ───────────────────────────────────────────────── */
+function makeScatter(id, xArr, yArr, xLabel, yLabel, color){
+  destroyChart(id);
+  const el = document.getElementById(id);
+  if(!el) return;
+  const pairs = xArr.map((v,i)=>({x:v,y:yArr[i]})).filter(p=>p.x!=null&&p.y!=null&&!isNaN(p.x)&&!isNaN(p.y));
+  if(!pairs.length){ el.parentElement.innerHTML=`<div class="empty">Not enough data for this chart</div>`; return; }
+  charts[id] = new Chart(el, {
+    type:'scatter',
+    data:{ datasets:[{ label:yLabel, data:pairs, backgroundColor:color+'55', borderColor:color, borderWidth:1, pointRadius:5 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: p=>`${xLabel}: ${p.parsed.x.toFixed(1)}, Severity: ${p.parsed.y}` }}},
+      scales:{
+        x:{ title:{display:true,text:xLabel,font:{size:11},color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b91a8'} },
+        y:{ min:0, max:10, title:{display:true,text:'Severity',font:{size:11},color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'}, ticks:{color:'#8b91a8'} }
+      }
     }
+  });
+}
 
-    const id = idMatch[1];
-    const gid = gidMatch ? gidMatch[1] : "0";
-
-    const url = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&gid=${gid}`;
-
-    console.log("Fetching JSON:", url);
-
-    const res = await fetch(url);
-    const text = await res.text();
-
-    // ✅ Remove Google's JSON wrapper
-    const json = JSON.parse(text.substring(47).slice(0, -2));
-
-    const rows = json.table.rows;
-    const cols = json.table.cols.map(c => c.label);
-
-    const data = rows.map(r => {
-      let obj = {};
-      r.c.forEach((cell, i) => {
-        obj[cols[i]] = cell ? cell.v : "";
-      });
-      return obj;
+/* ── sample data ──────────────────────────────────────────────────── */
+function makeSampleData(){
+  const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const meds=['Sumatriptan','Ibuprofen','Paracetamol','Rizatriptan','Naratriptan'];
+  const syms=['Nausea','Aura','Photophobia','Phonophobia','Vomiting','Neck pain','Dizziness','Brain fog'];
+  const out=[];
+  const base=new Date('2025-01-01');
+  for(let i=0;i<90;i++){
+    const d=new Date(base); d.setDate(base.getDate()+i);
+    const sev=Math.random()<0.35?Math.floor(Math.random()*9)+1:0;
+    const press=1000+Math.random()*30;
+    const pressD=(Math.random()-0.5)*10;
+    const hum=45+Math.random()*45;
+    const temp=8+Math.random()*18;
+    const tempD=(Math.random()-0.5)*6;
+    const rain=Math.random()<0.3?'Yes':'No';
+    const sleep=5+Math.random()*4;
+    const eff=65+Math.random()*30;
+    const awake=5+Math.random()*50;
+    const rem=50+Math.random()*70;
+    const deep=30+Math.random()*60;
+    const hr=55+Math.random()*25;
+    const hrv=25+Math.random()*50;
+    const taken=sev>0?Math.min(Math.floor(sev/2)+1,4):0;
+    const medsTaken=sev>0?meds[Math.floor(Math.random()*meds.length)]:'';
+    const s1=syms[Math.floor(Math.random()*syms.length)];
+    const s2=syms[Math.floor(Math.random()*syms.length)];
+    const otherSyms=sev>4?[s1,s2].filter((v,i2,a)=>a.indexOf(v)===i2).join('; '):sev>1?s1:'';
+    out.push({
+      'Date':d.toISOString().slice(0,10),
+      'Day':days[d.getDay()],
+      '# Taken':taken.toString(),
+      'Other Symptoms':otherSyms,
+      'Severity':sev.toString(),
+      'Pressure (hPa)':press.toFixed(1),
+      'Pressure Change (Δ)':pressD.toFixed(1),
+      'Humidity (%)':hum.toFixed(0),
+      'Temperature (°C)':temp.toFixed(1),
+      'Temp Change (Δ)':tempD.toFixed(1),
+      'Rain':rain,
+      'Sleep Duration (hrs)':sleep.toFixed(1),
+      'Sleep Efficiency (%)':eff.toFixed(0),
+      'Awake Time (mins)':awake.toFixed(0),
+      'REM Duration (mins)':rem.toFixed(0),
+      'Deep Sleep (mins)':deep.toFixed(0),
+      'Avg HR (bpm)':hr.toFixed(0),
+      'HRV':hrv.toFixed(1),
+      'Medications Taken':medsTaken,
+      'Notes':''
     });
-
-    console.log("Parsed rows:", data.length);
-
-    if (!data.length) {
-      alert("No data found");
-      return;
-    }
-
-    processData(data);
-
-  } catch (e) {
-    console.error(e);
-    alert("Error loading data");
   }
+  return out;
 }
 
-// ✅ PROCESS DATA
-function processData(data) {
-  const severity = data.map(r => Number(r["Severity"]) || 0);
-  const labels = data.map(r => r["Date"]);
+/* ── main render ──────────────────────────────────────────────────── */
+function render(){
+  document.getElementById('main-content').style.display='block';
+  const sev = rows.map(r=>n(r['Severity']));
+  const migRows = rows.filter(r=>n(r['Severity'])>0);
+  const totalDays = rows.length;
+  const migDays = migRows.length;
+  const pct = totalDays>0?Math.round(migDays/totalDays*100):0;
+  const avgSev = migRows.length?(migRows.reduce((s,r)=>s+n(r['Severity']),0)/migRows.length).toFixed(1):'-';
+  const sleepData = rows.map(r=>n(r['Sleep Duration (hrs)'])).filter(v=>v!=null);
+  const avgSleep = sleepData.length?(sleepData.reduce((a,b)=>a+b,0)/sleepData.length).toFixed(1)+'h':'-';
+  const maxSev = migRows.length?Math.max(...migRows.map(r=>n(r['Severity']))):'-';
 
-  drawTimeline(labels, severity);
+  document.getElementById('metrics-row').innerHTML = `
+    <div class="metric"><div class="metric-label">Total entries</div><div class="metric-value" style="color:var(--purple)">${totalDays}</div></div>
+    <div class="metric"><div class="metric-label">Migraine days</div><div class="metric-value" style="color:var(--red)">${migDays}</div><div class="metric-sub">${pct}% of days</div></div>
+    <div class="metric"><div class="metric-label">Avg severity</div><div class="metric-value" style="color:var(--amber)">${avgSev}</div><div class="metric-sub">on migraine days</div></div>
+    <div class="metric"><div class="metric-label">Peak severity</div><div class="metric-value" style="color:var(--red)">${maxSev}</div></div>
+    <div class="metric"><div class="metric-label">Avg sleep</div><div class="metric-value" style="color:var(--teal)">${avgSleep}</div></div>
+  `;
 
-  const metrics = [
-    "Pressure Change (Δ)",
-    "Humidity (%)",
-    "Temperature (°C)",
-    "Temp Change (Δ)",
-    "Sleep Duration (hrs)",
-    "Sleep Efficiency (%)",
-    "Awake Time (mins)",
-    "REM Duration (mins)",
-    "Deep Sleep (mins)",
-    "Avg HR (bpm)",
-    "HRV"
+  /* correlations */
+  const corrFields = [
+    { key:'Pressure (hPa)', label:'Pressure', icon:'ti-arrow-down-circle', color:'#4a9edd' },
+    { key:'Pressure Change (Δ)', label:'Press. Δ', icon:'ti-arrows-vertical', color:'#7c6ff7' },
+    { key:'Humidity (%)', label:'Humidity', icon:'ti-droplet', color:'#3db87a' },
+    { key:'Sleep Duration (hrs)', label:'Sleep duration', icon:'ti-moon', color:'#534AB7' },
+    { key:'Sleep Efficiency (%)', label:'Sleep quality', icon:'ti-zzz', color:'#2abfb0' },
+    { key:'HRV', label:'HRV', icon:'ti-heart', color:'#d4537e' },
+    { key:'Avg HR (bpm)', label:'Avg HR', icon:'ti-activity', color:'#e09a2f' },
+    { key:'Temperature (°C)', label:'Temperature', icon:'ti-temperature', color:'#e04b4b' },
+    { key:'Temp Change (Δ)', label:'Temp Δ', icon:'ti-temperature-plus', color:'#ba7517' },
+    { key:'Deep Sleep (mins)', label:'Deep sleep', icon:'ti-bed', color:'#3C3489' },
+    { key:'REM Duration (mins)', label:'REM sleep', icon:'ti-eye', color:'#AFA9EC' },
+    { key:'Awake Time (mins)', label:'Awake time', icon:'ti-alarm', color:'#993C1D' },
   ];
-
-  const corrValues = metrics.map(m => {
-    const values = data.map(r => Number(r[m]) || 0);
-    return Number(correlation(values, severity).toFixed(2));
+  let corrHTML = '';
+  corrFields.forEach(f=>{
+    const r = pearson(rows.map(r2=>n(r2[f.key])), sev);
+    if(r===null) return;
+    const strength = Math.abs(r)>.5?'strong':Math.abs(r)>.3?'moderate':'weak';
+    const dir = r>0?'↑ higher = worse':'↓ higher = better';
+    corrHTML += `
+      <div class="corr-card">
+        <div class="corr-icon" style="background:${f.color}20;color:${f.color}"><i class="ti ${f.icon}"></i></div>
+        <div>
+          <div class="corr-name">${f.label}</div>
+          <div class="corr-val" style="color:${f.color}">${r>=0?'+':''}${r.toFixed(2)}</div>
+          <div class="corr-dir">${dir} · ${strength}</div>
+        </div>
+      </div>`;
   });
+  document.getElementById('corr-grid').innerHTML = corrHTML || '<div class="empty">Not enough numeric data for correlations yet</div>';
 
-  drawCorrelation(metrics, corrValues);
-
-  // ✅ Risk score
-  const latest = data[data.length - 1];
-  let risk = 0;
-
-  if ((Number(latest["Sleep Duration (hrs)"]) || 0) < 6) risk++;
-  if ((Number(latest["Sleep Efficiency (%)"]) || 0) < 80) risk++;
-  if ((Number(latest["HRV"]) || 0) < 40) risk++;
-  if (Math.abs(Number(latest["Pressure Change (Δ)"]) || 0) > 5) risk++;
-
-  document.getElementById("risk").textContent =
-    Math.round((risk / 4) * 100);
-}
-
-// ✅ DRAW TIMELINE
-function drawTimeline(labels, data) {
-  if (timelineChart) timelineChart.destroy();
-
-  timelineChart = new Chart(document.getElementById("timeline"), {
-    type: "line",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Severity",
-        data: data,
-        borderColor: "red",
-        fill: false
-      }]
+  /* timeline */
+  destroyChart('timelineChart');
+  const sorted = [...rows].sort((a,b)=>a['Date']>b['Date']?1:-1);
+  charts['timelineChart'] = new Chart(document.getElementById('timelineChart'), {
+    type:'bar',
+    data:{
+      labels: sorted.map(r=>r['Date']),
+      datasets:[
+        { label:'Severity', data:sorted.map(r=>n(r['Severity'])), backgroundColor:'#e04b4b66', borderColor:'#e04b4b', borderWidth:1, yAxisID:'y' },
+        { type:'line', label:'Pressure', data:sorted.map(r=>n(r['Pressure (hPa)'])), borderColor:'#4a9edd', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'y2' }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{mode:'index'} },
+      scales:{
+        x:{ display:rows.length<=90, ticks:{maxRotation:45,font:{size:9},color:'#8b91a8',autoSkip:rows.length>30}, grid:{display:false} },
+        y:{ min:0, max:10, title:{display:true,text:'Severity',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} },
+        y2:{ position:'right', title:{display:true,text:'hPa',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{display:false} }
+      }
     }
   });
-}
 
-// ✅ DRAW CORRELATION
-function drawCorrelation(labels, data) {
-  if (corrChart) corrChart.destroy();
-
-  corrChart = new Chart(document.getElementById("corr"), {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: "Correlation",
-        data: data,
-        backgroundColor: "blue"
+  /* severity distribution */
+  destroyChart('sevDistChart');
+  const sevCounts = {};
+  for(let i=0;i<=10;i++) sevCounts[i]=0;
+  rows.forEach(r=>{ const v=Math.round(n(r['Severity'])||0); if(v>=0&&v<=10) sevCounts[v]++; });
+  const sevLabels = Object.keys(sevCounts).map(Number);
+  charts['sevDistChart'] = new Chart(document.getElementById('sevDistChart'), {
+    type:'bar',
+    data:{
+      labels: sevLabels,
+      datasets:[{
+        data: sevLabels.map(k=>sevCounts[k]),
+        backgroundColor: sevLabels.map(k=>k===0?'#88888833':k<=3?'#3db87a44':k<=6?'#e09a2f44':'#e04b4b44'),
+        borderColor: sevLabels.map(k=>k===0?'#888888':k<=3?'#3db87a':k<=6?'#e09a2f':'#e04b4b'),
+        borderWidth:1
       }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ title:{display:true,text:'Severity level',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{display:false} },
+        y:{ title:{display:true,text:'Days',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }
+      }
     }
   });
+
+  /* day of week */
+  destroyChart('dowChart');
+  const dayOrder=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayT={},dayC={};
+  dayOrder.forEach(d=>{dayT[d]=0;dayC[d]=0;});
+  rows.forEach(r=>{ const d=r['Day']; if(dayOrder.includes(d)&&n(r['Severity'])!=null){ dayT[d]+=n(r['Severity']); dayC[d]++; }});
+  charts['dowChart'] = new Chart(document.getElementById('dowChart'), {
+    type:'bar',
+    data:{
+      labels:dayOrder,
+      datasets:[{
+        data:dayOrder.map(d=>dayC[d]>0?(dayT[d]/dayC[d]).toFixed(2):0),
+        backgroundColor:'#7c6ff755', borderColor:'#7c6ff7', borderWidth:1
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ ticks:{color:'#8b91a8'}, grid:{display:false} },
+        y:{ min:0, max:10, title:{display:true,text:'Avg severity',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }
+      }
+    }
+  });
+
+  /* weather scatters */
+  makeScatter('pressureScatter', rows.map(r=>n(r['Pressure (hPa)'])), sev, 'Pressure (hPa)', 'Severity', '#4a9edd');
+  makeScatter('pressureChangeScatter', rows.map(r=>n(r['Pressure Change (Δ)'])), sev, 'Pressure Δ (hPa)', 'Severity', '#7c6ff7');
+  makeScatter('humidityScatter', rows.map(r=>n(r['Humidity (%)'])), sev, 'Humidity (%)', 'Severity', '#3db87a');
+  makeScatter('tempChangeScatter', rows.map(r=>n(r['Temp Change (Δ)'])), sev, 'Temp Δ (°C)', 'Severity', '#e09a2f');
+
+  /* rain chart */
+  destroyChart('rainChart');
+  const rainRows = rows.filter(r=>r['Rain']&&n(r['Severity'])!=null);
+  const rainY = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('y'));
+  const rainN = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('n'));
+  const avgY = rainY.length?rainY.reduce((s,r)=>s+n(r['Severity']),0)/rainY.length:0;
+  const avgN = rainN.length?rainN.reduce((s,r)=>s+n(r['Severity']),0)/rainN.length:0;
+  charts['rainChart'] = new Chart(document.getElementById('rainChart'), {
+    type:'bar',
+    data:{ labels:['Rain day','Dry day'], datasets:[{ data:[avgY.toFixed(2),avgN.toFixed(2)], backgroundColor:['#4a9edd44','#3db87a44'], borderColor:['#4a9edd','#3db87a'], borderWidth:1 }] },
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{
+        x:{ min:0, max:10, title:{display:true,text:'Avg severity',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} },
+        y:{ ticks:{color:'#8b91a8'}, grid:{display:false} }
+      }
+    }
+  });
+
+  /* sleep scatters */
+  makeScatter('sleepDurScatter', rows.map(r=>n(r['Sleep Duration (hrs)'])), sev, 'Sleep (hrs)', 'Severity', '#534AB7');
+  makeScatter('sleepEffScatter', rows.map(r=>n(r['Sleep Efficiency (%)'])), sev, 'Sleep efficiency (%)', 'Severity', '#3C3489');
+  makeScatter('remScatter', rows.map(r=>n(r['REM Duration (mins)'])), sev, 'REM (mins)', 'Severity', '#AFA9EC');
+  makeScatter('deepScatter', rows.map(r=>n(r['Deep Sleep (mins)'])), sev, 'Deep sleep (mins)', 'Severity', '#2abfb0');
+  makeScatter('hrvScatter', rows.map(r=>n(r['HRV'])), sev, 'HRV', 'Severity', '#d4537e');
+  makeScatter('awakeScatter', rows.map(r=>n(r['Awake Time (mins)'])), sev, 'Awake time (mins)', 'Severity', '#993C1D');
+
+  /* trigger: symptoms */
+  const symCounts = {};
+  rows.forEach(r=>{ if(r['Other Symptoms']) r['Other Symptoms'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{symCounts[s]=(symCounts[s]||0)+1;}); });
+  const sortedSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]);
+  destroyChart('symptomChart');
+  const symWrap = document.getElementById('symptom-wrap');
+  if(sortedSyms.length){
+    symWrap.style.height = Math.max(150, sortedSyms.length*40+60)+'px';
+    charts['symptomChart'] = new Chart(document.getElementById('symptomChart'), {
+      type:'bar',
+      data:{ labels:sortedSyms.map(e=>e[0]), datasets:[{ data:sortedSyms.map(e=>e[1]), backgroundColor:'#e04b4b44', borderColor:'#e04b4b', borderWidth:1 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false} },
+        scales:{ x:{ title:{display:true,text:'Occurrences',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
+      }
+    });
+  } else symWrap.innerHTML = '<div class="empty">No symptom data yet</div>';
+
+  /* trigger: meds */
+  const medCounts = {};
+  rows.forEach(r=>{ if(r['Medications Taken']) r['Medications Taken'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{medCounts[s]=(medCounts[s]||0)+1;}); });
+  const sortedMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]);
+  destroyChart('medChart');
+  const medWrap = document.getElementById('med-wrap');
+  if(sortedMeds.length){
+    medWrap.style.height = Math.max(120, sortedMeds.length*40+60)+'px';
+    charts['medChart'] = new Chart(document.getElementById('medChart'), {
+      type:'bar',
+      data:{ labels:sortedMeds.map(e=>e[0]), datasets:[{ data:sortedMeds.map(e=>e[1]), backgroundColor:'#7c6ff744', borderColor:'#7c6ff7', borderWidth:1 }] },
+      options:{
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false} },
+        scales:{ x:{ title:{display:true,text:'Times used',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
+      }
+    });
+  } else medWrap.innerHTML = '<div class="empty">No medication data yet</div>';
+
+  makeScatter('hrScatter', rows.map(r=>n(r['Avg HR (bpm)'])), sev, 'Avg HR (bpm)', 'Severity', '#e09a2f');
+  makeScatter('meds-taken-scatter', rows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
+
+  /* log table */
+  const cols = ['Date','Day','Severity','# Taken','Medications Taken','Pressure (hPa)','Humidity (%)','Sleep Duration (hrs)','Other Symptoms','Notes'];
+  document.getElementById('log-head').innerHTML = cols.map(c=>`<th>${c}</th>`).join('');
+  document.getElementById('log-body').innerHTML = [...rows]
+    .sort((a,b)=>b['Date']>a['Date']?1:-1)
+    .map(r=>{
+      const s = n(r['Severity']);
+      const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
+      return `<tr>${cols.map((c,i)=>i===2?`<td>${badge}</td>`:`<td>${r[c]||''}</td>`).join('')}</tr>`;
+    }).join('');
 }
+
+/* ── events ───────────────────────────────────────────────────────── */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('load-btn').addEventListener('click',()=>{
+  const url = document.getElementById('sheet-url').value.trim();
+  if(url) loadSheet(url);
+});
+
+document.getElementById('sheet-url').addEventListener('keydown',e=>{
+  if(e.key==='Enter') document.getElementById('load-btn').click();
+});
+
+document.getElementById('sample-btn').addEventListener('click',()=>{
+  rows = makeSampleData();
+  document.getElementById('import-msg').textContent = `Loaded ${rows.length} sample rows.`;
+  setPill('Sample data — '+rows.length+' days', true);
+  render();
+});
 </script>
-
 </body>
 </html>
