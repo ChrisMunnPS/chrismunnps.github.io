@@ -80,7 +80,7 @@ async function loadData() {
 
     console.log("Fetching:", csvUrl);
 
-    const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(csvUrl));
+    const res = await fetch("https://corsproxy.io/?" + encodeURIComponent(csvUrl));
 
 
     if (!res.ok) {
