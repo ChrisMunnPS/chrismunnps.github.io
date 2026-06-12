@@ -6,6 +6,8 @@
 <title>Migraine Tracker</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -166,6 +168,11 @@
   <div id="main-content" style="display:none">
 
     <div class="metrics" id="metrics-row"></div>
+
+    <div id="export-bar" style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:1.25rem;flex-wrap:wrap">
+      <button class="btn" id="csv-btn"><i class="ti ti-table-export"></i> Download CSV</button>
+      <button class="btn primary" id="pdf-btn"><i class="ti ti-file-type-pdf"></i> Export PDF (A4)</button>
+    </div>
 
     <div class="tabs">
       <div class="tab active" data-tab="overview">Overview</div>
@@ -753,6 +760,265 @@ document.getElementById('sample-btn').addEventListener('click',()=>{
   setPill('Sample data — '+rows.length+' days', true);
   render();
 });
+
+document.getElementById('csv-btn').addEventListener('click', exportCSV);
+document.getElementById('pdf-btn').addEventListener('click', exportPDF);
+
+/* ── CSV export ───────────────────────────────────────────────────── */
+function exportCSV(){
+  const last90 = get90DayRows();
+  if(!last90.length){ alert('No data to export.'); return; }
+  const headers = Object.keys(last90[0]);
+  const escape = v => `"${String(v||'').replace(/"/g,'""')}"`;
+  const csvContent = [
+    headers.map(escape).join(','),
+    ...last90.map(r => headers.map(h=>escape(r[h]||'')).join(','))
+  ].join('\r\n');
+  const blob = new Blob([csvContent], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'migraine-data-90days.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ── helper: last 90 days of rows ────────────────────────────────── */
+function get90DayRows(){
+  const sorted = [...rows].sort((a,b)=>{
+    const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
+    return (da&&db)?da-db:0;
+  });
+  return sorted.slice(-90);
+}
+
+/* ── PDF export ───────────────────────────────────────────────────── */
+async function exportPDF(){
+  if(!rows.length){ alert('No data to export.'); return; }
+  const btn = document.getElementById('pdf-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader"></i> Building PDF…';
+
+  try {
+    const { jsPDF } = window.jspdf;
+    // A4 landscape: 297 x 210 mm
+    const pdf = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
+    const PW = 297; const PH = 210;
+    const margin = 12;
+    const usableW = PW - margin*2;
+
+    /* ── helpers ── */
+    function header(pdf, title, subtitle){
+      pdf.setFillColor(15,17,23);
+      pdf.rect(0,0,PW,PH,'F');
+      pdf.setDrawColor(80,80,120);
+      pdf.setLineWidth(0.3);
+      pdf.line(margin, 18, PW-margin, 18);
+      pdf.setFont('helvetica','bold');
+      pdf.setFontSize(13); pdf.setTextColor(232,234,240);
+      pdf.text(title, margin, 12);
+      pdf.setFont('helvetica','normal');
+      pdf.setFontSize(8); pdf.setTextColor(139,145,168);
+      pdf.text(subtitle, margin, 17);
+      // page right: date generated
+      pdf.setFontSize(7); pdf.setTextColor(85,93,120);
+      pdf.text('Generated: '+fmtDate(new Date()), PW-margin, 12, {align:'right'});
+    }
+
+    function sectionLabel(pdf, text, y){
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(7);
+      pdf.setTextColor(85,93,120);
+      pdf.text(text.toUpperCase(), margin, y);
+      return y + 4;
+    }
+
+    async function captureChart(canvasId, w, h){
+      const el = document.getElementById(canvasId);
+      if(!el) return null;
+      const canvas = await html2canvas(el, {backgroundColor:'#181c27', scale:2, logging:false});
+      return canvas.toDataURL('image/png');
+    }
+
+    const last90 = get90DayRows();
+    const migDays = last90.filter(r=>n(r['Severity'])>0).length;
+    const avgSev = (last90.filter(r=>n(r['Severity'])>0).reduce((s,r)=>s+n(r['Severity']),0) / (migDays||1)).toFixed(1);
+    const dateRange = last90.length ? fmtDate(parseUKDate(last90[0]['Date']))+' – '+fmtDate(parseUKDate(last90[last90.length-1]['Date'])) : '';
+
+    /* ══ PAGE 1: Summary + key charts ══ */
+    header(pdf,
+      'Migraine Report',
+      `${dateRange} · ${last90.length} days · ${migDays} migraine days · Avg severity ${avgSev}/10`
+    );
+
+    let y = 23;
+    // Metric boxes
+    const metrics = [
+      {label:'Period', value:last90.length+' days'},
+      {label:'Migraine days', value:migDays+''},
+      {label:'Migraine rate', value:Math.round(migDays/(last90.length||1)*100)+'%'},
+      {label:'Avg severity', value:avgSev+' / 10'},
+      {label:'Peak severity', value:(migDays?Math.max(...last90.filter(r=>n(r['Severity'])>0).map(r=>n(r['Severity']))):'—')+''},
+    ];
+    const mw = (usableW - 4*3) / metrics.length;
+    metrics.forEach((m,i)=>{
+      const mx = margin + i*(mw+3);
+      pdf.setFillColor(24,28,39); pdf.setDrawColor(60,60,90);
+      pdf.setLineWidth(0.3);
+      pdf.roundedRect(mx, y, mw, 14, 2, 2, 'FD');
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(85,93,120);
+      pdf.text(m.label, mx+mw/2, y+5, {align:'center'});
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(11); pdf.setTextColor(232,234,240);
+      pdf.text(m.value, mx+mw/2, y+11, {align:'center'});
+    });
+    y += 18;
+
+    // Make all tabs visible temporarily to capture all charts
+    const allViews = document.querySelectorAll('.view');
+    const prevDisplay = [];
+    allViews.forEach(v=>{ prevDisplay.push(v.style.display); v.style.display='block'; });
+
+    // Timeline chart — full width
+    y = sectionLabel(pdf, 'Migraine timeline (severity + atmospheric pressure)', y);
+    const timelineImg = await captureChart('timelineChart', usableW, 45);
+    if(timelineImg) pdf.addImage(timelineImg,'PNG', margin, y, usableW, 40);
+    y += 43;
+
+    // Row of 3 charts
+    y = sectionLabel(pdf, 'Distribution · Day of week · Pressure vs severity', y);
+    const chartRow1 = await Promise.all([
+      captureChart('sevDistChart', usableW/3, 38),
+      captureChart('dowChart', usableW/3, 38),
+      captureChart('pressureScatter', usableW/3, 38),
+    ]);
+    const cw = (usableW - 4) / 3;
+    chartRow1.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 35); });
+    y += 38;
+
+    /* ══ PAGE 2: Weather correlations ══ */
+    pdf.addPage();
+    header(pdf, 'Migraine Report — Weather Correlations', dateRange);
+    y = 23;
+
+    y = sectionLabel(pdf, 'Pressure change · Humidity · Temperature change', y);
+    const weatherRow = await Promise.all([
+      captureChart('pressureChangeScatter', usableW/3, 45),
+      captureChart('humidityScatter', usableW/3, 45),
+      captureChart('tempChangeScatter', usableW/3, 45),
+    ]);
+    weatherRow.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
+    y += 45;
+
+    y = sectionLabel(pdf, 'Sleep duration · Sleep efficiency · HRV', y);
+    const sleepRow = await Promise.all([
+      captureChart('sleepDurScatter', usableW/3, 45),
+      captureChart('sleepEffScatter', usableW/3, 45),
+      captureChart('hrvScatter', usableW/3, 45),
+    ]);
+    sleepRow.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
+    y += 45;
+
+    y = sectionLabel(pdf, 'REM sleep · Deep sleep · Rain vs dry', y);
+    const sleepRow2 = await Promise.all([
+      captureChart('remScatter', usableW/3, 45),
+      captureChart('deepScatter', usableW/3, 45),
+      captureChart('rainChart', usableW/3, 45),
+    ]);
+    sleepRow2.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
+
+    /* ══ PAGE 3: Data table (last 90 days) ══ */
+    pdf.addPage();
+    header(pdf, 'Migraine Report — Data Log (last 90 days)', dateRange);
+    y = 23;
+
+    const tableCols = [
+      {h:'Date', k:'Date', w:20},
+      {h:'Day', k:'Day', w:12},
+      {h:'Sev', k:'Severity', w:10},
+      {h:'Pressure', k:'Pressure (hPa)', w:20},
+      {h:'Press Δ', k:'Pressure Change (Δ)', w:16},
+      {h:'Humid %', k:'Humidity (%)', w:16},
+      {h:'Temp °C', k:'Temperature (°C)', w:16},
+      {h:'Rain', k:'Rain', w:12},
+      {h:'Sleep h', k:'Sleep Duration (hrs)', w:16},
+      {h:'Sleep eff%', k:'Sleep Efficiency (%)', w:20},
+      {h:'REM min', k:'REM Duration (mins)', w:18},
+      {h:'HRV', k:'HRV', w:12},
+      {h:'HR bpm', k:'Avg HR (bpm)', w:16},
+      {h:'Meds', k:'Medications Taken', w:30},
+    ];
+
+    const rowH = 5.5;
+    const headerH = 7;
+
+    function drawTableHeader(pdf, y){
+      pdf.setFillColor(30,35,51); pdf.setDrawColor(60,60,90); pdf.setLineWidth(0.2);
+      pdf.rect(margin, y, usableW, headerH, 'FD');
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(139,145,168);
+      let x = margin+1;
+      tableCols.forEach(c=>{ pdf.text(c.h, x, y+4.5); x+=c.w; });
+      return y+headerH;
+    }
+
+    function drawTableRow(pdf, row, y, isOdd){
+      if(isOdd){ pdf.setFillColor(20,24,35); pdf.rect(margin,y,usableW,rowH,'F'); }
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6); pdf.setTextColor(232,234,240);
+      const sev = n(row['Severity']);
+      let x = margin+1;
+      tableCols.forEach(c=>{
+        let val = row[c.k]||'';
+        if(c.k==='Severity' && sev!==null && sev>0){
+          const col = sev>=7?[224,75,75]:sev>=4?[224,154,47]:[61,184,122];
+          pdf.setTextColor(...col);
+          pdf.text(val, x, y+3.8);
+          pdf.setTextColor(232,234,240);
+        } else {
+          // truncate long values
+          if(val.length>Math.floor(c.w/2)) val=val.slice(0,Math.floor(c.w/2)-1)+'…';
+          pdf.text(val, x, y+3.8);
+        }
+        x+=c.w;
+      });
+      return y+rowH;
+    }
+
+    const tableRows = [...last90].sort((a,b)=>{
+      const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
+      return (da&&db)?da-db:0;
+    });
+
+    y = drawTableHeader(pdf, y);
+    let rowIdx = 0;
+    for(const row of tableRows){
+      if(y + rowH > PH - margin){
+        pdf.addPage();
+        header(pdf, 'Migraine Report — Data Log (continued)', dateRange);
+        y = 23;
+        y = drawTableHeader(pdf, y);
+      }
+      y = drawTableRow(pdf, row, y, rowIdx%2===1);
+      rowIdx++;
+    }
+
+    // Restore tab visibility
+    allViews.forEach((v,i)=>{ v.style.display=prevDisplay[i]; });
+
+    // Footer on all pages
+    const pageCount = pdf.getNumberOfPages();
+    for(let p=1; p<=pageCount; p++){
+      pdf.setPage(p);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(85,93,120);
+      pdf.text('Migraine Tracker · Confidential patient data', margin, PH-5);
+      pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-5, {align:'right'});
+    }
+
+    pdf.save('migraine-report-90days.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('PDF export failed: '+err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-file-type-pdf"></i> Export PDF (A4)';
+  }
+}
 </script>
 </body>
 </html>
