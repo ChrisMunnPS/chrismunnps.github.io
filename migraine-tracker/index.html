@@ -370,6 +370,22 @@ function sheetUrlToCSV(url){
   return `https://docs.google.com/spreadsheets/d/${m[1]}/export?format=csv&gid=${gid}`;
 }
 
+/* Parse UK date DD/MM/YYYY or DD-MM-YYYY, also handles YYYY-MM-DD as fallback */
+function parseUKDate(str){
+  if(!str||!str.trim()) return null;
+  const s = str.trim();
+  const ukM = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(ukM) return new Date(+ukM[3], +ukM[2]-1, +ukM[1], 12, 0, 0);
+  const isoM = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+  if(isoM) return new Date(+isoM[1], +isoM[2]-1, +isoM[3], 12, 0, 0);
+  return null;
+}
+
+function fmtDate(dt){
+  if(!dt||isNaN(dt)) return '';
+  return String(dt.getDate()).padStart(2,'0')+'/'+String(dt.getMonth()+1).padStart(2,'0')+'/'+dt.getFullYear();
+}
+
 /* ── load ─────────────────────────────────────────────────────────── */
 async function loadSheet(url){
   const msg = document.getElementById('import-msg');
@@ -447,7 +463,7 @@ function makeSampleData(){
     const s2=syms[Math.floor(Math.random()*syms.length)];
     const otherSyms=sev>4?[s1,s2].filter((v,i2,a)=>a.indexOf(v)===i2).join('; '):sev>1?s1:'';
     out.push({
-      'Date':d.toISOString().slice(0,10),
+      'Date':fmtDate(d),
       'Day':days[d.getDay()],
       '# Taken':taken.toString(),
       'Other Symptoms':otherSyms,
@@ -528,11 +544,14 @@ function render(){
 
   /* timeline */
   destroyChart('timelineChart');
-  const sorted = [...rows].sort((a,b)=>a['Date']>b['Date']?1:-1);
+  const sorted = [...rows].sort((a,b)=>{
+    const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
+    return (da&&db)?da-db:0;
+  });
   charts['timelineChart'] = new Chart(document.getElementById('timelineChart'), {
     type:'bar',
     data:{
-      labels: sorted.map(r=>r['Date']),
+      labels: sorted.map(r=>{ const dt=parseUKDate(r['Date']); return dt?fmtDate(dt):r['Date']; }),
       datasets:[
         { label:'Severity', data:sorted.map(r=>n(r['Severity'])), backgroundColor:'#e04b4b66', borderColor:'#e04b4b', borderWidth:1, yAxisID:'y' },
         { type:'line', label:'Pressure', data:sorted.map(r=>n(r['Pressure (hPa)'])), borderColor:'#4a9edd', borderWidth:1.5, pointRadius:0, tension:.3, yAxisID:'y2' }
@@ -595,14 +614,9 @@ function render(){
       const pi=dayFull.findIndex(d=>d.toLowerCase().startsWith(raw.toLowerCase().slice(0,3)));
       if(pi!==-1) return dayShort[pi];
     }
-    // Fallback: derive from Date column
-    if(r['Date']&&r['Date'].trim()){
-      const parts=r['Date'].trim().split(/[-\/]/);
-      if(parts.length===3){
-        const dt=new Date(r['Date'].trim()+'T12:00:00');
-        if(!isNaN(dt)) return dayShort[dt.getDay()];
-      }
-    }
+    // Fallback: derive from Date column using UK date parser
+    const dt=parseUKDate(r['Date']);
+    if(dt&&!isNaN(dt)) return dayShort[dt.getDay()];
     return null;
   }
   const dayT={},dayC={};
@@ -706,7 +720,7 @@ function render(){
   const cols = ['Date','Day','Severity','# Taken','Medications Taken','Pressure (hPa)','Humidity (%)','Sleep Duration (hrs)','Other Symptoms','Notes'];
   document.getElementById('log-head').innerHTML = cols.map(c=>`<th>${c}</th>`).join('');
   document.getElementById('log-body').innerHTML = [...rows]
-    .sort((a,b)=>b['Date']>a['Date']?1:-1)
+    .sort((a,b)=>{ const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']); return (da&&db)?db-da:0; })
     .map(r=>{
       const s = n(r['Severity']);
       const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
