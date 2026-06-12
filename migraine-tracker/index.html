@@ -80,7 +80,8 @@ async function loadData() {
 
     console.log("Fetching:", csvUrl);
 
-    const res = await fetch(csvUrl);
+    const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(csvUrl));
+
 
     if (!res.ok) {
       throw new Error("Network error");
