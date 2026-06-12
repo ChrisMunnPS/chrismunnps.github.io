@@ -579,9 +579,35 @@ function render(){
   /* day of week */
   destroyChart('dowChart');
   const dayOrder=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const dayFull=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dayShort=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function normDay(r){
+    // Try Day column first
+    const raw=(r['Day']||'').trim();
+    if(raw){
+      // Short: Mon/Tue etc
+      const si=dayShort.indexOf(raw);
+      if(si!==-1) return dayShort[si];
+      // Full: Monday/Tuesday etc
+      const fi=dayFull.findIndex(d=>d.toLowerCase()===raw.toLowerCase());
+      if(fi!==-1) return dayShort[fi];
+      // 3-char prefix match
+      const pi=dayFull.findIndex(d=>d.toLowerCase().startsWith(raw.toLowerCase().slice(0,3)));
+      if(pi!==-1) return dayShort[pi];
+    }
+    // Fallback: derive from Date column
+    if(r['Date']&&r['Date'].trim()){
+      const parts=r['Date'].trim().split(/[-\/]/);
+      if(parts.length===3){
+        const dt=new Date(r['Date'].trim()+'T12:00:00');
+        if(!isNaN(dt)) return dayShort[dt.getDay()];
+      }
+    }
+    return null;
+  }
   const dayT={},dayC={};
   dayOrder.forEach(d=>{dayT[d]=0;dayC[d]=0;});
-  rows.forEach(r=>{ const d=r['Day']; if(dayOrder.includes(d)&&n(r['Severity'])!=null){ dayT[d]+=n(r['Severity']); dayC[d]++; }});
+  rows.forEach(r=>{ const d=normDay(r); if(d&&dayOrder.includes(d)&&n(r['Severity'])!=null){ dayT[d]+=n(r['Severity']); dayC[d]++; }});
   charts['dowChart'] = new Chart(document.getElementById('dowChart'), {
     type:'bar',
     data:{
