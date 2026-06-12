@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <title>Migraine Tracker</title>
 
   <!-- ✅ React -->
@@ -19,8 +20,8 @@ const { useState } = React;
 const { LineChart, Line, XAxis, YAxis, Tooltip } = Recharts;
 
 function App() {
-  return React.createElement("div", {},
-    React.createElement("h1", {}, "✅ Migraine Tracker Loaded")
+  return React.createElement("div", { style: { padding: 20 } },
+    React.createElement("h1", {}, "✅ Migraine Tracker Loaded Successfully")
   );
 }
 
