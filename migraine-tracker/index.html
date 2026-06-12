@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Migraine Dashboard</title>
+  <title>Migraine Analytics Dashboard</title>
 
-  <!-- Chart.js (safe, GitHub-friendly) -->
+  <!-- ✅ Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body style="font-family: Arial; padding:20px;">
 
-<h1>Migraine Analytics</h1>
+<h1>Migraine Analytics Dashboard</h1>
 
 <input id="sheet" placeholder="Paste Google Sheet URL" style="width:350px;">
 <button onclick="loadData()">Load Data</button>
@@ -25,16 +25,27 @@
 <script>
 let timelineChart, corrChart;
 
+// ✅ Improved CSV parser
 function parseCSV(text) {
-  const rows = text.split("\\n").map(r => r.split(","));
-  const headers = rows[0];
+  const rows = text.trim().split("\\n");
+
+  const headers = rows[0].split(",");
+
   return rows.slice(1).map(row => {
+    const values = row.match(/(".*?"|[^",\\s]+)(?=,|$)/g);
+
+    if (!values) return null;
+
     let obj = {};
-    headers.forEach((h,i) => obj[h.trim()] = row[i]);
+    headers.forEach((h, i) => {
+      obj[h.trim()] = values[i]?.replace(/"/g, "") || "";
+    });
+
     return obj;
-  });
+  }).filter(r => r !== null);
 }
 
+// ✅ Correlation function
 function correlation(x, y) {
   const n = x.length;
   const avgX = x.reduce((a,b)=>a+b,0)/n;
@@ -49,23 +60,60 @@ function correlation(x, y) {
   return num / Math.sqrt(dx*dy || 1);
 }
 
+// ✅ Load data from Google Sheets
 async function loadData() {
-  const input = document.getElementById("sheet").value;
+  try {
+    const input = document.getElementById("sheet").value;
 
-  const csvUrl = input.replace(/\/edit.*$/, "/export?format=csv");
+    const idMatch = input.match(/\/d\/(.*?)\//);
+    const gidMatch = input.match(/gid=(\d+)/);
 
-  const res = await fetch(csvUrl);
-  const text = await res.text();
-  const data = parseCSV(text);
+    if (!idMatch) {
+      alert("Invalid Google Sheets URL");
+      return;
+    }
 
-  // --- SEVERITY ---
+    const id = idMatch[1];
+    const gid = gidMatch ? gidMatch[1] : "0";
+
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`;
+
+    console.log("Fetching:", csvUrl);
+
+    const res = await fetch(csvUrl);
+
+    if (!res.ok) {
+      throw new Error("Network error");
+    }
+
+    const text = await res.text();
+
+    console.log("CSV preview:", text.substring(0, 200));
+
+    const data = parseCSV(text);
+
+    console.log("Parsed rows:", data.length);
+
+    if (data.length === 0) {
+      alert("No data found");
+      return;
+    }
+
+    processData(data);
+
+  } catch (e) {
+    console.error(e);
+    alert("Error: " + e.message);
+  }
+}
+
+// ✅ Process your migraine data
+function processData(data) {
   const severity = data.map(r => Number(r["Severity"]) || 0);
-
-  // --- TIMELINE ---
   const labels = data.map(r => r["Date"]);
+
   drawTimeline(labels, severity);
 
-  // --- CORRELATIONS ---
   const metrics = [
     "Pressure Change (Δ)",
     "Humidity (%)",
@@ -73,18 +121,22 @@ async function loadData() {
     "Temp Change (Δ)",
     "Sleep Duration (hrs)",
     "Sleep Efficiency (%)",
+    "Awake Time (mins)",
+    "REM Duration (mins)",
+    "Deep Sleep (mins)",
+    "Avg HR (bpm)",
     "HRV"
   ];
 
   const corrValues = metrics.map(m => {
     const values = data.map(r => Number(r[m]) || 0);
-    return correlation(values, severity).toFixed(2);
+    return Number(correlation(values, severity).toFixed(2));
   });
 
   drawCorrelation(metrics, corrValues);
 
-  // --- RISK SCORE ---
-  const latest = data[data.length - 1] || {};
+  // ✅ Risk score
+  const latest = data[data.length - 1];
   let risk = 0;
 
   if ((Number(latest["Sleep Duration (hrs)"]) || 0) < 6) risk++;
@@ -92,9 +144,11 @@ async function loadData() {
   if ((Number(latest["HRV"]) || 0) < 40) risk++;
   if (Math.abs(Number(latest["Pressure Change (Δ)"]) || 0) > 5) risk++;
 
-  document.getElementById("risk").textContent = Math.round((risk/4)*100);
+  document.getElementById("risk").textContent =
+    Math.round((risk / 4) * 100);
 }
 
+// ✅ Draw timeline chart
 function drawTimeline(labels, data) {
   if (timelineChart) timelineChart.destroy();
 
@@ -105,12 +159,14 @@ function drawTimeline(labels, data) {
       datasets: [{
         label: "Severity",
         data: data,
-        borderColor: "red"
+        borderColor: "red",
+        fill: false
       }]
     }
   });
 }
 
+// ✅ Draw correlation chart
 function drawCorrelation(labels, data) {
   if (corrChart) corrChart.destroy();
 
