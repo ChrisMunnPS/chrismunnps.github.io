@@ -172,6 +172,50 @@
   .comp-bar-fill { height: 100%; border-radius: 3px; transition: width .4s; }
   .comp-card-count { font-size: 10px; color: var(--text3); margin-top: 5px; }
 
+  /* Chart expand modal */
+  .chart-card { position: relative; }
+  .expand-btn {
+    position: absolute; top: 12px; right: 12px;
+    width: 26px; height: 26px; border-radius: var(--radius-sm);
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text3); cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 13px;
+    opacity: 0; transition: opacity .15s, color .15s;
+    z-index: 2;
+  }
+  .chart-card:hover .expand-btn { opacity: 1; }
+  .expand-btn:hover { color: var(--purple); border-color: rgba(124,111,247,.4); }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.75);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius); width: 100%; max-width: 1000px;
+    max-height: 90vh; display: flex; flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 1.25rem; border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .modal-title { font-size: 14px; font-weight: 500; }
+  .modal-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .modal-close {
+    width: 30px; height: 30px; border-radius: var(--radius-sm);
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text2); cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 16px;
+    flex-shrink: 0; transition: color .15s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-body { padding: 1.25rem; flex: 1; min-height: 0; position: relative; }
+  .modal-canvas-wrap { position: relative; height: 100%; min-height: 400px; }
+
   @media (max-width: 640px) {
     .grid2, .grid3 { grid-template-columns: 1fr; }
     .app { padding: 1rem 1rem 3rem; }
@@ -422,6 +466,22 @@
   </div><!-- /main-content -->
 </div><!-- /app -->
 <div id="heatmap-tooltip" class="heatmap-tooltip"></div>
+
+<!-- Chart expand modal -->
+<div id="chart-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-text">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title-text"></div>
+        <div class="modal-desc" id="modal-desc-text"></div>
+      </div>
+      <button class="modal-close" id="modal-close-btn" aria-label="Close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-canvas-wrap" id="modal-canvas-wrap"></div>
+    </div>
+  </div>
+</div>
 
 <script>
 let rows = [];
@@ -836,6 +896,9 @@ function render(){
   renderHeatmap();
   renderComparisonTable();
   renderCompleteness();
+
+  /* wire expand buttons on all chart cards */
+  initExpandButtons();
 }
 
 /* ── heatmap calendar ─────────────────────────────────────────────── */
@@ -1037,7 +1100,83 @@ function renderCompleteness(){
   document.getElementById('completeness-grid').innerHTML = html;
 }
 
+/* ── chart expand modal ───────────────────────────────────────────── */
+let modalChart = null;
+
+function initExpandButtons(){
+  // For each canvas that has a chart, inject an expand button into its parent chart-card
+  document.querySelectorAll('canvas[id]').forEach(canvas=>{
+    const card = canvas.closest('.chart-card');
+    if(!card || card.querySelector('.expand-btn')) return; // skip if already added
+    const chartId = canvas.id;
+    // find title and desc from card
+    const titleEl = card.querySelector('.card-title');
+    const descEl  = card.querySelector('.card-desc');
+    const title = titleEl ? titleEl.textContent : '';
+    const desc  = descEl  ? descEl.textContent  : '';
+
+    const btn = document.createElement('button');
+    btn.className = 'expand-btn';
+    btn.setAttribute('aria-label', 'Expand chart');
+    btn.setAttribute('title', 'Expand');
+    btn.innerHTML = '<i class="ti ti-arrows-maximize"></i>';
+    btn.addEventListener('click', e=>{
+      e.stopPropagation();
+      openModal(chartId, title, desc);
+    });
+    card.appendChild(btn);
+  });
+}
+
+function openModal(chartId, title, desc){
+  const overlay  = document.getElementById('chart-modal');
+  const wrap     = document.getElementById('modal-canvas-wrap');
+  const titleEl  = document.getElementById('modal-title-text');
+  const descEl   = document.getElementById('modal-desc-text');
+
+  titleEl.textContent = title;
+  descEl.textContent  = desc;
+
+  // Destroy previous modal chart
+  if(modalChart){ modalChart.destroy(); modalChart = null; }
+  wrap.innerHTML = '';
+
+  const sourceChart = charts[chartId];
+  if(!sourceChart){ overlay.classList.add('open'); return; }
+
+  // Clone the chart config into a new canvas inside the modal
+  const newCanvas = document.createElement('canvas');
+  newCanvas.id = chartId + '_modal';
+  wrap.appendChild(newCanvas);
+
+  // Deep-clone config so the original is untouched
+  const cfg = JSON.parse(JSON.stringify(sourceChart.config));
+  // Ensure responsive + no fixed height
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+
+  // Re-attach data from the live chart (JSON clone may lose typed arrays)
+  cfg.data = sourceChart.data;
+
+  modalChart = new Chart(newCanvas, cfg);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('chart-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  if(modalChart){ modalChart.destroy(); modalChart = null; }
+  document.getElementById('modal-canvas-wrap').innerHTML = '';
+}
+
 /* ── events ───────────────────────────────────────────────────────── */
+document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+document.getElementById('chart-modal').addEventListener('click', e=>{
+  if(e.target === document.getElementById('chart-modal')) closeModal();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
@@ -1250,6 +1389,46 @@ async function exportPDF(){
     y = secLabel('Sleep: REM  \u00B7  deep sleep  \u00B7  rain vs dry days', y);
     const row4 = await Promise.all(['remScatter','deepScatter','rainChart'].map(captureChart));
     row4.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 38); });
+
+    /* ══ PAGE 3: Heatmap calendar ═══════════════════════════════════ */
+    pdf.addPage();
+    drawHeader('Migraine Report — Calendar Heatmap', `Chris Munn  \u00B7  ${dateRange}`);
+    y = 24;
+    y = secLabel('Each cell = one day. Dark green = no migraine. Red shades = migraine, darker = more severe.', y);
+
+    // Render heatmap to a temp off-screen div, capture with html2canvas
+    const hmEl = document.getElementById('heatmap-grid');
+    const hmMonthEl = document.getElementById('heatmap-month-labels');
+    const hmWrap = hmEl ? hmEl.closest('.heatmap-wrap') : null;
+    if(hmWrap){
+      try{
+        const hmCanvas = await html2canvas(hmWrap, {
+          backgroundColor:'#ffffff', scale:3, logging:false, useCORS:true
+        });
+        const hmImg = hmCanvas.toDataURL('image/png');
+        // Calculate display size — fit to page width, maintain aspect ratio
+        const hmAspect = hmCanvas.width / hmCanvas.height;
+        const hmW = usableW;
+        const hmH = Math.min(hmW / hmAspect, PH - y - margin - 10);
+        pdf.addImage(hmImg, 'PNG', margin, y, hmW, hmH);
+        y += hmH + 6;
+      } catch(e){ console.warn('Heatmap capture failed', e); }
+    }
+
+    // Add legend below heatmap
+    const legColors = ['#1a3d2b','#7c2020','#a82828','#d43535','#e05050','#f07070'];
+    const legLabels = ['No migraine','Sev 1–2','Sev 3–4','Sev 5–6','Sev 7–8','Sev 9–10'];
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(7); pdf.setTextColor(...C.subText);
+    let lx = margin;
+    legColors.forEach((col,i)=>{
+      const rgb = parseInt(col.slice(1),16);
+      const r=(rgb>>16)&255, g=(rgb>>8)&255, b=rgb&255;
+      pdf.setFillColor(r,g,b); pdf.setDrawColor(r,g,b);
+      pdf.rect(lx, y, 8, 5, 'F');
+      pdf.setTextColor(...C.subText);
+      pdf.text(legLabels[i], lx+10, y+4);
+      lx += 10 + pdf.getTextWidth(legLabels[i]) + 8;
+    });
 
     /* ══ PAGE 3+: Data table ════════════════════════════════════════ */
     // Column definitions — widths must sum to usableW (271mm)
