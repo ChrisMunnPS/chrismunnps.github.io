@@ -220,6 +220,44 @@
     .grid2, .grid3 { grid-template-columns: 1fr; }
     .app { padding: 1rem 1rem 3rem; }
   }
+
+  /* Report options group box */
+  .group-box {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .group-box-legend {
+    font-size: 11px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text3);
+    margin-bottom: .85rem; display: flex; align-items: center; gap: 7px;
+  }
+  .group-box-legend i { font-size: 14px; color: var(--purple); }
+  .group-box-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .group-box-field { display: flex; align-items: center; gap: 8px; }
+  .group-box-field label { font-size: 12px; color: var(--text2); white-space: nowrap; }
+  .group-box-field input[type=number] {
+    width: 72px; font-size: 13px; padding: 6px 10px;
+    border: 1px solid var(--border2); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text); outline: none; text-align: center;
+  }
+  .group-box-field input[type=number]:focus { border-color: var(--purple); }
+  .group-box-hint { font-size: 11px; color: var(--text3); }
+
+  /* Lag analysis */
+  .lag-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .lag-table th { padding: 8px 10px; font-size: 11px; font-weight: 500; color: var(--text3); border-bottom: 1px solid var(--border2); text-align: left; white-space: nowrap; }
+  .lag-table th.num { text-align: right; }
+  .lag-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .lag-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: monospace; font-size: 12px; }
+  .lag-table tr:last-child td { border-bottom: none; }
+  .lag-table tr:hover td { background: rgba(255,255,255,.02); }
+  .lag-best { font-weight: 700; }
+  .lag-badge { display: inline-flex; align-items: center; font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+  .lag-badge-0 { background: var(--blue-dim); color: var(--blue); }
+  .lag-badge-1 { background: var(--purple-dim); color: var(--purple); }
+  .lag-badge-2 { background: var(--teal-dim); color: var(--teal); }
+  .lag-note { font-size: 11px; color: var(--text3); margin-top: .75rem; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -252,9 +290,19 @@
 
     <div class="metrics" id="metrics-row"></div>
 
-    <div id="export-bar" style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:1.25rem;flex-wrap:wrap">
-      <button class="btn" id="csv-btn"><i class="ti ti-table-export"></i> Download CSV</button>
-      <button class="btn primary" id="pdf-btn"><i class="ti ti-file-type-pdf"></i> Export PDF (A4)</button>
+    <div id="export-bar" class="group-box">
+      <div class="group-box-legend"><i class="ti ti-settings"></i> Report options</div>
+      <div class="group-box-row">
+        <div class="group-box-field">
+          <label for="report-days">Days to include</label>
+          <input type="number" id="report-days" min="7" max="3650" value="90" />
+        </div>
+        <span class="group-box-hint">Most recent entries are used. 90 = last 3 months.</span>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="csv-btn"><i class="ti ti-table-export"></i> Download CSV</button>
+          <button class="btn primary" id="pdf-btn"><i class="ti ti-file-type-pdf"></i> Export PDF (A4)</button>
+        </div>
+      </div>
     </div>
 
     <div class="tabs">
@@ -447,6 +495,27 @@
         <div class="card-title">Data completeness</div>
         <div class="card-desc">How many entries have each field filled in. Fields below 50% will produce less reliable correlations.</div>
         <div class="completeness-grid" id="completeness-grid"></div>
+      </div>
+
+      <!-- Lag analysis -->
+      <div class="chart-card">
+        <div class="card-title">Trigger lag analysis</div>
+        <div class="card-desc">Tests whether each factor predicts migraines on the same day (lag 0), the following day (lag 1), or two days later (lag 2). The strongest lag per factor is highlighted — this shows not just what triggers migraines but how long the delay is.</div>
+        <div class="table-wrap">
+          <table class="lag-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th class="num">Same day (lag 0)</th>
+                <th class="num">Next day (lag 1)</th>
+                <th class="num">2 days later (lag 2)</th>
+                <th>Strongest lag</th>
+              </tr>
+            </thead>
+            <tbody id="lag-table-body"></tbody>
+          </table>
+        </div>
+        <div class="lag-note" id="lag-note"></div>
       </div>
 
     </div>
@@ -896,6 +965,7 @@ function render(){
   renderHeatmap();
   renderComparisonTable();
   renderCompleteness();
+  renderLagAnalysis();
 
   /* wire expand buttons on all chart cards */
   initExpandButtons();
@@ -1215,6 +1285,131 @@ function closeModal(){
   document.getElementById('modal-canvas-wrap').innerHTML = '';
 }
 
+/* ── lag analysis ─────────────────────────────────────────────────── */
+function renderLagAnalysis(){
+  // Sort rows chronologically
+  const sorted = [...rows].sort((a,b)=>{
+    const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
+    return (da&&db)?da-db:0;
+  });
+
+  // Build a date-keyed lookup for O(1) access
+  const byDate = {};
+  sorted.forEach(r=>{
+    const dt = parseUKDate(r['Date']);
+    if(dt) byDate[dt.toISOString().slice(0,10)] = r;
+  });
+
+  // For a given factor and lag, get paired arrays [factorValue, severityAtLag] 
+  function getLagPairs(key, lagDays){
+    const xs=[], ys=[];
+    sorted.forEach(r=>{
+      const dt = parseUKDate(r['Date']);
+      if(!dt) return;
+      const xVal = n(r[key]);
+      if(xVal===null) return;
+      // Severity at lag days ahead
+      const future = new Date(dt);
+      future.setDate(future.getDate() + lagDays);
+      const futureKey = future.toISOString().slice(0,10);
+      const futureRow = byDate[futureKey];
+      if(!futureRow) return;
+      const yVal = n(futureRow['Severity']);
+      if(yVal===null) return;
+      xs.push(xVal);
+      ys.push(yVal);
+    });
+    return {xs, ys};
+  }
+
+  const lagFields = [
+    { label:'Pressure (hPa)',        key:'Pressure (hPa)',          higherIsBetter:true  },
+    { label:'Pressure change (Δ)',   key:'Pressure Change (Δ)',     higherIsBetter:null  },
+    { label:'Humidity (%)',          key:'Humidity (%)',            higherIsBetter:null  },
+    { label:'Temperature (°C)',      key:'Temperature (°C)',        higherIsBetter:null  },
+    { label:'Temp change (Δ)',       key:'Temp Change (Δ)',         higherIsBetter:null  },
+    { label:'Sleep duration (hrs)',  key:'Sleep Duration (hrs)',    higherIsBetter:false },
+    { label:'Sleep efficiency (%)',  key:'Sleep Efficiency (%)',    higherIsBetter:false },
+    { label:'HRV',                   key:'HRV',                     higherIsBetter:false },
+    { label:'Avg HR (bpm)',          key:'Avg HR (bpm)',            higherIsBetter:true  },
+    { label:'REM sleep (mins)',      key:'REM Duration (mins)',     higherIsBetter:false },
+    { label:'Deep sleep (mins)',     key:'Deep Sleep (mins)',       higherIsBetter:false },
+    { label:'Awake time (mins)',     key:'Awake Time (mins)',       higherIsBetter:true  },
+  ];
+
+  const lagLabels  = ['Same day','Next day','2 days later'];
+  const badgeClass = ['lag-badge-0','lag-badge-1','lag-badge-2'];
+  const minPairs   = 10; // minimum pairs for a meaningful correlation
+
+  let html = '';
+  let bestFindings = [];
+
+  lagFields.forEach(f=>{
+    const rs = [0,1,2].map(lag=>{
+      const {xs,ys} = getLagPairs(f.key, lag);
+      if(xs.length < minPairs) return null;
+      return pearson(xs, ys);
+    });
+
+    // Skip if no lag has enough data
+    if(rs.every(r=>r===null)) return;
+
+    // Find strongest by absolute value
+    let bestLag = 0;
+    let bestAbs = -1;
+    rs.forEach((r,i)=>{ if(r!==null && Math.abs(r)>bestAbs){ bestAbs=Math.abs(r); bestLag=i; } });
+
+    const bestR = rs[bestLag];
+
+    // Build row cells
+    const cells = rs.map((r,i)=>{
+      if(r===null) return `<td class="num" style="color:var(--text3)">—</td>`;
+      const abs   = Math.abs(r);
+      const color = abs>.5?'var(--red)':abs>.3?'var(--amber)':'var(--text2)';
+      const bold  = i===bestLag ? ' lag-best' : '';
+      return `<td class="num${bold}" style="color:${color}">${r>=0?'+':''}${r.toFixed(3)}</td>`;
+    });
+
+    // Strongest lag cell
+    const strengthWord = bestAbs>.5?'strong':bestAbs>.3?'moderate':'weak';
+    const dir = bestR!==null ? (bestR>0?'↑ higher → worse':'↓ lower → worse') : '';
+    const bestCell = bestR!==null
+      ? `<span class="lag-best">${lagLabels[bestLag]}</span>
+         <span class="lag-badge ${badgeClass[bestLag]}">${lagLabels[bestLag]}</span>
+         <span style="font-size:11px;color:var(--text3);display:block;margin-top:2px">${strengthWord} · ${dir}</span>`
+      : '—';
+
+    // Collect notable findings (moderate or strong, lag 1 or 2 = delayed trigger)
+    if(bestAbs>=0.3 && bestLag>0 && bestR!==null){
+      bestFindings.push({ label:f.label, lag:bestLag, r:bestR, strength:strengthWord });
+    }
+
+    html += `<tr>${cells.join('')}<td>${bestCell}</td></tr>`;
+
+    // Prepend factor label as first cell — rebuild the row properly
+    const rDir = rs[0]!==null?(rs[0]>0?'↑':'↓'):'';
+    html = html.replace(`<tr>${cells.join('')}`, `<tr><td>${f.label}</td>${cells.join('')}`);
+    void rDir;
+  });
+
+  document.getElementById('lag-table-body').innerHTML = html ||
+    '<tr><td colspan="5" class="empty">Not enough data for lag analysis yet — need at least 10 consecutive days per factor</td></tr>';
+
+  // Generate interpretive note
+  let note = '';
+  if(bestFindings.length){
+    const notable = bestFindings
+      .sort((a,b)=>Math.abs(b.r)-Math.abs(a.r))
+      .slice(0,3)
+      .map(f=>`<strong>${f.label}</strong> (strongest at lag ${f.lag} — effect peaks ${f.lag===1?'the following day':'two days later'}, r = ${f.r>=0?'+':''}${f.r.toFixed(2)})`)
+      .join('; ');
+    note = `<strong>Notable delayed triggers:</strong> ${notable}. These factors show a stronger correlation with migraines on a future day than on the same day, suggesting a delayed physiological response.`;
+  } else {
+    note = 'No clear delayed triggers detected yet. More data will improve the analysis.';
+  }
+  document.getElementById('lag-note').innerHTML = note;
+}
+
 /* ── events ───────────────────────────────────────────────────────── */
 document.getElementById('modal-close-btn').addEventListener('click', closeModal);
 document.getElementById('chart-modal').addEventListener('click', e=>{
@@ -1262,17 +1457,22 @@ function exportCSV(){
   const blob = new Blob([csvContent], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'migraine-data-90days.csv'; a.click();
+  a.href = url; a.download = `migraine-data-${getReportDays()}days.csv`; a.click();
   URL.revokeObjectURL(url);
 }
 
-/* ── helper: last 90 days of rows ────────────────────────────────── */
+/* ── helper: get last N days of rows (reads report-days input) ───── */
+function getReportDays(){
+  const v = parseInt(document.getElementById('report-days')?.value||'90', 10);
+  return isNaN(v)||v<1 ? 90 : v;
+}
 function get90DayRows(){
+  const n = getReportDays();
   const sorted = [...rows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
-  return sorted.slice(-90);
+  return sorted.slice(-n);
 }
 
 /* ── PDF export ───────────────────────────────────────────────────── */
@@ -1374,7 +1574,6 @@ async function exportPDF(){
     /* ══ PAGE 1: Summary + charts ══════════════════════════════════ */
     drawHeader('Migraine Report — Chris Munn',
       `${dateRange}  \u00B7  ${last90.length} days recorded  \u00B7  ${migDays} migraine days  \u00B7  Avg severity ${avgSev}/10`);
-
     let y = 24;
 
     // metric boxes
@@ -1579,7 +1778,7 @@ async function exportPDF(){
       pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-4.5, {align:'right'});
     }
 
-    pdf.save('Chris-Munn-migraine-report-90days.pdf');
+    pdf.save(`Chris-Munn-migraine-report-${getReportDays()}days.pdf`);
 
   } catch(err){
     console.error(err);
