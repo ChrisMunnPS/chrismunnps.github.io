@@ -133,6 +133,45 @@
   /* Section label */
   .section-label { font-size: 11px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); margin-bottom: .75rem; }
 
+  /* Heatmap calendar */
+  .heatmap-wrap { overflow-x: auto; padding-bottom: .5rem; }
+  .heatmap-grid { display: flex; gap: 3px; align-items: flex-start; }
+  .heatmap-col { display: flex; flex-direction: column; gap: 3px; }
+  .heatmap-month-labels { display: flex; gap: 3px; margin-bottom: 4px; padding-left: 26px; }
+  .heatmap-month-label { font-size: 10px; color: var(--text3); white-space: nowrap; overflow: hidden; }
+  .heatmap-dow-labels { display: flex; flex-direction: column; gap: 3px; margin-right: 4px; padding-top: 0; }
+  .heatmap-dow-label { font-size: 9px; color: var(--text3); height: 13px; line-height: 13px; text-align: right; width: 20px; }
+  .heatmap-cell { width: 13px; height: 13px; border-radius: 2px; cursor: pointer; transition: transform .1s; flex-shrink: 0; }
+  .heatmap-cell:hover { transform: scale(1.4); z-index: 10; position: relative; }
+  .heatmap-legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; color: var(--text3); }
+  .heatmap-legend-cells { display: flex; gap: 3px; }
+  .heatmap-tooltip { position: fixed; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 7px 10px; font-size: 12px; pointer-events: none; z-index: 1000; display: none; max-width: 220px; }
+  .heatmap-tooltip .ht-date { font-weight: 600; margin-bottom: 4px; }
+  .heatmap-tooltip .ht-row { display: flex; justify-content: space-between; gap: 16px; font-size: 11px; color: var(--text2); }
+
+  /* Comparison table */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .comp-table th { padding: 9px 12px; font-size: 11px; font-weight: 500; color: var(--text3); border-bottom: 1px solid var(--border2); text-align: left; }
+  .comp-table th.num { text-align: right; }
+  .comp-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .comp-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table tr:hover td { background: rgba(255,255,255,.02); }
+  .comp-delta { font-size: 11px; margin-left: 6px; }
+  .delta-bad { color: var(--red); }
+  .delta-good { color: var(--green); }
+  .delta-neutral { color: var(--text3); }
+
+  /* Completeness */
+  .completeness-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .comp-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: .9rem 1rem; }
+  .comp-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+  .comp-card-name { font-size: 12px; color: var(--text2); }
+  .comp-card-pct { font-size: 13px; font-weight: 600; }
+  .comp-bar-track { height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+  .comp-bar-fill { height: 100%; border-radius: 3px; transition: width .4s; }
+  .comp-card-count { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
   @media (max-width: 640px) {
     .grid2, .grid3 { grid-template-columns: 1fr; }
     .app { padding: 1rem 1rem 3rem; }
@@ -179,6 +218,7 @@
       <div class="tab" data-tab="weather">Weather</div>
       <div class="tab" data-tab="sleep">Sleep</div>
       <div class="tab" data-tab="triggers">Triggers</div>
+      <div class="tab" data-tab="insights">Insights</div>
       <div class="tab" data-tab="log">Log</div>
     </div>
 
@@ -310,6 +350,63 @@
       </div>
     </div>
 
+    <!-- INSIGHTS -->
+    <div id="tab-insights" class="view">
+
+      <!-- Heatmap calendar -->
+      <div class="chart-card">
+        <div class="card-title">Migraine calendar</div>
+        <div class="card-desc">Each square is one day. Colour indicates severity — green = none, shades of red = migraine. Hover for details.</div>
+        <div class="heatmap-wrap">
+          <div id="heatmap-month-labels" class="heatmap-month-labels"></div>
+          <div style="display:flex">
+            <div id="heatmap-dow-labels" class="heatmap-dow-labels">
+              <div class="heatmap-dow-label"></div>
+              <div class="heatmap-dow-label">Mon</div>
+              <div class="heatmap-dow-label"></div>
+              <div class="heatmap-dow-label">Wed</div>
+              <div class="heatmap-dow-label"></div>
+              <div class="heatmap-dow-label">Fri</div>
+              <div class="heatmap-dow-label"></div>
+            </div>
+            <div id="heatmap-grid" class="heatmap-grid"></div>
+          </div>
+          <div class="heatmap-legend">
+            <span>None</span>
+            <div class="heatmap-legend-cells" id="heatmap-legend-cells"></div>
+            <span>Severe</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Migraine vs non-migraine comparison -->
+      <div class="chart-card">
+        <div class="card-title">Migraine vs non-migraine days</div>
+        <div class="card-desc">Average values on days with and without migraines. Δ shows the difference — red means worse on migraine days, green means better.</div>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th class="num">Non-migraine days</th>
+                <th class="num">Migraine days</th>
+                <th class="num">Difference</th>
+              </tr>
+            </thead>
+            <tbody id="comp-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Data completeness -->
+      <div class="chart-card">
+        <div class="card-title">Data completeness</div>
+        <div class="card-desc">How many entries have each field filled in. Fields below 50% will produce less reliable correlations.</div>
+        <div class="completeness-grid" id="completeness-grid"></div>
+      </div>
+
+    </div>
+
     <!-- LOG -->
     <div id="tab-log" class="view">
       <div class="chart-card" style="padding:0;overflow:hidden">
@@ -324,6 +421,7 @@
 
   </div><!-- /main-content -->
 </div><!-- /app -->
+<div id="heatmap-tooltip" class="heatmap-tooltip"></div>
 
 <script>
 let rows = [];
@@ -733,6 +831,210 @@ function render(){
       const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
       return `<tr>${cols.map((c,i)=>i===2?`<td>${badge}</td>`:`<td>${r[c]||''}</td>`).join('')}</tr>`;
     }).join('');
+
+  /* insights tab */
+  renderHeatmap();
+  renderComparisonTable();
+  renderCompleteness();
+}
+
+/* ── heatmap calendar ─────────────────────────────────────────────── */
+function renderHeatmap(){
+  // Build a lookup: dateKey (YYYY-MM-DD) -> row
+  const lookup = {};
+  rows.forEach(r=>{
+    const dt = parseUKDate(r['Date']);
+    if(dt) lookup[dt.toISOString().slice(0,10)] = r;
+  });
+
+  // Find date range — full weeks from earliest to latest
+  const dates = rows.map(r=>parseUKDate(r['Date'])).filter(Boolean);
+  if(!dates.length) return;
+  dates.sort((a,b)=>a-b);
+  const minDate = new Date(dates[0]); minDate.setHours(12);
+  const maxDate = new Date(dates[dates.length-1]); maxDate.setHours(12);
+
+  // Start from Monday of the week containing minDate
+  const start = new Date(minDate);
+  const dowStart = (start.getDay()+6)%7; // 0=Mon
+  start.setDate(start.getDate() - dowStart);
+
+  // Severity colour scale (dark bg aware)
+  function sevColor(sev){
+    if(sev === null || sev === undefined) return 'rgba(255,255,255,0.04)'; // no data
+    if(sev === 0) return '#1a3d2b'; // no migraine — dark green
+    if(sev <= 2) return '#7c2020';
+    if(sev <= 4) return '#a82828';
+    if(sev <= 6) return '#d43535';
+    if(sev <= 8) return '#e05050';
+    return '#f07070';
+  }
+
+  // Build columns (each column = one week, 7 cells Mon-Sun)
+  const gridEl = document.getElementById('heatmap-grid');
+  const monthLabelsEl = document.getElementById('heatmap-month-labels');
+  gridEl.innerHTML = '';
+  monthLabelsEl.innerHTML = '';
+
+  const tooltip = document.getElementById('heatmap-tooltip');
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  let cur = new Date(start);
+  let prevMonth = -1;
+  const colWidth = 13 + 3; // cell + gap
+
+  while(cur <= maxDate){
+    const col = document.createElement('div');
+    col.className = 'heatmap-col';
+
+    // Month label for this column
+    const colMonth = cur.getMonth();
+    const monthLabel = document.createElement('div');
+    monthLabel.className = 'heatmap-month-label';
+    monthLabel.style.width = colWidth + 'px';
+    if(colMonth !== prevMonth){
+      monthLabel.textContent = monthNames[colMonth];
+      prevMonth = colMonth;
+    }
+    monthLabelsEl.appendChild(monthLabel);
+
+    for(let d=0; d<7; d++){
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell';
+      const key = cur.toISOString().slice(0,10);
+      const row = lookup[key];
+      const sev = row ? n(row['Severity']) : null;
+      cell.style.background = sevColor(sev);
+      if(!row) cell.style.opacity = '0.35';
+
+      // tooltip
+      const dateStr = fmtDate(cur);
+      const dayName = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][cur.getDay()];
+      cell.addEventListener('mousemove', e=>{
+        let html = `<div class="ht-date">${dayName} ${dateStr}</div>`;
+        if(!row){
+          html += `<div class="ht-row"><span>No data recorded</span></div>`;
+        } else {
+          html += `<div class="ht-row"><span>Severity</span><span>${row['Severity']||'—'}</span></div>`;
+          if(row['Pressure (hPa)']) html += `<div class="ht-row"><span>Pressure</span><span>${row['Pressure (hPa)']} hPa</span></div>`;
+          if(row['Sleep Duration (hrs)']) html += `<div class="ht-row"><span>Sleep</span><span>${row['Sleep Duration (hrs)']}h</span></div>`;
+          if(row['Medications Taken']) html += `<div class="ht-row"><span>Meds</span><span>${row['Medications Taken']}</span></div>`;
+          if(row['Other Symptoms']) html += `<div class="ht-row"><span>Symptoms</span><span>${row['Other Symptoms']}</span></div>`;
+        }
+        tooltip.innerHTML = html;
+        tooltip.style.display = 'block';
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top  = (e.clientY - 10) + 'px';
+      });
+      cell.addEventListener('mouseleave', ()=>{ tooltip.style.display='none'; });
+
+      col.appendChild(cell);
+      cur.setDate(cur.getDate()+1);
+    }
+    gridEl.appendChild(col);
+  }
+
+  // Legend
+  const legendEl = document.getElementById('heatmap-legend-cells');
+  legendEl.innerHTML = '';
+  ['#1a3d2b','#7c2020','#a82828','#d43535','#e05050','#f07070'].forEach(c=>{
+    const cell = document.createElement('div');
+    cell.className = 'heatmap-cell';
+    cell.style.background = c;
+    cell.style.cursor = 'default';
+    legendEl.appendChild(cell);
+  });
+}
+
+/* ── comparison table ─────────────────────────────────────────────── */
+function renderComparisonTable(){
+  const migR  = rows.filter(r=>n(r['Severity'])>0);
+  const noMigR = rows.filter(r=>n(r['Severity'])===0);
+  if(!migR.length || !noMigR.length){
+    document.getElementById('comp-table-body').innerHTML =
+      '<tr><td colspan="4" class="empty">Need both migraine and non-migraine days to compare</td></tr>';
+    return;
+  }
+
+  function avg(arr, key){
+    const vals = arr.map(r=>n(r[key])).filter(v=>v!=null);
+    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+  }
+  function fmt(v, dec=1){ return v!=null ? v.toFixed(dec) : '—'; }
+
+  // higherIsBetter: true = higher value on migraine days is BAD (red)
+  // higherIsBetter: false = lower value on migraine days is BAD (red)
+  const fields = [
+    { label:'Atmospheric pressure (hPa)', key:'Pressure (hPa)',          higherIsBetter:true,  unit:'hPa', dec:1 },
+    { label:'Pressure change (hPa)',       key:'Pressure Change (Δ)',     higherIsBetter:null,  unit:'hPa', dec:1 },
+    { label:'Humidity (%)',                key:'Humidity (%)',            higherIsBetter:true,  unit:'%',   dec:0 },
+    { label:'Temperature (°C)',            key:'Temperature (°C)',        higherIsBetter:null,  unit:'°C',  dec:1 },
+    { label:'Temperature change (°C)',     key:'Temp Change (Δ)',         higherIsBetter:null,  unit:'°C',  dec:1 },
+    { label:'Sleep duration (hrs)',        key:'Sleep Duration (hrs)',    higherIsBetter:false, unit:'h',   dec:1 },
+    { label:'Sleep efficiency (%)',        key:'Sleep Efficiency (%)',    higherIsBetter:false, unit:'%',   dec:0 },
+    { label:'Awake time (mins)',           key:'Awake Time (mins)',       higherIsBetter:true,  unit:'min', dec:0 },
+    { label:'REM sleep (mins)',            key:'REM Duration (mins)',     higherIsBetter:false, unit:'min', dec:0 },
+    { label:'Deep sleep (mins)',           key:'Deep Sleep (mins)',       higherIsBetter:false, unit:'min', dec:0 },
+    { label:'HRV',                         key:'HRV',                     higherIsBetter:false, unit:'',    dec:1 },
+    { label:'Avg heart rate (bpm)',        key:'Avg HR (bpm)',            higherIsBetter:true,  unit:'bpm', dec:0 },
+  ];
+
+  let html = '';
+  fields.forEach(f=>{
+    const nm = avg(noMigR, f.key);
+    const mg = avg(migR,   f.key);
+    if(nm===null && mg===null) return;
+    const diff = (nm!=null && mg!=null) ? mg - nm : null;
+    let deltaClass = 'delta-neutral', deltaSign = '';
+    if(diff !== null && f.higherIsBetter !== null){
+      const isBad = f.higherIsBetter ? diff > 0 : diff < 0;
+      deltaClass = isBad ? 'delta-bad' : 'delta-good';
+      deltaSign = diff > 0 ? '+' : '';
+    }
+    const deltaStr = diff !== null
+      ? `<span class="comp-delta ${deltaClass}">${deltaSign}${diff.toFixed(f.dec)}${f.unit}</span>`
+      : '';
+    html += `<tr>
+      <td>${f.label}</td>
+      <td class="num">${fmt(nm,f.dec)}${f.unit}</td>
+      <td class="num">${fmt(mg,f.dec)}${f.unit}</td>
+      <td class="num">${deltaStr}</td>
+    </tr>`;
+  });
+  document.getElementById('comp-table-body').innerHTML = html ||
+    '<tr><td colspan="4" class="empty">No numeric data available</td></tr>';
+}
+
+/* ── data completeness ────────────────────────────────────────────── */
+function renderCompleteness(){
+  const fields = [
+    'Severity','Pressure (hPa)','Pressure Change (Δ)','Humidity (%)','Temperature (°C)',
+    'Temp Change (Δ)','Rain','Sleep Duration (hrs)','Sleep Efficiency (%)','Awake Time (mins)',
+    'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV','Medications Taken','Other Symptoms','Notes'
+  ];
+  const total = rows.length;
+  let html = '';
+  fields.forEach(f=>{
+    const filled = rows.filter(r=>r[f]&&r[f].trim()!==''&&r[f]!=='0'||
+      (f==='Severity'&&r[f]!==undefined&&r[f].trim()!=='')).length;
+    // For Severity specifically count anything non-empty
+    const count = rows.filter(r=>r[f]!==undefined&&r[f]!==null&&String(r[f]).trim()!=='').length;
+    const pct = total ? Math.round(count/total*100) : 0;
+    const barColor = pct >= 80 ? '#3db87a' : pct >= 50 ? '#e09a2f' : '#e04b4b';
+    const label = f.replace(' (hPa)','').replace(' (%)','').replace(' (mins)','').replace(' (hrs)','').replace(' (°C)','').replace(' (Δ)','').replace(' (bpm)','');
+    html += `
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div class="comp-card-name">${label}</div>
+          <div class="comp-card-pct" style="color:${barColor}">${pct}%</div>
+        </div>
+        <div class="comp-bar-track">
+          <div class="comp-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+        </div>
+        <div class="comp-card-count">${count} of ${total} entries</div>
+      </div>`;
+  });
+  document.getElementById('completeness-grid').innerHTML = html;
 }
 
 /* ── events ───────────────────────────────────────────────────────── */
