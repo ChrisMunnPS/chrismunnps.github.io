@@ -1602,7 +1602,7 @@ function getReportDays(){
 }
 function get90DayRows(){
   const nDays = getReportDays();
-  const sorted = [...activeRows].sort((a,b)=>{
+  const sorted = [...rows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
