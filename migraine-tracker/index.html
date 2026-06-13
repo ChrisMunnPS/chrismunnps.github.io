@@ -297,7 +297,8 @@
           <label for="report-days">Days to include</label>
           <input type="number" id="report-days" min="1" max="3650" value="90" placeholder="All" />
         </div>
-        <span class="group-box-hint">Default 90 days. Leave blank to include all data.</span>
+        <button class="btn" id="apply-btn"><i class="ti ti-check"></i> Apply</button>
+        <span class="group-box-hint">Leave blank for all data. &nbsp;<a href="#" id="clear-days-btn" style="color:var(--purple);text-decoration:none;font-size:11px">Clear (show all)</a></span>
         <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="csv-btn"><i class="ti ti-table-export"></i> Download CSV</button>
           <button class="btn primary" id="pdf-btn"><i class="ti ti-file-type-pdf"></i> Export PDF (A4)</button>
@@ -554,10 +555,39 @@
 
 <script>
 let rows = [];
+let activeRows = []; // the currently displayed subset (respects days filter)
 let charts = {};
 
 /* ── helpers ─────────────────────────────────────────────────────── */
 function n(v){ return (v===''||v==null)?null:parseFloat(v); }
+
+/* Parse HH:MM or HH:MM:SS to decimal hours */
+function parseTimeToHours(v){
+  if(!v||!v.trim()) return null;
+  const m = v.trim().match(/^(\d+):(\d{2})(?::(\d{2}))?$/);
+  if(!m) return null;
+  return parseInt(m[1],10) + parseInt(m[2],10)/60 + (m[3]?parseInt(m[3],10)/3600:0);
+}
+
+/* Parse HH:MM or HH:MM:SS to decimal minutes */
+function parseTimeToMins(v){
+  const h = parseTimeToHours(v);
+  return h===null ? null : h*60;
+}
+
+/* Normalise a loaded row — convert time fields to numeric strings in-place */
+function normaliseRow(r){
+  // Sleep Duration: HH:MM:SS → decimal hours
+  const sd = parseTimeToHours(r['Sleep Duration (hrs)']);
+  if(sd!==null) r['Sleep Duration (hrs)'] = sd.toFixed(2);
+
+  // REM, Deep Sleep, Awake Time: HH:MM → decimal minutes
+  ['REM Duration (mins)','Deep Sleep (mins)','Awake Time (mins)'].forEach(k=>{
+    const mins = parseTimeToMins(r[k]);
+    if(mins!==null) r[k] = mins.toFixed(1);
+  });
+  return r;
+}
 
 function destroyChart(id){
   if(charts[id]){ charts[id].destroy(); delete charts[id]; }
@@ -631,7 +661,7 @@ async function loadSheet(url){
     const resp = await fetch(csvUrl);
     if(!resp.ok) throw new Error('HTTP '+resp.status);
     const text = await resp.text();
-    rows = parseCSV(text).filter(r=>r['Date']&&r['Date'].trim());
+    rows = parseCSV(text).filter(r=>r['Date']&&r['Date'].trim()).map(normaliseRow);
     msg.textContent = `Loaded ${rows.length} rows.`;
     setPill(rows.length+' entries loaded', true);
     render();
@@ -724,16 +754,24 @@ function makeSampleData(){
 
 /* ── main render ──────────────────────────────────────────────────── */
 function render(){
+  // Set activeRows from the days filter
+  activeRows = get90DayRows();
+
   document.getElementById('main-content').style.display='block';
-  const sev = rows.map(r=>n(r['Severity']));
-  const migRows = rows.filter(r=>n(r['Severity'])>0);
-  const totalDays = rows.length;
+  const sev = activeRows.map(r=>n(r['Severity']));
+  const migRows = activeRows.filter(r=>n(r['Severity'])>0);
+  const totalDays = activeRows.length;
   const migDays = migRows.length;
   const pct = totalDays>0?Math.round(migDays/totalDays*100):0;
   const avgSev = migRows.length?(migRows.reduce((s,r)=>s+n(r['Severity']),0)/migRows.length).toFixed(1):'-';
-  const sleepData = rows.map(r=>n(r['Sleep Duration (hrs)'])).filter(v=>v!=null);
+  const sleepData = activeRows.map(r=>n(r['Sleep Duration (hrs)'])).filter(v=>v!=null);
   const avgSleep = sleepData.length?(sleepData.reduce((a,b)=>a+b,0)/sleepData.length).toFixed(1)+'h':'-';
   const maxSev = migRows.length?Math.max(...migRows.map(r=>n(r['Severity']))):'-';
+
+  // Show active range in pill
+  const nDays = getReportDays();
+  const rangeLabel = nDays===null ? `All data (${totalDays} entries)` : `Last ${nDays} days (${totalDays} entries)`;
+  setPill(rangeLabel, true);
 
   document.getElementById('metrics-row').innerHTML = `
     <div class="metric"><div class="metric-label">Total entries</div><div class="metric-value" style="color:var(--purple)">${totalDays}</div></div>
@@ -760,7 +798,7 @@ function render(){
   ];
   let corrHTML = '';
   corrFields.forEach(f=>{
-    const r = pearson(rows.map(r2=>n(r2[f.key])), sev);
+    const r = pearson(activeRows.map(r2=>n(r2[f.key])), sev);
     if(r===null) return;
     const strength = Math.abs(r)>.5?'strong':Math.abs(r)>.3?'moderate':'weak';
     const dir = r>0?'↑ higher = worse':'↓ higher = better';
@@ -778,7 +816,7 @@ function render(){
 
   /* timeline */
   destroyChart('timelineChart');
-  const sorted = [...rows].sort((a,b)=>{
+  const sorted = [...activeRows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
@@ -795,7 +833,7 @@ function render(){
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{mode:'index'} },
       scales:{
-        x:{ display:rows.length<=90, ticks:{maxRotation:45,font:{size:9},color:'#8b91a8',autoSkip:rows.length>30}, grid:{display:false} },
+        x:{ display:activeRows.length<=90, ticks:{maxRotation:45,font:{size:9},color:'#8b91a8',autoSkip:activeRows.length>30}, grid:{display:false} },
         y:{ min:0, max:10, title:{display:true,text:'Severity',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} },
         y2:{ position:'right', title:{display:true,text:'hPa',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{display:false} }
       }
@@ -806,7 +844,7 @@ function render(){
   destroyChart('sevDistChart');
   const sevCounts = {};
   for(let i=0;i<=10;i++) sevCounts[i]=0;
-  rows.forEach(r=>{ const v=Math.round(n(r['Severity'])||0); if(v>=0&&v<=10) sevCounts[v]++; });
+  activeRows.forEach(r=>{ const v=Math.round(n(r['Severity'])||0); if(v>=0&&v<=10) sevCounts[v]++; });
   const sevLabels = Object.keys(sevCounts).map(Number);
   charts['sevDistChart'] = new Chart(document.getElementById('sevDistChart'), {
     type:'bar',
@@ -835,27 +873,22 @@ function render(){
   const dayFull=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const dayShort=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   function normDay(r){
-    // Try Day column first
     const raw=(r['Day']||'').trim();
     if(raw){
-      // Short: Mon/Tue etc
       const si=dayShort.indexOf(raw);
       if(si!==-1) return dayShort[si];
-      // Full: Monday/Tuesday etc
       const fi=dayFull.findIndex(d=>d.toLowerCase()===raw.toLowerCase());
       if(fi!==-1) return dayShort[fi];
-      // 3-char prefix match
       const pi=dayFull.findIndex(d=>d.toLowerCase().startsWith(raw.toLowerCase().slice(0,3)));
       if(pi!==-1) return dayShort[pi];
     }
-    // Fallback: derive from Date column using UK date parser
     const dt=parseUKDate(r['Date']);
     if(dt&&!isNaN(dt)) return dayShort[dt.getDay()];
     return null;
   }
   const dayT={},dayC={};
   dayOrder.forEach(d=>{dayT[d]=0;dayC[d]=0;});
-  rows.forEach(r=>{ const d=normDay(r); if(d&&dayOrder.includes(d)&&n(r['Severity'])!=null){ dayT[d]+=n(r['Severity']); dayC[d]++; }});
+  activeRows.forEach(r=>{ const d=normDay(r); if(d&&dayOrder.includes(d)&&n(r['Severity'])!=null){ dayT[d]+=n(r['Severity']); dayC[d]++; }});
   charts['dowChart'] = new Chart(document.getElementById('dowChart'), {
     type:'bar',
     data:{
@@ -876,16 +909,16 @@ function render(){
   });
 
   /* weather scatters */
-  makeScatter('pressureScatter', rows.map(r=>n(r['Pressure (hPa)'])), sev, 'Pressure (hPa)', 'Severity', '#4a9edd');
-  makeScatter('pressureChangeScatter', rows.map(r=>n(r['Pressure Change (Δ)'])), sev, 'Pressure Δ (hPa)', 'Severity', '#7c6ff7');
-  makeScatter('humidityScatter', rows.map(r=>n(r['Humidity (%)'])), sev, 'Humidity (%)', 'Severity', '#3db87a');
-  makeScatter('tempChangeScatter', rows.map(r=>n(r['Temp Change (Δ)'])), sev, 'Temp Δ (°C)', 'Severity', '#e09a2f');
+  makeScatter('pressureScatter', activeRows.map(r=>n(r['Pressure (hPa)'])), sev, 'Pressure (hPa)', 'Severity', '#4a9edd');
+  makeScatter('pressureChangeScatter', activeRows.map(r=>n(r['Pressure Change (Δ)'])), sev, 'Pressure Δ (hPa)', 'Severity', '#7c6ff7');
+  makeScatter('humidityScatter', activeRows.map(r=>n(r['Humidity (%)'])), sev, 'Humidity (%)', 'Severity', '#3db87a');
+  makeScatter('tempChangeScatter', activeRows.map(r=>n(r['Temp Change (Δ)'])), sev, 'Temp Δ (°C)', 'Severity', '#e09a2f');
 
   /* rain chart */
   destroyChart('rainChart');
-  const rainRows = rows.filter(r=>r['Rain']&&n(r['Severity'])!=null);
-  const rainY = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('y'));
-  const rainN = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('n'));
+  const rainRows = activeRows.filter(r=>r['Rain']&&n(r['Severity'])!=null);
+  const rainY = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('y')||r['Rain'].trim()==='1');
+  const rainN = rainRows.filter(r=>r['Rain'].toLowerCase().startsWith('n')||r['Rain'].trim()==='0');
   const avgY = rainY.length?rainY.reduce((s,r)=>s+n(r['Severity']),0)/rainY.length:0;
   const avgN = rainN.length?rainN.reduce((s,r)=>s+n(r['Severity']),0)/rainN.length:0;
   charts['rainChart'] = new Chart(document.getElementById('rainChart'), {
@@ -902,16 +935,16 @@ function render(){
   });
 
   /* sleep scatters */
-  makeScatter('sleepDurScatter', rows.map(r=>n(r['Sleep Duration (hrs)'])), sev, 'Sleep (hrs)', 'Severity', '#534AB7');
-  makeScatter('sleepEffScatter', rows.map(r=>n(r['Sleep Efficiency (%)'])), sev, 'Sleep efficiency (%)', 'Severity', '#3C3489');
-  makeScatter('remScatter', rows.map(r=>n(r['REM Duration (mins)'])), sev, 'REM (mins)', 'Severity', '#AFA9EC');
-  makeScatter('deepScatter', rows.map(r=>n(r['Deep Sleep (mins)'])), sev, 'Deep sleep (mins)', 'Severity', '#2abfb0');
-  makeScatter('hrvScatter', rows.map(r=>n(r['HRV'])), sev, 'HRV', 'Severity', '#d4537e');
-  makeScatter('awakeScatter', rows.map(r=>n(r['Awake Time (mins)'])), sev, 'Awake time (mins)', 'Severity', '#993C1D');
+  makeScatter('sleepDurScatter', activeRows.map(r=>n(r['Sleep Duration (hrs)'])), sev, 'Sleep (hrs)', 'Severity', '#534AB7');
+  makeScatter('sleepEffScatter', activeRows.map(r=>n(r['Sleep Efficiency (%)'])), sev, 'Sleep efficiency (%)', 'Severity', '#3C3489');
+  makeScatter('remScatter', activeRows.map(r=>n(r['REM Duration (mins)'])), sev, 'REM (mins)', 'Severity', '#AFA9EC');
+  makeScatter('deepScatter', activeRows.map(r=>n(r['Deep Sleep (mins)'])), sev, 'Deep sleep (mins)', 'Severity', '#2abfb0');
+  makeScatter('hrvScatter', activeRows.map(r=>n(r['HRV'])), sev, 'HRV', 'Severity', '#d4537e');
+  makeScatter('awakeScatter', activeRows.map(r=>n(r['Awake Time (mins)'])), sev, 'Awake time (mins)', 'Severity', '#993C1D');
 
   /* trigger: symptoms */
   const symCounts = {};
-  rows.forEach(r=>{ if(r['Other Symptoms']) r['Other Symptoms'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{symCounts[s]=(symCounts[s]||0)+1;}); });
+  activeRows.forEach(r=>{ if(r['Other Symptoms']) r['Other Symptoms'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{symCounts[s]=(symCounts[s]||0)+1;}); });
   const sortedSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]);
   destroyChart('symptomChart');
   const symWrap = document.getElementById('symptom-wrap');
@@ -930,7 +963,7 @@ function render(){
 
   /* trigger: meds */
   const medCounts = {};
-  rows.forEach(r=>{ if(r['Medications Taken']) r['Medications Taken'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{medCounts[s]=(medCounts[s]||0)+1;}); });
+  activeRows.forEach(r=>{ if(r['Medications Taken']) r['Medications Taken'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{medCounts[s]=(medCounts[s]||0)+1;}); });
   const sortedMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]);
   destroyChart('medChart');
   const medWrap = document.getElementById('med-wrap');
@@ -947,13 +980,13 @@ function render(){
     });
   } else medWrap.innerHTML = '<div class="empty">No medication data yet</div>';
 
-  makeScatter('hrScatter', rows.map(r=>n(r['Avg HR (bpm)'])), sev, 'Avg HR (bpm)', 'Severity', '#e09a2f');
-  makeScatter('meds-taken-scatter', rows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
+  makeScatter('hrScatter', activeRows.map(r=>n(r['Avg HR (bpm)'])), sev, 'Avg HR (bpm)', 'Severity', '#e09a2f');
+  makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
 
   /* log table */
   const cols = ['Date','Day','Severity','# Taken','Medications Taken','Pressure (hPa)','Humidity (%)','Sleep Duration (hrs)','Other Symptoms','Notes'];
   document.getElementById('log-head').innerHTML = cols.map(c=>`<th>${c}</th>`).join('');
-  document.getElementById('log-body').innerHTML = [...rows]
+  document.getElementById('log-body').innerHTML = [...activeRows]
     .sort((a,b)=>{ const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']); return (da&&db)?db-da:0; })
     .map(r=>{
       const s = n(r['Severity']);
@@ -975,13 +1008,13 @@ function render(){
 function renderHeatmap(){
   // Build a lookup: dateKey (YYYY-MM-DD) -> row
   const lookup = {};
-  rows.forEach(r=>{
+  activeRows.forEach(r=>{
     const dt = parseUKDate(r['Date']);
     if(dt) lookup[dt.toISOString().slice(0,10)] = r;
   });
 
   // Find date range — full weeks from earliest to latest
-  const dates = rows.map(r=>parseUKDate(r['Date'])).filter(Boolean);
+  const dates = activeRows.map(r=>parseUKDate(r['Date'])).filter(Boolean);
   if(!dates.length) return;
   dates.sort((a,b)=>a-b);
   const minDate = new Date(dates[0]); minDate.setHours(12);
@@ -1081,8 +1114,8 @@ function renderHeatmap(){
 
 /* ── comparison table ─────────────────────────────────────────────── */
 function renderComparisonTable(){
-  const migR  = rows.filter(r=>n(r['Severity'])>0);
-  const noMigR = rows.filter(r=>n(r['Severity'])===0);
+  const migR  = activeRows.filter(r=>n(r['Severity'])>0);
+  const noMigR = activeRows.filter(r=>n(r['Severity'])===0);
   if(!migR.length || !noMigR.length){
     document.getElementById('comp-table-body').innerHTML =
       '<tr><td colspan="4" class="empty">Need both migraine and non-migraine days to compare</td></tr>';
@@ -1145,13 +1178,13 @@ function renderCompleteness(){
     'Temp Change (Δ)','Rain','Sleep Duration (hrs)','Sleep Efficiency (%)','Awake Time (mins)',
     'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV','Medications Taken','Other Symptoms','Notes'
   ];
-  const total = rows.length;
+  const total = activeRows.length;
   let html = '';
   fields.forEach(f=>{
-    const filled = rows.filter(r=>r[f]&&r[f].trim()!==''&&r[f]!=='0'||
+    const filled = activeRows.filter(r=>r[f]&&r[f].trim()!==''&&r[f]!=='0'||
       (f==='Severity'&&r[f]!==undefined&&r[f].trim()!=='')).length;
     // For Severity specifically count anything non-empty
-    const count = rows.filter(r=>r[f]!==undefined&&r[f]!==null&&String(r[f]).trim()!=='').length;
+    const count = activeRows.filter(r=>r[f]!==undefined&&r[f]!==null&&String(r[f]).trim()!=='').length;
     const pct = total ? Math.round(count/total*100) : 0;
     const barColor = pct >= 80 ? '#3db87a' : pct >= 50 ? '#e09a2f' : '#e04b4b';
     const label = f.replace(' (hPa)','').replace(' (%)','').replace(' (mins)','').replace(' (hrs)','').replace(' (°C)','').replace(' (Δ)','').replace(' (bpm)','');
@@ -1380,7 +1413,7 @@ function closeModal(){
 /* ── lag analysis ─────────────────────────────────────────────────── */
 function renderLagAnalysis(){
   // Sort rows chronologically
-  const sorted = [...rows].sort((a,b)=>{
+  const sorted = [...activeRows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
@@ -1527,12 +1560,19 @@ document.getElementById('sheet-url').addEventListener('keydown',e=>{
 });
 
 document.getElementById('sample-btn').addEventListener('click',()=>{
-  rows = makeSampleData();
+  rows = makeSampleData().map(normaliseRow);
   document.getElementById('import-msg').textContent = `Loaded ${rows.length} sample rows.`;
   setPill('Sample data — '+rows.length+' days', true);
   render();
 });
 
+document.getElementById('apply-btn').addEventListener('click', ()=>{ if(rows.length) render(); });
+document.getElementById('report-days').addEventListener('keydown', e=>{ if(e.key==='Enter'&&rows.length) render(); });
+document.getElementById('clear-days-btn').addEventListener('click', e=>{
+  e.preventDefault();
+  document.getElementById('report-days').value = '';
+  if(rows.length) render();
+});
 document.getElementById('csv-btn').addEventListener('click', exportCSV);
 document.getElementById('pdf-btn').addEventListener('click', exportPDF);
 
@@ -1562,7 +1602,7 @@ function getReportDays(){
 }
 function get90DayRows(){
   const nDays = getReportDays();
-  const sorted = [...rows].sort((a,b)=>{
+  const sorted = [...activeRows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
