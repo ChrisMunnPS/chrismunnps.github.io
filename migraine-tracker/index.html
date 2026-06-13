@@ -1174,28 +1174,91 @@ function renderCompleteness(){
 let modalChart = null;
 
 function initExpandButtons(){
-  // For each canvas that has a chart, inject an expand button into its parent chart-card
+  // Canvas-based charts
   document.querySelectorAll('canvas[id]').forEach(canvas=>{
     const card = canvas.closest('.chart-card');
-    if(!card || card.querySelector('.expand-btn')) return; // skip if already added
+    if(!card || card.querySelector('.expand-btn')) return;
     const chartId = canvas.id;
-    // find title and desc from card
-    const titleEl = card.querySelector('.card-title');
-    const descEl  = card.querySelector('.card-desc');
-    const title = titleEl ? titleEl.textContent : '';
-    const desc  = descEl  ? descEl.textContent  : '';
-
+    const title = card.querySelector('.card-title')?.textContent || '';
+    const desc  = card.querySelector('.card-desc')?.textContent  || '';
     const btn = document.createElement('button');
     btn.className = 'expand-btn';
     btn.setAttribute('aria-label', 'Expand chart');
     btn.setAttribute('title', 'Expand');
     btn.innerHTML = '<i class="ti ti-arrows-maximize"></i>';
+    btn.addEventListener('click', e=>{ e.stopPropagation(); openModal(chartId, title, desc); });
+    card.appendChild(btn);
+  });
+
+  // HTML-content cards (heatmap, lag table)
+  const contentCards = [
+    { contentId: 'heatmap-grid',   wrapperId: 'heatmap-content-wrap' },
+    { contentId: 'lag-table-body', wrapperId: 'lag-content-wrap'     },
+  ];
+  contentCards.forEach(({contentId, wrapperId})=>{
+    const el   = document.getElementById(contentId);
+    if(!el) return;
+    const card = el.closest('.chart-card');
+    if(!card || card.querySelector('.expand-btn')) return;
+    const title = card.querySelector('.card-title')?.textContent || '';
+    const desc  = card.querySelector('.card-desc')?.textContent  || '';
+    const btn = document.createElement('button');
+    btn.className = 'expand-btn';
+    btn.setAttribute('aria-label', 'Expand');
+    btn.setAttribute('title', 'Expand');
+    btn.innerHTML = '<i class="ti ti-arrows-maximize"></i>';
     btn.addEventListener('click', e=>{
       e.stopPropagation();
-      openModal(chartId, title, desc);
+      // For heatmap pass the whole .heatmap-wrap; for lag pass the whole table-wrap
+      const sourceWrap = el.closest('.heatmap-wrap') || el.closest('.table-wrap') || el.parentElement;
+      openContentModal(sourceWrap, title, desc);
     });
     card.appendChild(btn);
   });
+}
+
+function openContentModal(sourceEl, title, desc){
+  const overlay = document.getElementById('chart-modal');
+  const wrap    = document.getElementById('modal-canvas-wrap');
+
+  document.getElementById('modal-title-text').textContent = title;
+  document.getElementById('modal-desc-text').textContent  = desc;
+
+  if(modalChart){ modalChart.destroy(); modalChart = null; }
+  wrap.innerHTML = '';
+  wrap.style.height   = 'auto';
+  wrap.style.overflow = 'auto';
+  wrap.style.maxHeight = 'calc(90vh - 130px)';
+  wrap.style.padding  = '0.5rem 0';
+
+  // Clone the source element's content into the modal
+  const clone = sourceEl.cloneNode(true);
+  clone.style.maxWidth = '100%';
+
+  // If it's the heatmap, re-attach the tooltip mousemove events
+  // (cloned DOM nodes lose event listeners) — simplest fix: show a note
+  // and disable the tooltip on the clone, since we can't re-attach complex closures
+  if(sourceEl.classList.contains('heatmap-wrap')){
+    // Remove inline styles that constrain width
+    clone.style.overflowX = 'auto';
+    // Remove hover tooltip from cloned cells (events don't clone)
+    // Expand the cells a little for the modal view
+    clone.querySelectorAll('.heatmap-cell').forEach(c=>{
+      c.style.width  = '18px';
+      c.style.height = '18px';
+    });
+    clone.querySelectorAll('.heatmap-month-label').forEach(c=>{
+      c.style.width = '21px';
+    });
+    const note = document.createElement('p');
+    note.style.cssText = 'font-size:11px;color:var(--text3);margin-top:10px';
+    note.textContent   = 'Hover tooltips are available in the main view.';
+    clone.appendChild(note);
+  }
+
+  wrap.appendChild(clone);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function openModal(chartId, title, desc){
@@ -1282,7 +1345,12 @@ function closeModal(){
   document.getElementById('chart-modal').classList.remove('open');
   document.body.style.overflow = '';
   if(modalChart){ modalChart.destroy(); modalChart = null; }
-  document.getElementById('modal-canvas-wrap').innerHTML = '';
+  const wrap = document.getElementById('modal-canvas-wrap');
+  wrap.innerHTML   = '';
+  wrap.style.height    = 'calc(90vh - 120px)';
+  wrap.style.overflow  = '';
+  wrap.style.maxHeight = '';
+  wrap.style.padding   = '';
 }
 
 /* ── lag analysis ─────────────────────────────────────────────────── */
