@@ -797,219 +797,264 @@ async function exportPDF(){
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader"></i> Building PDF…';
 
+  // ── Colours (light mode for print) ──────────────────────────────
+  const C = {
+    pageBg:    [255,255,255],
+    headerBg:  [248,247,255],  // very faint lavender
+    accentBar: [108, 99,220],  // purple
+    titleText: [ 30, 27, 60],
+    subText:   [100, 95,140],
+    dimText:   [160,155,185],
+    bodyText:  [ 40, 38, 70],
+    border:    [210,207,235],
+    rowAlt:    [250,249,255],
+    rowHdr:    [237,234,255],
+    sevHigh:   [200, 50, 50],
+    sevMed:    [195,120, 20],
+    sevLow:    [ 40,155, 80],
+    metricBg:  [242,240,255],
+    metricBdr: [198,193,240],
+  };
+
   try {
     const { jsPDF } = window.jspdf;
-    // A4 landscape: 297 x 210 mm
     const pdf = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
     const PW = 297; const PH = 210;
-    const margin = 12;
+    const margin = 13;
     const usableW = PW - margin*2;
 
-    /* ── helpers ── */
-    function header(pdf, title, subtitle){
-      pdf.setFillColor(15,17,23);
+    /* ── page background ── */
+    function fillPage(){
+      pdf.setFillColor(...C.pageBg);
       pdf.rect(0,0,PW,PH,'F');
-      pdf.setDrawColor(80,80,120);
+    }
+
+    /* ── page header ── */
+    function drawHeader(title, subtitle){
+      fillPage();
+      // accent bar left edge
+      pdf.setFillColor(...C.accentBar);
+      pdf.rect(0, 0, 3, PH, 'F');
+      // header band
+      pdf.setFillColor(...C.headerBg);
+      pdf.rect(3, 0, PW-3, 20, 'F');
+      pdf.setDrawColor(...C.border);
       pdf.setLineWidth(0.3);
-      pdf.line(margin, 18, PW-margin, 18);
+      pdf.line(3, 20, PW, 20);
+      // title
       pdf.setFont('helvetica','bold');
-      pdf.setFontSize(13); pdf.setTextColor(232,234,240);
-      pdf.text(title, margin, 12);
+      pdf.setFontSize(12); pdf.setTextColor(...C.titleText);
+      pdf.text(title, margin+2, 9);
+      // subtitle
       pdf.setFont('helvetica','normal');
-      pdf.setFontSize(8); pdf.setTextColor(139,145,168);
-      pdf.text(subtitle, margin, 17);
-      // page right: date generated
-      pdf.setFontSize(7); pdf.setTextColor(85,93,120);
-      pdf.text('Generated: '+fmtDate(new Date()), PW-margin, 12, {align:'right'});
+      pdf.setFontSize(7.5); pdf.setTextColor(...C.subText);
+      pdf.text(subtitle, margin+2, 15.5);
+      // right: generated date + patient
+      pdf.setFontSize(7); pdf.setTextColor(...C.dimText);
+      pdf.text('Patient: Chris Munn', PW-margin, 9, {align:'right'});
+      pdf.text('Generated: '+fmtDate(new Date()), PW-margin, 15.5, {align:'right'});
     }
 
-    function sectionLabel(pdf, text, y){
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(7);
-      pdf.setTextColor(85,93,120);
-      pdf.text(text.toUpperCase(), margin, y);
-      return y + 4;
+    /* ── section label ── */
+    function secLabel(text, y){
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(6.5);
+      pdf.setTextColor(...C.subText);
+      pdf.text(text.toUpperCase(), margin+2, y);
+      // underline
+      pdf.setDrawColor(...C.border); pdf.setLineWidth(0.2);
+      pdf.line(margin+2, y+1, PW-margin, y+1);
+      return y+4.5;
     }
 
-    async function captureChart(canvasId, w, h){
-      const el = document.getElementById(canvasId);
+    /* ── capture a chart canvas as light-bg PNG ── */
+    async function captureChart(id){
+      const el = document.getElementById(id);
       if(!el) return null;
-      const canvas = await html2canvas(el, {backgroundColor:'#181c27', scale:2, logging:false});
-      return canvas.toDataURL('image/png');
+      try{
+        const canvas = await html2canvas(el,{backgroundColor:'#ffffff',scale:2,logging:false,useCORS:true});
+        return canvas.toDataURL('image/png');
+      }catch(e){ return null; }
     }
 
-    const last90 = get90DayRows();
-    const migDays = last90.filter(r=>n(r['Severity'])>0).length;
-    const avgSev = (last90.filter(r=>n(r['Severity'])>0).reduce((s,r)=>s+n(r['Severity']),0) / (migDays||1)).toFixed(1);
-    const dateRange = last90.length ? fmtDate(parseUKDate(last90[0]['Date']))+' – '+fmtDate(parseUKDate(last90[last90.length-1]['Date'])) : '';
+    /* ── data ── */
+    const last90   = get90DayRows();
+    const migRows  = last90.filter(r=>n(r['Severity'])>0);
+    const migDays  = migRows.length;
+    const avgSev   = migDays ? (migRows.reduce((s,r)=>s+n(r['Severity']),0)/migDays).toFixed(1) : '—';
+    const peakSev  = migDays ? Math.max(...migRows.map(r=>n(r['Severity']))) : '—';
+    const dateRange= last90.length
+      ? fmtDate(parseUKDate(last90[0]['Date']))+' \u2013 '+fmtDate(parseUKDate(last90[last90.length-1]['Date']))
+      : '';
 
-    /* ══ PAGE 1: Summary + key charts ══ */
-    header(pdf,
-      'Migraine Report',
-      `${dateRange} · ${last90.length} days · ${migDays} migraine days · Avg severity ${avgSev}/10`
-    );
+    /* ══ PAGE 1: Summary + charts ══════════════════════════════════ */
+    drawHeader('Migraine Report — Chris Munn',
+      `${dateRange}  \u00B7  ${last90.length} days recorded  \u00B7  ${migDays} migraine days  \u00B7  Avg severity ${avgSev}/10`);
 
-    let y = 23;
-    // Metric boxes
-    const metrics = [
-      {label:'Period', value:last90.length+' days'},
-      {label:'Migraine days', value:migDays+''},
-      {label:'Migraine rate', value:Math.round(migDays/(last90.length||1)*100)+'%'},
-      {label:'Avg severity', value:avgSev+' / 10'},
-      {label:'Peak severity', value:(migDays?Math.max(...last90.filter(r=>n(r['Severity'])>0).map(r=>n(r['Severity']))):'—')+''},
+    let y = 24;
+
+    // metric boxes
+    const metricDefs = [
+      {label:'Period',       value:last90.length+' days',        color:C.accentBar},
+      {label:'Migraine days',value:String(migDays),              color:C.sevHigh},
+      {label:'Migraine rate',value:Math.round(migDays/(last90.length||1)*100)+'%', color:C.sevMed},
+      {label:'Avg severity', value:avgSev+' / 10',               color:C.sevMed},
+      {label:'Peak severity',value:String(peakSev),              color:C.sevHigh},
     ];
-    const mw = (usableW - 4*3) / metrics.length;
-    metrics.forEach((m,i)=>{
+    const mw = (usableW - (metricDefs.length-1)*3) / metricDefs.length;
+    metricDefs.forEach((m,i)=>{
       const mx = margin + i*(mw+3);
-      pdf.setFillColor(24,28,39); pdf.setDrawColor(60,60,90);
+      pdf.setFillColor(...C.metricBg); pdf.setDrawColor(...C.metricBdr);
       pdf.setLineWidth(0.3);
-      pdf.roundedRect(mx, y, mw, 14, 2, 2, 'FD');
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(85,93,120);
+      pdf.roundedRect(mx, y, mw, 15, 2, 2, 'FD');
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6); pdf.setTextColor(...C.subText);
       pdf.text(m.label, mx+mw/2, y+5, {align:'center'});
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(11); pdf.setTextColor(232,234,240);
-      pdf.text(m.value, mx+mw/2, y+11, {align:'center'});
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(12); pdf.setTextColor(...m.color);
+      pdf.text(m.value, mx+mw/2, y+12, {align:'center'});
     });
-    y += 18;
+    y += 19;
 
-    // Make all tabs visible temporarily to capture all charts
+    // reveal all chart canvases temporarily
     const allViews = document.querySelectorAll('.view');
-    const prevDisplay = [];
-    allViews.forEach(v=>{ prevDisplay.push(v.style.display); v.style.display='block'; });
+    const prevDisp = [];
+    allViews.forEach(v=>{ prevDisp.push(v.style.display); v.style.display='block'; });
+    // also temporarily swap Chart.js defaults to light
+    // (charts already use transparent bg so html2canvas white bg shows through)
 
-    // Timeline chart — full width
-    y = sectionLabel(pdf, 'Migraine timeline (severity + atmospheric pressure)', y);
-    const timelineImg = await captureChart('timelineChart', usableW, 45);
-    if(timelineImg) pdf.addImage(timelineImg,'PNG', margin, y, usableW, 40);
+    y = secLabel('Migraine timeline — severity bars with atmospheric pressure overlay', y);
+    const tlImg = await captureChart('timelineChart');
+    if(tlImg) pdf.addImage(tlImg,'PNG',margin,y,usableW,42);
+    y += 45;
+
+    y = secLabel('Severity distribution  \u00B7  Day of week  \u00B7  Atmospheric pressure vs severity', y);
+    const cw = (usableW - 4) / 3;
+    const row1 = await Promise.all(['sevDistChart','dowChart','pressureScatter'].map(captureChart));
+    row1.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 36); });
+
+    /* ══ PAGE 2: Correlations ═══════════════════════════════════════ */
+    pdf.addPage();
+    drawHeader('Migraine Report — Correlations', `Chris Munn  \u00B7  ${dateRange}`);
+    y = 24;
+
+    y = secLabel('Weather: pressure change  \u00B7  humidity  \u00B7  temperature change', y);
+    const row2 = await Promise.all(['pressureChangeScatter','humidityScatter','tempChangeScatter'].map(captureChart));
+    row2.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 40); });
     y += 43;
 
-    // Row of 3 charts
-    y = sectionLabel(pdf, 'Distribution · Day of week · Pressure vs severity', y);
-    const chartRow1 = await Promise.all([
-      captureChart('sevDistChart', usableW/3, 38),
-      captureChart('dowChart', usableW/3, 38),
-      captureChart('pressureScatter', usableW/3, 38),
-    ]);
-    const cw = (usableW - 4) / 3;
-    chartRow1.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 35); });
-    y += 38;
+    y = secLabel('Sleep: duration  \u00B7  efficiency  \u00B7  HRV', y);
+    const row3 = await Promise.all(['sleepDurScatter','sleepEffScatter','hrvScatter'].map(captureChart));
+    row3.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 40); });
+    y += 43;
 
-    /* ══ PAGE 2: Weather correlations ══ */
-    pdf.addPage();
-    header(pdf, 'Migraine Report — Weather Correlations', dateRange);
-    y = 23;
+    y = secLabel('Sleep: REM  \u00B7  deep sleep  \u00B7  rain vs dry days', y);
+    const row4 = await Promise.all(['remScatter','deepScatter','rainChart'].map(captureChart));
+    row4.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 38); });
 
-    y = sectionLabel(pdf, 'Pressure change · Humidity · Temperature change', y);
-    const weatherRow = await Promise.all([
-      captureChart('pressureChangeScatter', usableW/3, 45),
-      captureChart('humidityScatter', usableW/3, 45),
-      captureChart('tempChangeScatter', usableW/3, 45),
-    ]);
-    weatherRow.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
-    y += 45;
-
-    y = sectionLabel(pdf, 'Sleep duration · Sleep efficiency · HRV', y);
-    const sleepRow = await Promise.all([
-      captureChart('sleepDurScatter', usableW/3, 45),
-      captureChart('sleepEffScatter', usableW/3, 45),
-      captureChart('hrvScatter', usableW/3, 45),
-    ]);
-    sleepRow.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
-    y += 45;
-
-    y = sectionLabel(pdf, 'REM sleep · Deep sleep · Rain vs dry', y);
-    const sleepRow2 = await Promise.all([
-      captureChart('remScatter', usableW/3, 45),
-      captureChart('deepScatter', usableW/3, 45),
-      captureChart('rainChart', usableW/3, 45),
-    ]);
-    sleepRow2.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 42); });
-
-    /* ══ PAGE 3: Data table (last 90 days) ══ */
-    pdf.addPage();
-    header(pdf, 'Migraine Report — Data Log (last 90 days)', dateRange);
-    y = 23;
-
-    const tableCols = [
-      {h:'Date', k:'Date', w:20},
-      {h:'Day', k:'Day', w:12},
-      {h:'Sev', k:'Severity', w:10},
-      {h:'Pressure', k:'Pressure (hPa)', w:20},
-      {h:'Press Δ', k:'Pressure Change (Δ)', w:16},
-      {h:'Humid %', k:'Humidity (%)', w:16},
-      {h:'Temp °C', k:'Temperature (°C)', w:16},
-      {h:'Rain', k:'Rain', w:12},
-      {h:'Sleep h', k:'Sleep Duration (hrs)', w:16},
-      {h:'Sleep eff%', k:'Sleep Efficiency (%)', w:20},
-      {h:'REM min', k:'REM Duration (mins)', w:18},
-      {h:'HRV', k:'HRV', w:12},
-      {h:'HR bpm', k:'Avg HR (bpm)', w:16},
-      {h:'Meds', k:'Medications Taken', w:30},
+    /* ══ PAGE 3+: Data table ════════════════════════════════════════ */
+    // Column definitions — widths must sum to usableW (271mm)
+    const cols = [
+      {h:'Date',         k:'Date',                    w:22},
+      {h:'Day',          k:'Day',                     w:20},
+      {h:'Sev',          k:'Severity',                w: 9},
+      {h:'Pressure hPa', k:'Pressure (hPa)',          w:23},
+      {h:'Press \u0394', k:'Pressure Change (\u0394)',w:17},
+      {h:'Humid %',      k:'Humidity (%)',             w:16},
+      {h:'Temp \u00B0C', k:'Temperature (\u00B0C)',   w:16},
+      {h:'Rain',         k:'Rain',                    w:12},
+      {h:'Sleep h',      k:'Sleep Duration (hrs)',    w:16},
+      {h:'Sleep eff %',  k:'Sleep Efficiency (%)',    w:20},
+      {h:'REM min',      k:'REM Duration (mins)',     w:18},
+      {h:'Deep min',     k:'Deep Sleep (mins)',       w:18},
+      {h:'HRV',          k:'HRV',                    w:13},
+      {h:'HR bpm',       k:'Avg HR (bpm)',            w:15},
+      {h:'Medication',   k:'Medications Taken',       w:36},
     ];
+    // auto-adjust last column so widths sum exactly to usableW
+    const colSum = cols.reduce((s,c)=>s+c.w,0);
+    cols[cols.length-1].w = Math.max(10, cols[cols.length-1].w + (usableW - colSum));
 
-    const rowH = 5.5;
-    const headerH = 7;
+    const ROW_H = 5.8;
+    const HDR_H = 7.5;
 
-    function drawTableHeader(pdf, y){
-      pdf.setFillColor(30,35,51); pdf.setDrawColor(60,60,90); pdf.setLineWidth(0.2);
-      pdf.rect(margin, y, usableW, headerH, 'FD');
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(139,145,168);
-      let x = margin+1;
-      tableCols.forEach(c=>{ pdf.text(c.h, x, y+4.5); x+=c.w; });
-      return y+headerH;
+    function drawColHeaders(y){
+      pdf.setFillColor(...C.rowHdr);
+      pdf.setDrawColor(...C.border); pdf.setLineWidth(0.2);
+      pdf.rect(margin, y, usableW, HDR_H, 'FD');
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(...C.subText);
+      let x = margin+1.5;
+      cols.forEach(c=>{ pdf.text(c.h, x, y+5); x+=c.w; });
+      return y+HDR_H;
     }
 
-    function drawTableRow(pdf, row, y, isOdd){
-      if(isOdd){ pdf.setFillColor(20,24,35); pdf.rect(margin,y,usableW,rowH,'F'); }
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(6); pdf.setTextColor(232,234,240);
+    function drawDataRow(row, y, odd){
+      if(odd){ pdf.setFillColor(...C.rowAlt); pdf.rect(margin,y,usableW,ROW_H,'F'); }
+      // row bottom border
+      pdf.setDrawColor(...C.border); pdf.setLineWidth(0.1);
+      pdf.line(margin, y+ROW_H, margin+usableW, y+ROW_H);
+
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.2);
       const sev = n(row['Severity']);
-      let x = margin+1;
-      tableCols.forEach(c=>{
-        let val = row[c.k]||'';
-        if(c.k==='Severity' && sev!==null && sev>0){
-          const col = sev>=7?[224,75,75]:sev>=4?[224,154,47]:[61,184,122];
-          pdf.setTextColor(...col);
-          pdf.text(val, x, y+3.8);
-          pdf.setTextColor(232,234,240);
+      let x = margin+1.5;
+      cols.forEach(c=>{
+        let val = String(row[c.k] != null ? row[c.k] : '');
+        // approx max chars: font size 6.2pt, helvetica narrow ≈ 1.55mm/char
+        const maxCh = Math.floor((c.w - 1.5) / 1.55);
+        if(val.length > maxCh) val = val.slice(0, maxCh-1)+'\u2026';
+
+        if(c.k==='Severity' && sev!=null && sev>0){
+          pdf.setTextColor(...(sev>=7?C.sevHigh:sev>=4?C.sevMed:C.sevLow));
+          pdf.setFont('helvetica','bold');
+          pdf.text(val, x, y+ROW_H-1.5);
+          pdf.setFont('helvetica','normal');
+          pdf.setTextColor(...C.bodyText);
         } else {
-          // truncate long values
-          if(val.length>Math.floor(c.w/2)) val=val.slice(0,Math.floor(c.w/2)-1)+'…';
-          pdf.text(val, x, y+3.8);
+          pdf.setTextColor(...C.bodyText);
+          pdf.text(val, x, y+ROW_H-1.5);
         }
         x+=c.w;
       });
-      return y+rowH;
+      return y+ROW_H;
     }
 
     const tableRows = [...last90].sort((a,b)=>{
-      const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
+      const da=parseUKDate(a['Date']),db=parseUKDate(b['Date']);
       return (da&&db)?da-db:0;
     });
 
-    y = drawTableHeader(pdf, y);
-    let rowIdx = 0;
+    pdf.addPage();
+    drawHeader('Migraine Report — Data Log (last 90 days)', `Chris Munn  \u00B7  ${dateRange}`);
+    y = 24;
+    y = secLabel('All recorded fields — severity colour coded: green \u2264 3, amber 4\u20136, red \u2265 7', y);
+    y = drawColHeaders(y);
+
+    let rowIdx=0;
     for(const row of tableRows){
-      if(y + rowH > PH - margin){
+      if(y+ROW_H > PH-margin-6){
         pdf.addPage();
-        header(pdf, 'Migraine Report — Data Log (continued)', dateRange);
-        y = 23;
-        y = drawTableHeader(pdf, y);
+        drawHeader('Migraine Report — Data Log (continued)', `Chris Munn  \u00B7  ${dateRange}`);
+        y=24;
+        y=secLabel('Continued', y);
+        y=drawColHeaders(y);
       }
-      y = drawTableRow(pdf, row, y, rowIdx%2===1);
+      y = drawDataRow(row, y, rowIdx%2===1);
       rowIdx++;
     }
 
-    // Restore tab visibility
-    allViews.forEach((v,i)=>{ v.style.display=prevDisplay[i]; });
+    // restore tab visibility
+    allViews.forEach((v,i)=>{ v.style.display=prevDisp[i]; });
 
-    // Footer on all pages
+    // footer on every page
     const pageCount = pdf.getNumberOfPages();
-    for(let p=1; p<=pageCount; p++){
+    for(let p=1;p<=pageCount;p++){
       pdf.setPage(p);
-      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(85,93,120);
-      pdf.text('Migraine Tracker · Confidential patient data', margin, PH-5);
-      pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-5, {align:'right'});
+      // footer rule
+      pdf.setDrawColor(...C.border); pdf.setLineWidth(0.2);
+      pdf.line(margin, PH-8, PW-margin, PH-8);
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(...C.dimText);
+      pdf.text('Migraine Tracker \u00B7 Confidential patient data \u00B7 Chris Munn', margin, PH-4.5);
+      pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-4.5, {align:'right'});
     }
 
-    pdf.save('migraine-report-90days.pdf');
+    pdf.save('Chris-Munn-migraine-report-90days.pdf');
 
   } catch(err){
     console.error(err);
