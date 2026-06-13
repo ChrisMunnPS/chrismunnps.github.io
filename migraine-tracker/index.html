@@ -213,8 +213,8 @@
     flex-shrink: 0; transition: color .15s;
   }
   .modal-close:hover { color: var(--text); }
-  .modal-body { padding: 1.25rem; flex: 1; min-height: 0; position: relative; }
-  .modal-canvas-wrap { position: relative; height: 100%; min-height: 400px; }
+  .modal-body { padding: 1.25rem; flex: 1; min-height: 0; overflow: hidden; }
+  .modal-canvas-wrap { position: relative; width: 100%; height: calc(90vh - 120px); }
 
   @media (max-width: 640px) {
     .grid2, .grid3 { grid-template-columns: 1fr; }
@@ -1129,37 +1129,81 @@ function initExpandButtons(){
 }
 
 function openModal(chartId, title, desc){
-  const overlay  = document.getElementById('chart-modal');
-  const wrap     = document.getElementById('modal-canvas-wrap');
-  const titleEl  = document.getElementById('modal-title-text');
-  const descEl   = document.getElementById('modal-desc-text');
+  const overlay = document.getElementById('chart-modal');
+  const wrap    = document.getElementById('modal-canvas-wrap');
 
-  titleEl.textContent = title;
-  descEl.textContent  = desc;
+  document.getElementById('modal-title-text').textContent = title;
+  document.getElementById('modal-desc-text').textContent  = desc;
 
-  // Destroy previous modal chart
   if(modalChart){ modalChart.destroy(); modalChart = null; }
   wrap.innerHTML = '';
 
   const sourceChart = charts[chartId];
-  if(!sourceChart){ overlay.classList.add('open'); return; }
+  if(!sourceChart){
+    wrap.innerHTML = '<div class="empty">Chart not available</div>';
+    overlay.classList.add('open');
+    return;
+  }
 
-  // Clone the chart config into a new canvas inside the modal
+  // Explicit sized wrapper so Chart.js has dimensions to work with
+  wrap.style.position = 'relative';
+  wrap.style.height   = 'calc(90vh - 120px)';
+
   const newCanvas = document.createElement('canvas');
-  newCanvas.id = chartId + '_modal';
+  newCanvas.style.display = 'block';
   wrap.appendChild(newCanvas);
 
-  // Deep-clone config so the original is untouched
-  const cfg = JSON.parse(JSON.stringify(sourceChart.config));
-  // Ensure responsive + no fixed height
-  cfg.options = cfg.options || {};
-  cfg.options.responsive = true;
-  cfg.options.maintainAspectRatio = false;
+  // Rebuild chart type + datasets from the live chart instance
+  const src = sourceChart;
+  const type = src.config.type;
 
-  // Re-attach data from the live chart (JSON clone may lose typed arrays)
-  cfg.data = sourceChart.data;
+  // Deep-copy datasets safely (avoid JSON — functions don't survive it)
+  const datasets = src.data.datasets.map(ds => {
+    const copy = Object.assign({}, ds);
+    // copy data array
+    copy.data = Array.isArray(ds.data) ? ds.data.map(d => {
+      if(d !== null && typeof d === 'object') return Object.assign({}, d);
+      return d;
+    }) : ds.data;
+    return copy;
+  });
 
-  modalChart = new Chart(newCanvas, cfg);
+  // Copy labels
+  const labels = src.data.labels ? [...src.data.labels] : undefined;
+
+  // Copy options but re-attach function-based callbacks from original
+  // Use JSON clone for safe scalar values, then re-graft functions
+  let opts;
+  try {
+    opts = JSON.parse(JSON.stringify(src.config.options || {}));
+  } catch(e) {
+    opts = {};
+  }
+  opts.responsive           = true;
+  opts.maintainAspectRatio  = false;
+  opts.animation            = { duration: 300 };
+
+  // Re-attach tooltip label callbacks if original had them
+  try {
+    const origTooltip = src.config.options?.plugins?.tooltip?.callbacks;
+    if(origTooltip){
+      opts.plugins = opts.plugins || {};
+      opts.plugins.tooltip = opts.plugins.tooltip || {};
+      opts.plugins.tooltip.callbacks = origTooltip;
+    }
+  } catch(e){}
+
+  // Bump point sizes for scatter plots in modal
+  if(type === 'scatter'){
+    datasets.forEach(ds => { ds.pointRadius = 6; ds.borderWidth = 1.5; });
+  }
+
+  modalChart = new Chart(newCanvas, {
+    type,
+    data: { labels, datasets },
+    options: opts
+  });
+
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
