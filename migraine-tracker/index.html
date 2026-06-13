@@ -295,9 +295,9 @@
       <div class="group-box-row">
         <div class="group-box-field">
           <label for="report-days">Days to include</label>
-          <input type="number" id="report-days" min="7" max="3650" value="90" />
+          <input type="number" id="report-days" min="1" max="3650" value="90" placeholder="All" />
         </div>
-        <span class="group-box-hint">Most recent entries are used. 90 = last 3 months.</span>
+        <span class="group-box-hint">Default 90 days. Leave blank to include all data.</span>
         <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn" id="csv-btn"><i class="ti ti-table-export"></i> Download CSV</button>
           <button class="btn primary" id="pdf-btn"><i class="ti ti-file-type-pdf"></i> Export PDF (A4)</button>
@@ -1239,17 +1239,41 @@ function openContentModal(sourceEl, title, desc){
   // (cloned DOM nodes lose event listeners) — simplest fix: show a note
   // and disable the tooltip on the clone, since we can't re-attach complex closures
   if(sourceEl.classList.contains('heatmap-wrap')){
-    // Remove inline styles that constrain width
-    clone.style.overflowX = 'auto';
-    // Remove hover tooltip from cloned cells (events don't clone)
-    // Expand the cells a little for the modal view
+    // Calculate how many week-columns the heatmap has
+    const gridEl   = sourceEl.querySelector('.heatmap-grid');
+    const numWeeks = gridEl ? gridEl.children.length : 52;
+
+    // Available modal inner width: modal max-width 1000px minus padding (2 × 1.25rem ≈ 40px)
+    // Use the actual rendered modal width if available
+    const modalBox  = document.querySelector('.modal-box');
+    const modalW    = modalBox ? modalBox.getBoundingClientRect().width - 40 - 26 : 920;
+    // cell = (available width - dow-label col 26px) / numWeeks, minus 3px gap per week
+    const cellSize  = Math.max(10, Math.floor((modalW - 26 - numWeeks * 3) / numWeeks));
+    const labelW    = cellSize + 3; // match col width
+
+    clone.style.overflowX = 'visible';
+    clone.style.width     = '100%';
+
     clone.querySelectorAll('.heatmap-cell').forEach(c=>{
-      c.style.width  = '18px';
-      c.style.height = '18px';
+      c.style.width  = cellSize + 'px';
+      c.style.height = cellSize + 'px';
+      c.style.borderRadius = Math.max(2, Math.floor(cellSize/6)) + 'px';
     });
     clone.querySelectorAll('.heatmap-month-label').forEach(c=>{
-      c.style.width = '21px';
+      c.style.width    = labelW + 'px';
+      c.style.fontSize = Math.max(9, Math.min(12, cellSize-2)) + 'px';
     });
+    clone.querySelectorAll('.heatmap-dow-label').forEach(c=>{
+      c.style.height     = cellSize + 3 + 'px';
+      c.style.lineHeight = cellSize + 3 + 'px';
+      c.style.fontSize   = Math.max(8, Math.min(11, cellSize-3)) + 'px';
+    });
+    // Legend cells
+    clone.querySelectorAll('.heatmap-legend-cells .heatmap-cell').forEach(c=>{
+      c.style.width  = '14px';
+      c.style.height = '14px';
+    });
+
     const note = document.createElement('p');
     note.style.cssText = 'font-size:11px;color:var(--text3);margin-top:10px';
     note.textContent   = 'Hover tooltips are available in the main view.';
@@ -1525,22 +1549,24 @@ function exportCSV(){
   const blob = new Blob([csvContent], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `migraine-data-${getReportDays()}days.csv`; a.click();
+  a.href = url; a.download = `migraine-data-${getReportDays()===null?'all':getReportDays()+'days'}.csv`; a.click();
   URL.revokeObjectURL(url);
 }
 
 /* ── helper: get last N days of rows (reads report-days input) ───── */
 function getReportDays(){
-  const v = parseInt(document.getElementById('report-days')?.value||'90', 10);
-  return isNaN(v)||v<1 ? 90 : v;
+  const raw = document.getElementById('report-days')?.value?.trim();
+  if(!raw) return null; // blank = all data
+  const v = parseInt(raw, 10);
+  return isNaN(v)||v<1 ? null : v;
 }
 function get90DayRows(){
-  const n = getReportDays();
+  const nDays = getReportDays();
   const sorted = [...rows].sort((a,b)=>{
     const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']);
     return (da&&db)?da-db:0;
   });
-  return sorted.slice(-n);
+  return nDays===null ? sorted : sorted.slice(-nDays);
 }
 
 /* ── PDF export ───────────────────────────────────────────────────── */
@@ -1846,7 +1872,7 @@ async function exportPDF(){
       pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-4.5, {align:'right'});
     }
 
-    pdf.save(`Chris-Munn-migraine-report-${getReportDays()}days.pdf`);
+    pdf.save(`Chris-Munn-migraine-report-${getReportDays()===null?'all':getReportDays()+'days'}.pdf`);
 
   } catch(err){
     console.error(err);
