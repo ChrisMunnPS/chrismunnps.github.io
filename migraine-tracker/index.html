@@ -118,8 +118,8 @@
   /* Table */
   .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { text-align: left; padding: 8px 10px; font-weight: 500; color: var(--text3); border-bottom: 1px solid var(--border2); white-space: nowrap; font-size: 11px; letter-spacing: .04em; }
-  td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  th { text-align: left; padding: 0; font-weight: 500; color: var(--text3); border-bottom: 1px solid var(--border2); font-size: 11px; letter-spacing: .04em; white-space: nowrap; }
+  td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 12px; white-space: nowrap; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: rgba(255,255,255,.02); }
   .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
@@ -127,6 +127,31 @@
   .b-med { background: var(--amber-dim); color: var(--amber); }
   .b-low { background: var(--green-dim); color: var(--green); }
   .b-none { background: var(--bg3); color: var(--text3); }
+
+  /* Slanted log headers */
+  #log-table th {
+    height: 100px; vertical-align: bottom; padding-bottom: 6px;
+    width: 36px; min-width: 36px; max-width: 36px;
+    position: relative; border-bottom: 1px solid var(--border2);
+  }
+  #log-table th.th-wide  { width: 80px; min-width: 80px; max-width: 80px; }
+  #log-table th.th-med   { width: 56px; min-width: 56px; max-width: 56px; }
+  #log-table th span {
+    display: block;
+    transform-origin: bottom left;
+    transform: rotate(-45deg) translateX(4px);
+    width: 120px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: visible;
+  }
+  #log-table td {
+    padding: 6px 6px; font-size: 11px;
+    max-width: 0; /* forces truncation via overflow */
+  }
+  #log-table td.td-wide  { max-width: none; min-width: 80px; }
+  #log-table td.td-med   { max-width: none; min-width: 56px; }
 
   .empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 13px; }
 
@@ -525,7 +550,7 @@
     <div id="tab-log" class="view">
       <div class="chart-card" style="padding:0;overflow:hidden">
         <div class="table-wrap">
-          <table>
+          <table id="log-table">
             <thead><tr id="log-head"></tr></thead>
             <tbody id="log-body"></tbody>
           </table>
@@ -1015,21 +1040,43 @@ function render(){
   makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
 
   /* log table */
-  const cols = [
-    'Date','Day','# Taken','Other Symptoms','Severity',
-    'Pressure (hPa)','Pressure Change (Δ)','Humidity (%)','Temperature (°C)','Temp Change (Δ)',
-    'Rain','Sleep Duration (hrs)','Sleep Efficiency (%)','Awake Time (mins)',
-    'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV',
-    'Medications Taken','Notes'
+  // Col definitions: key, display label, width class ('' = narrow 36px, 'th-med', 'th-wide')
+  const logCols = [
+    { k:'Date',                  h:'Date',                  w:'th-med'  },
+    { k:'Day',                   h:'Day',                   w:'th-med'  },
+    { k:'# Taken',               h:'# Taken',               w:''        },
+    { k:'Other Symptoms',        h:'Other Symptoms',        w:'th-wide' },
+    { k:'Severity',              h:'Severity',              w:''        },
+    { k:'Pressure (hPa)',        h:'Pressure (hPa)',        w:''        },
+    { k:'Pressure Change (Δ)',   h:'Pressure Change (Δ)',   w:''        },
+    { k:'Humidity (%)',          h:'Humidity (%)',          w:''        },
+    { k:'Temperature (°C)',      h:'Temperature (°C)',      w:''        },
+    { k:'Temp Change (Δ)',       h:'Temp Change (Δ)',       w:''        },
+    { k:'Rain',                  h:'Rain',                  w:''        },
+    { k:'Sleep Duration (hrs)',  h:'Sleep Duration (hrs)',  w:''        },
+    { k:'Sleep Efficiency (%)',  h:'Sleep Efficiency (%)',  w:''        },
+    { k:'Awake Time (mins)',     h:'Awake Time (mins)',     w:''        },
+    { k:'REM Duration (mins)',   h:'REM Duration (mins)',   w:''        },
+    { k:'Deep Sleep (mins)',     h:'Deep Sleep (mins)',     w:''        },
+    { k:'Avg HR (bpm)',          h:'Avg HR (bpm)',          w:''        },
+    { k:'HRV',                   h:'HRV',                   w:''        },
+    { k:'Medications Taken',     h:'Medications Taken',     w:'th-wide' },
+    { k:'Notes',                 h:'Notes',                 w:'th-wide' },
   ];
-  document.getElementById('log-head').innerHTML = cols.map(c=>`<th>${c}</th>`).join('');
-  const sevIdx = cols.indexOf('Severity');
+  const tdClass = { 'th-wide':'td-wide', 'th-med':'td-med', '':'' };
+  const sevIdx = logCols.findIndex(c=>c.k==='Severity');
+  document.getElementById('log-head').innerHTML = logCols.map(c=>
+    `<th class="${c.w}"><span>${c.h}</span></th>`
+  ).join('');
   document.getElementById('log-body').innerHTML = [...activeRows]
     .sort((a,b)=>{ const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']); return (da&&db)?db-da:0; })
     .map(r=>{
       const s = n(r['Severity']);
       const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
-      return `<tr>${cols.map((c,i)=>i===sevIdx?`<td>${badge}</td>`:`<td>${r[c]||''}</td>`).join('')}</tr>`;
+      return `<tr>${logCols.map((c,i)=>{
+        const cls = tdClass[c.w] ? ` class="${tdClass[c.w]}"` : '';
+        return i===sevIdx ? `<td${cls}>${badge}</td>` : `<td${cls}>${r[c.k]||''}</td>`;
+      }).join('')}</tr>`;
     }).join('');
 
   /* insights tab */
