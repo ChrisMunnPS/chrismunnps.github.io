@@ -1015,14 +1015,21 @@ function render(){
   makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
 
   /* log table */
-  const cols = ['Date','Day','Severity','# Taken','Medications Taken','Pressure (hPa)','Humidity (%)','Sleep Duration (hrs)','Other Symptoms','Notes'];
+  const cols = [
+    'Date','Day','# Taken','Other Symptoms','Severity',
+    'Pressure (hPa)','Pressure Change (Δ)','Humidity (%)','Temperature (°C)','Temp Change (Δ)',
+    'Rain','Sleep Duration (hrs)','Sleep Efficiency (%)','Awake Time (mins)',
+    'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV',
+    'Medications Taken','Notes'
+  ];
   document.getElementById('log-head').innerHTML = cols.map(c=>`<th>${c}</th>`).join('');
+  const sevIdx = cols.indexOf('Severity');
   document.getElementById('log-body').innerHTML = [...activeRows]
     .sort((a,b)=>{ const da=parseUKDate(a['Date']), db=parseUKDate(b['Date']); return (da&&db)?db-da:0; })
     .map(r=>{
       const s = n(r['Severity']);
       const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
-      return `<tr>${cols.map((c,i)=>i===2?`<td>${badge}</td>`:`<td>${r[c]||''}</td>`).join('')}</tr>`;
+      return `<tr>${cols.map((c,i)=>i===sevIdx?`<td>${badge}</td>`:`<td>${r[c]||''}</td>`).join('')}</tr>`;
     }).join('');
 
   /* insights tab */
