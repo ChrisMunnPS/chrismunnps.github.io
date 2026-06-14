@@ -1846,44 +1846,66 @@ async function exportPDF(){
     });
 
     /* ══ PAGE 3+: Data table ════════════════════════════════════════ */
-    // Column definitions — widths must sum to usableW (271mm)
+    // With slanted headers, columns can be much narrower — text fits at 45°
     const cols = [
-      {h:'Date',         k:'Date',                    w:22},
-      {h:'Day',          k:'Day',                     w:20},
-      {h:'Sev',          k:'Severity',                w: 9},
-      {h:'Pressure hPa', k:'Pressure (hPa)',          w:23},
-      {h:'Press \u0394', k:'Pressure Change (\u0394)',w:17},
-      {h:'Humid %',      k:'Humidity (%)',             w:16},
-      {h:'Temp \u00B0C', k:'Temperature (\u00B0C)',   w:16},
-      {h:'Rain',         k:'Rain',                    w:12},
-      {h:'Sleep h',      k:'Sleep Duration (hrs)',    w:16},
-      {h:'Sleep eff %',  k:'Sleep Efficiency (%)',    w:20},
-      {h:'REM min',      k:'REM Duration (mins)',     w:18},
-      {h:'Deep min',     k:'Deep Sleep (mins)',       w:18},
-      {h:'HRV',          k:'HRV',                    w:13},
-      {h:'HR bpm',       k:'Avg HR (bpm)',            w:15},
-      {h:'Medication',   k:'Medications Taken',       w:36},
+      {h:'Date',              k:'Date',                    w:18},
+      {h:'Day',               k:'Day',                     w:16},
+      {h:'Severity',          k:'Severity',                w:13},
+      {h:'# Taken',           k:'# Taken',                 w:13},
+      {h:'Pressure hPa',      k:'Pressure (hPa)',          w:14},
+      {h:'Pressure Δ',        k:'Pressure Change (Δ)',     w:13},
+      {h:'Humidity %',        k:'Humidity (%)',             w:13},
+      {h:'Temperature °C',    k:'Temperature (°C)',        w:14},
+      {h:'Temp Change Δ',     k:'Temp Change (Δ)',         w:14},
+      {h:'Rain',              k:'Rain',                    w:10},
+      {h:'Sleep hrs',         k:'Sleep Duration (hrs)',    w:13},
+      {h:'Sleep Eff %',       k:'Sleep Efficiency (%)',    w:13},
+      {h:'Awake mins',        k:'Awake Time (mins)',       w:13},
+      {h:'REM mins',          k:'REM Duration (mins)',     w:13},
+      {h:'Deep Sleep mins',   k:'Deep Sleep (mins)',       w:14},
+      {h:'Avg HR bpm',        k:'Avg HR (bpm)',            w:13},
+      {h:'HRV',               k:'HRV',                    w:10},
+      {h:'Other Symptoms',    k:'Other Symptoms',          w:20},
+      {h:'Medications',       k:'Medications Taken',       w:20},
+      {h:'Notes',             k:'Notes',                   w:18},
     ];
     // auto-adjust last column so widths sum exactly to usableW
     const colSum = cols.reduce((s,c)=>s+c.w,0);
-    cols[cols.length-1].w = Math.max(10, cols[cols.length-1].w + (usableW - colSum));
+    cols[cols.length-1].w = Math.max(8, cols[cols.length-1].w + (usableW - colSum));
 
-    const ROW_H = 5.8;
-    const HDR_H = 7.5;
+    const ROW_H  = 5.8;
+    const HDR_H  = 26; // tall enough for 45° rotated headers
 
     function drawColHeaders(y){
+      // Faint banded background for header zone
       pdf.setFillColor(...C.rowHdr);
       pdf.setDrawColor(...C.border); pdf.setLineWidth(0.2);
       pdf.rect(margin, y, usableW, HDR_H, 'FD');
-      pdf.setFont('helvetica','bold'); pdf.setFontSize(6); pdf.setTextColor(...C.subText);
-      let x = margin+1.5;
-      cols.forEach(c=>{ pdf.text(c.h, x, y+5); x+=c.w; });
-      return y+HDR_H;
+
+      pdf.setFont('helvetica','bold'); pdf.setFontSize(6.5);
+      pdf.setTextColor(...C.subText);
+
+      let x = margin + 1.5;
+      cols.forEach(c=>{
+        // Draw vertical tick line between columns
+        pdf.setDrawColor(...C.border); pdf.setLineWidth(0.15);
+        if(x > margin+1.5) pdf.line(x-1.5, y, x-1.5, y+HDR_H);
+
+        // Rotated text: origin at bottom-left of column, angled 45° upward
+        // jsPDF text angle is in degrees, counter-clockwise
+        pdf.text(c.h, x + c.w*0.5 - 1, y + HDR_H - 2, { angle: 45 });
+        x += c.w;
+      });
+
+      // Bottom border of header row
+      pdf.setDrawColor(...C.border); pdf.setLineWidth(0.3);
+      pdf.line(margin, y+HDR_H, margin+usableW, y+HDR_H);
+
+      return y + HDR_H;
     }
 
     function drawDataRow(row, y, odd){
       if(odd){ pdf.setFillColor(...C.rowAlt); pdf.rect(margin,y,usableW,ROW_H,'F'); }
-      // row bottom border
       pdf.setDrawColor(...C.border); pdf.setLineWidth(0.1);
       pdf.line(margin, y+ROW_H, margin+usableW, y+ROW_H);
 
@@ -1892,7 +1914,6 @@ async function exportPDF(){
       let x = margin+1.5;
       cols.forEach(c=>{
         let val = String(row[c.k] != null ? row[c.k] : '');
-        // approx max chars: font size 6.2pt, helvetica narrow ≈ 1.55mm/char
         const maxCh = Math.floor((c.w - 1.5) / 1.55);
         if(val.length > maxCh) val = val.slice(0, maxCh-1)+'\u2026';
 
@@ -1906,7 +1927,7 @@ async function exportPDF(){
           pdf.setTextColor(...C.bodyText);
           pdf.text(val, x, y+ROW_H-1.5);
         }
-        x+=c.w;
+        x += c.w;
       });
       return y+ROW_H;
     }
