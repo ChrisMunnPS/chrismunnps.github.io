@@ -682,8 +682,27 @@ function makeScatter(id, xArr, yArr, xLabel, yLabel, color){
   destroyChart(id);
   const el = document.getElementById(id);
   if(!el) return;
+
+  // Remove any previous "no data" message in the wrapper
+  const wrap = el.parentElement;
+  const prev = wrap.querySelector('.scatter-empty');
+  if(prev) prev.remove();
+
   const pairs = xArr.map((v,i)=>({x:v,y:yArr[i]})).filter(p=>p.x!=null&&p.y!=null&&!isNaN(p.x)&&!isNaN(p.y));
-  if(!pairs.length){ el.parentElement.innerHTML=`<div class="empty">Not enough data for this chart</div>`; return; }
+  if(!pairs.length){
+    // Hide canvas, show message — but keep canvas in DOM so re-render can restore it
+    el.style.display = 'none';
+    const msg = document.createElement('div');
+    msg.className = 'scatter-empty empty';
+    msg.style.paddingTop = '3rem';
+    msg.textContent = 'Not enough data for this chart';
+    wrap.appendChild(msg);
+    return;
+  }
+
+  // Restore canvas if it was hidden
+  el.style.display = '';
+
   charts[id] = new Chart(el, {
     type:'scatter',
     data:{ datasets:[{ label:yLabel, data:pairs, backgroundColor:color+'55', borderColor:color, borderWidth:1, pointRadius:5 }] },
@@ -948,9 +967,15 @@ function render(){
   const sortedSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]);
   destroyChart('symptomChart');
   const symWrap = document.getElementById('symptom-wrap');
+  symWrap.innerHTML = '';
+  const symCanvas = document.createElement('canvas');
+  symCanvas.id = 'symptomChart';
+  symCanvas.setAttribute('role','img');
+  symCanvas.setAttribute('aria-label','Symptom frequency');
+  symWrap.appendChild(symCanvas);
   if(sortedSyms.length){
     symWrap.style.height = Math.max(150, sortedSyms.length*40+60)+'px';
-    charts['symptomChart'] = new Chart(document.getElementById('symptomChart'), {
+    charts['symptomChart'] = new Chart(symCanvas, {
       type:'bar',
       data:{ labels:sortedSyms.map(e=>e[0]), datasets:[{ data:sortedSyms.map(e=>e[1]), backgroundColor:'#e04b4b44', borderColor:'#e04b4b', borderWidth:1 }] },
       options:{
@@ -959,7 +984,7 @@ function render(){
         scales:{ x:{ title:{display:true,text:'Occurrences',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
       }
     });
-  } else symWrap.innerHTML = '<div class="empty">No symptom data yet</div>';
+  } else { symWrap.style.height='80px'; symCanvas.style.display='none'; symWrap.insertAdjacentHTML('beforeend','<div class="empty" style="padding-top:1.5rem">No symptom data yet</div>'); }
 
   /* trigger: meds */
   const medCounts = {};
@@ -967,9 +992,15 @@ function render(){
   const sortedMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]);
   destroyChart('medChart');
   const medWrap = document.getElementById('med-wrap');
+  medWrap.innerHTML = '';
+  const medCanvas = document.createElement('canvas');
+  medCanvas.id = 'medChart';
+  medCanvas.setAttribute('role','img');
+  medCanvas.setAttribute('aria-label','Medication frequency');
+  medWrap.appendChild(medCanvas);
   if(sortedMeds.length){
     medWrap.style.height = Math.max(120, sortedMeds.length*40+60)+'px';
-    charts['medChart'] = new Chart(document.getElementById('medChart'), {
+    charts['medChart'] = new Chart(medCanvas, {
       type:'bar',
       data:{ labels:sortedMeds.map(e=>e[0]), datasets:[{ data:sortedMeds.map(e=>e[1]), backgroundColor:'#7c6ff744', borderColor:'#7c6ff7', borderWidth:1 }] },
       options:{
@@ -978,7 +1009,7 @@ function render(){
         scales:{ x:{ title:{display:true,text:'Times used',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
       }
     });
-  } else medWrap.innerHTML = '<div class="empty">No medication data yet</div>';
+  } else { medWrap.style.height='80px'; medCanvas.style.display='none'; medWrap.insertAdjacentHTML('beforeend','<div class="empty" style="padding-top:1.5rem">No medication data yet</div>'); }
 
   makeScatter('hrScatter', activeRows.map(r=>n(r['Avg HR (bpm)'])), sev, 'Avg HR (bpm)', 'Severity', '#e09a2f');
   makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
