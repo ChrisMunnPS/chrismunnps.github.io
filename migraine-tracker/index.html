@@ -283,6 +283,18 @@
   .lag-badge-1 { background: var(--purple-dim); color: var(--purple); }
   .lag-badge-2 { background: var(--teal-dim); color: var(--teal); }
   .lag-note { font-size: 11px; color: var(--text3); margin-top: .75rem; line-height: 1.6; }
+
+  /* Monthly breakdown */
+  .month-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .month-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: .9rem 1rem; }
+  .month-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .month-card-name { font-size: 14px; font-weight: 600; }
+  .month-card-rate { font-size: 12px; color: var(--text2); }
+  .month-stat { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+  .month-stat-label { color: var(--text3); }
+  .month-stat-value { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .month-sev-bar { height: 4px; border-radius: 2px; margin-top: 8px; }
+  .month-empty { color: var(--text3); font-size: 12px; padding: .5rem 0; }
 </style>
 </head>
 <body>
@@ -337,6 +349,7 @@
       <div class="tab" data-tab="sleep">Sleep</div>
       <div class="tab" data-tab="triggers">Triggers</div>
       <div class="tab" data-tab="insights">Insights</div>
+      <div class="tab" data-tab="months">Months</div>
       <div class="tab" data-tab="log">Log</div>
     </div>
 
@@ -546,6 +559,17 @@
 
     </div>
 
+    <!-- MONTHS -->
+    <div id="tab-months" class="view">
+      <div class="chart-card">
+        <div class="card-title">Monthly migraine frequency</div>
+        <div class="card-desc">Migraine days per month as a bar chart</div>
+        <div style="position:relative;height:220px"><canvas id="monthlyChart" role="img" aria-label="Monthly migraine frequency"></canvas></div>
+      </div>
+      <div class="section-label" style="margin-top:.5rem">Monthly breakdown</div>
+      <div class="month-grid" id="month-grid"></div>
+    </div>
+
     <!-- LOG -->
     <div id="tab-log" class="view">
       <div class="chart-card" style="padding:0;overflow:hidden">
@@ -586,10 +610,15 @@ let charts = {};
 /* ── helpers ─────────────────────────────────────────────────────── */
 function n(v){ return (v===''||v==null)?null:parseFloat(v); }
 
-/* Parse HH:MM or HH:MM:SS to decimal hours */
+/* Parse HH:MM or HH:MM:SS to decimal hours. Also handles :MM (missing leading 00) */
 function parseTimeToHours(v){
-  if(!v||!v.trim()) return null;
-  const m = v.trim().match(/^(\d+):(\d{2})(?::(\d{2}))?$/);
+  if(!v||!String(v).trim()) return null;
+  const s = String(v).trim();
+  // :MM format — e.g. ":44" means 0h 44m
+  const shortM = s.match(/^:(\d{2})$/);
+  if(shortM) return parseInt(shortM[1],10)/60;
+  // HH:MM or HH:MM:SS
+  const m = s.match(/^(\d+):(\d{2})(?::(\d{2}))?$/);
   if(!m) return null;
   return parseInt(m[1],10) + parseInt(m[2],10)/60 + (m[3]?parseInt(m[3],10)/3600:0);
 }
@@ -803,7 +832,10 @@ function render(){
 
   document.getElementById('main-content').style.display='block';
   const sev = activeRows.map(r=>n(r['Severity']));
-  const migRows = activeRows.filter(r=>n(r['Severity'])>0);
+  // Migraine = severity is a number AND greater than 0. Blank/null/0 = no migraine.
+  const isMig = r => { const v=n(r['Severity']); return v!==null && !isNaN(v) && v>0; };
+  const migRows = activeRows.filter(isMig);
+  const noMigRows = activeRows.filter(r=>!isMig(r));
   const totalDays = activeRows.length;
   const migDays = migRows.length;
   const pct = totalDays>0?Math.round(migDays/totalDays*100):0;
@@ -1085,6 +1117,9 @@ function render(){
   renderCompleteness();
   renderLagAnalysis();
 
+  /* months tab */
+  renderMonths();
+
   /* wire expand buttons on all chart cards */
   initExpandButtons();
 }
@@ -1199,8 +1234,9 @@ function renderHeatmap(){
 
 /* ── comparison table ─────────────────────────────────────────────── */
 function renderComparisonTable(){
-  const migR  = activeRows.filter(r=>n(r['Severity'])>0);
-  const noMigR = activeRows.filter(r=>n(r['Severity'])===0);
+  const isMigR = r => { const v=n(r['Severity']); return v!==null && !isNaN(v) && v>0; };
+  const migR  = activeRows.filter(isMigR);
+  const noMigR = activeRows.filter(r=>!isMigR(r));
   if(!migR.length || !noMigR.length){
     document.getElementById('comp-table-body').innerHTML =
       '<tr><td colspan="4" class="empty">Need both migraine and non-migraine days to compare</td></tr>';
@@ -1620,6 +1656,98 @@ function renderLagAnalysis(){
   document.getElementById('lag-note').innerHTML = note;
 }
 
+/* ── monthly breakdown ────────────────────────────────────────────── */
+function renderMonths(){
+  const MONTH_NAMES = ['January','February','March','April','May','June',
+                       'July','August','September','October','November','December'];
+
+  // Group activeRows by YYYY-MM
+  const byMonth = {};
+  activeRows.forEach(r=>{
+    const dt = parseUKDate(r['Date']);
+    if(!dt) return;
+    const key = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+    if(!byMonth[key]) byMonth[key]=[];
+    byMonth[key].push(r);
+  });
+
+  const keys = Object.keys(byMonth).sort();
+  if(!keys.length){
+    document.getElementById('month-grid').innerHTML='<div class="empty">No data</div>';
+    return;
+  }
+
+  function avg(arr, k){ const v=arr.map(r=>n(r[k])).filter(x=>x!=null&&!isNaN(x)); return v.length?v.reduce((a,b)=>a+b,0)/v.length:null; }
+  function fmt(v,d=1){ return v!=null?v.toFixed(d):'—'; }
+  function isMig(r){ const v=n(r['Severity']); return v!=null&&!isNaN(v)&&v>0; }
+
+  // Bar chart
+  destroyChart('monthlyChart');
+  const migCounts = keys.map(k=>byMonth[k].filter(isMig).length);
+  const totalCounts = keys.map(k=>byMonth[k].length);
+  const barLabels = keys.map(k=>{ const [y,m]=k.split('-'); return MONTH_NAMES[+m-1].slice(0,3)+' '+y.slice(2); });
+  charts['monthlyChart'] = new Chart(document.getElementById('monthlyChart'),{
+    type:'bar',
+    data:{
+      labels: barLabels,
+      datasets:[
+        { label:'Migraine days', data:migCounts, backgroundColor:'#e04b4b88', borderColor:'#e04b4b', borderWidth:1 },
+        { label:'Total days', data:totalCounts, backgroundColor:'#7c6ff722', borderColor:'#7c6ff7', borderWidth:1 }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ display:true, labels:{ color:'#8b91a8', font:{size:11} } } },
+      scales:{
+        x:{ ticks:{color:'#8b91a8',font:{size:10}}, grid:{display:false} },
+        y:{ ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'}, title:{display:true,text:'Days',font:{size:10},color:'#8b91a8'} }
+      }
+    }
+  });
+
+  // Month cards
+  let html = '';
+  keys.forEach(k=>{
+    const mrs = byMonth[k];
+    const [y,m] = k.split('-');
+    const label = MONTH_NAMES[+m-1]+' '+y;
+    const mig = mrs.filter(isMig);
+    const migCount = mig.length;
+    const total = mrs.length;
+    const pct = total?Math.round(migCount/total*100):0;
+    const avgSev = mig.length?avg(mig,'Severity'):null;
+    const avgSleep = avg(mrs,'Sleep Duration (hrs)');
+    const avgPress = avg(mrs,'Pressure (hPa)');
+    const avgHRV = avg(mrs,'HRV');
+    const avgHR = avg(mrs,'Avg HR (bpm)');
+    const avgREM = avg(mrs,'REM Duration (mins)');
+    const peakSev = mig.length?Math.max(...mig.map(r=>n(r['Severity']))):null;
+    const sevColor = !avgSev?'var(--green)':avgSev>=7?'var(--red)':avgSev>=4?'var(--amber)':'var(--green)';
+    const barW = pct;
+    const barCol = pct>=70?'var(--red)':pct>=40?'var(--amber)':'var(--green)';
+
+    html += `<div class="month-card">
+      <div class="month-card-header">
+        <div class="month-card-name">${label}</div>
+        <div class="month-card-rate" style="color:${barCol}">${migCount}/${total} days (${pct}%)</div>
+      </div>
+      <div class="month-sev-bar" style="background:var(--bg3)">
+        <div style="width:${barW}%;height:100%;background:${barCol};border-radius:2px"></div>
+      </div>
+      <div style="margin-top:8px">
+        <div class="month-stat"><span class="month-stat-label">Avg severity</span><span class="month-stat-value" style="color:${sevColor}">${fmt(avgSev)}</span></div>
+        <div class="month-stat"><span class="month-stat-label">Peak severity</span><span class="month-stat-value">${peakSev??'—'}</span></div>
+        <div class="month-stat"><span class="month-stat-label">Avg sleep</span><span class="month-stat-value">${fmt(avgSleep)}h</span></div>
+        <div class="month-stat"><span class="month-stat-label">Avg REM</span><span class="month-stat-value">${fmt(avgREM,0)} min</span></div>
+        <div class="month-stat"><span class="month-stat-label">Avg pressure</span><span class="month-stat-value">${fmt(avgPress)} hPa</span></div>
+        <div class="month-stat"><span class="month-stat-label">Avg HRV</span><span class="month-stat-value">${fmt(avgHRV)}</span></div>
+        <div class="month-stat"><span class="month-stat-label">Avg HR</span><span class="month-stat-value">${fmt(avgHR,0)} bpm</span></div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('month-grid').innerHTML = html;
+}
+
 /* ── events ───────────────────────────────────────────────────────── */
 document.getElementById('modal-close-btn').addEventListener('click', closeModal);
 document.getElementById('chart-modal').addEventListener('click', e=>{
@@ -1782,17 +1910,18 @@ async function exportPDF(){
 
     /* ── data ── */
     const last90   = get90DayRows();
-    const migRows  = last90.filter(r=>n(r['Severity'])>0);
+    const isMigPDF = r => { const v=n(r['Severity']); return v!==null&&!isNaN(v)&&v>0; };
+    const migRows  = last90.filter(isMigPDF);
     const migDays  = migRows.length;
-    const avgSev   = migDays ? (migRows.reduce((s,r)=>s+n(r['Severity']),0)/migDays).toFixed(1) : '—';
-    const peakSev  = migDays ? Math.max(...migRows.map(r=>n(r['Severity']))) : '—';
+    const avgSev   = migDays ? (migRows.reduce((s,r)=>s+n(r['Severity']),0)/migDays).toFixed(1) : '-';
+    const peakSev  = migDays ? Math.max(...migRows.map(r=>n(r['Severity']))) : '-';
     const dateRange= last90.length
-      ? fmtDate(parseUKDate(last90[0]['Date']))+' \u2013 '+fmtDate(parseUKDate(last90[last90.length-1]['Date']))
+      ? fmtDate(parseUKDate(last90[0]['Date']))+' - '+fmtDate(parseUKDate(last90[last90.length-1]['Date']))
       : '';
 
     /* ══ PAGE 1: Summary + charts ══════════════════════════════════ */
     drawHeader('Migraine Report — Chris Munn',
-      `${dateRange}  \u00B7  ${last90.length} days recorded  \u00B7  ${migDays} migraine days  \u00B7  Avg severity ${avgSev}/10`);
+      `${dateRange}  ·  ${last90.length} days recorded  ·  ${migDays} migraine days  ·  Avg severity ${avgSev}/10`);
     let y = 24;
 
     // metric boxes
@@ -1828,33 +1957,33 @@ async function exportPDF(){
     if(tlImg) pdf.addImage(tlImg,'PNG',margin,y,usableW,42);
     y += 45;
 
-    y = secLabel('Severity distribution  \u00B7  Day of week  \u00B7  Atmospheric pressure vs severity', y);
+    y = secLabel('Severity distribution  ·  Day of week  ·  Atmospheric pressure vs severity', y);
     const cw = (usableW - 4) / 3;
     const row1 = await Promise.all(['sevDistChart','dowChart','pressureScatter'].map(captureChart));
     row1.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 36); });
 
     /* ══ PAGE 2: Correlations ═══════════════════════════════════════ */
     pdf.addPage();
-    drawHeader('Migraine Report — Correlations', `Chris Munn  \u00B7  ${dateRange}`);
+    drawHeader('Migraine Report — Correlations', `Chris Munn  ·  ${dateRange}`);
     y = 24;
 
-    y = secLabel('Weather: pressure change  \u00B7  humidity  \u00B7  temperature change', y);
+    y = secLabel('Weather: pressure change  ·  humidity  ·  temperature change', y);
     const row2 = await Promise.all(['pressureChangeScatter','humidityScatter','tempChangeScatter'].map(captureChart));
     row2.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 40); });
     y += 43;
 
-    y = secLabel('Sleep: duration  \u00B7  efficiency  \u00B7  HRV', y);
+    y = secLabel('Sleep: duration  ·  efficiency  ·  HRV', y);
     const row3 = await Promise.all(['sleepDurScatter','sleepEffScatter','hrvScatter'].map(captureChart));
     row3.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 40); });
     y += 43;
 
-    y = secLabel('Sleep: REM  \u00B7  deep sleep  \u00B7  rain vs dry days', y);
+    y = secLabel('Sleep: REM  ·  deep sleep  ·  rain vs dry days', y);
     const row4 = await Promise.all(['remScatter','deepScatter','rainChart'].map(captureChart));
     row4.forEach((img,i)=>{ if(img) pdf.addImage(img,'PNG', margin+i*(cw+2), y, cw, 38); });
 
     /* ══ PAGE 3: Heatmap calendar ═══════════════════════════════════ */
     pdf.addPage();
-    drawHeader('Migraine Report — Calendar Heatmap', `Chris Munn  \u00B7  ${dateRange}`);
+    drawHeader('Migraine Report — Calendar Heatmap', `Chris Munn  ·  ${dateRange}`);
     y = 24;
     y = secLabel('Each cell = one day. Dark green = no migraine. Red shades = migraine, darker = more severe.', y);
 
@@ -1900,10 +2029,10 @@ async function exportPDF(){
       {h:'Severity',          k:'Severity',                w:13},
       {h:'# Taken',           k:'# Taken',                 w:13},
       {h:'Pressure hPa',      k:'Pressure (hPa)',          w:14},
-      {h:'Pressure Δ',        k:'Pressure Change (Δ)',     w:13},
+      {h:'Pressure (d)',      k:'Pressure Change (Δ)',     w:13},
       {h:'Humidity %',        k:'Humidity (%)',             w:13},
-      {h:'Temperature °C',    k:'Temperature (°C)',        w:14},
-      {h:'Temp Change Δ',     k:'Temp Change (Δ)',         w:14},
+      {h:'Temperature C',     k:'Temperature (°C)',        w:14},
+      {h:'Temp Change (d)',   k:'Temp Change (Δ)',         w:14},
       {h:'Rain',              k:'Rain',                    w:10},
       {h:'Sleep hrs',         k:'Sleep Duration (hrs)',    w:13},
       {h:'Sleep Eff %',       k:'Sleep Efficiency (%)',    w:13},
@@ -1962,7 +2091,7 @@ async function exportPDF(){
       cols.forEach(c=>{
         let val = String(row[c.k] != null ? row[c.k] : '');
         const maxCh = Math.floor((c.w - 1.5) / 1.55);
-        if(val.length > maxCh) val = val.slice(0, maxCh-1)+'\u2026';
+        if(val.length > maxCh) val = val.slice(0, maxCh-1)+'...';
 
         if(c.k==='Severity' && sev!=null && sev>0){
           pdf.setTextColor(...(sev>=7?C.sevHigh:sev>=4?C.sevMed:C.sevLow));
@@ -1985,16 +2114,16 @@ async function exportPDF(){
     });
 
     pdf.addPage();
-    drawHeader('Migraine Report — Data Log (last 90 days)', `Chris Munn  \u00B7  ${dateRange}`);
+    drawHeader('Migraine Report — Data Log (last 90 days)', `Chris Munn  ·  ${dateRange}`);
     y = 24;
-    y = secLabel('All recorded fields — severity colour coded: green \u2264 3, amber 4\u20136, red \u2265 7', y);
+    y = secLabel('All recorded fields - severity colour coded: green <= 3, amber 4-6, red >= 7', y);
     y = drawColHeaders(y);
 
     let rowIdx=0;
     for(const row of tableRows){
       if(y+ROW_H > PH-margin-6){
         pdf.addPage();
-        drawHeader('Migraine Report — Data Log (continued)', `Chris Munn  \u00B7  ${dateRange}`);
+        drawHeader('Migraine Report — Data Log (continued)', `Chris Munn  ·  ${dateRange}`);
         y=24;
         y=secLabel('Continued', y);
         y=drawColHeaders(y);
@@ -2014,7 +2143,7 @@ async function exportPDF(){
       pdf.setDrawColor(...C.border); pdf.setLineWidth(0.2);
       pdf.line(margin, PH-8, PW-margin, PH-8);
       pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(...C.dimText);
-      pdf.text('Migraine Tracker \u00B7 Confidential patient data \u00B7 Chris Munn', margin, PH-4.5);
+      pdf.text('Migraine Tracker · Confidential patient data · Chris Munn', margin, PH-4.5);
       pdf.text(`Page ${p} of ${pageCount}`, PW-margin, PH-4.5, {align:'right'});
     }
 
