@@ -457,15 +457,22 @@
 
     <!-- TRIGGERS -->
     <div id="tab-triggers" class="view">
-      <div class="chart-card">
-        <div class="card-title">Other symptoms frequency</div>
-        <div class="card-desc">Associated symptoms ranked by occurrence</div>
-        <div id="symptom-wrap" style="position:relative;min-height:120px"><canvas id="symptomChart" role="img" aria-label="Symptom frequency"></canvas></div>
+
+      <!-- Symptom abbreviation legend -->
+      <div class="chart-card" style="padding:.85rem 1.25rem">
+        <div class="card-title" style="margin-bottom:.6rem">Symptom key</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          ${Object.entries(SYMPTOM_ABBR).map(([k,v])=>`
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 10px;border-radius:20px;background:var(--bg3);border:1px solid var(--border2)">
+              <strong style="color:var(--purple)">${k}</strong> ${v}
+            </span>`).join('')}
+        </div>
       </div>
+
       <div class="chart-card">
-        <div class="card-title">Medications used</div>
-        <div class="card-desc">Frequency of each medication taken</div>
-        <div id="med-wrap" style="position:relative;min-height:120px"><canvas id="medChart" role="img" aria-label="Medication frequency"></canvas></div>
+        <div class="card-title">Symptom frequency</div>
+        <div class="card-desc">Associated symptoms ranked by occurrence across all migraine days</div>
+        <div id="symptom-wrap" style="position:relative;min-height:120px"><canvas id="symptomChart" role="img" aria-label="Symptom frequency"></canvas></div>
       </div>
       <div class="grid2">
         <div class="chart-card">
@@ -474,9 +481,9 @@
           <div style="position:relative;height:200px"><canvas id="hrScatter" role="img" aria-label="HR vs severity"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="card-title">Medications taken (count) vs severity</div>
-          <div class="card-desc">Number of doses on migraine days</div>
-          <div style="position:relative;height:200px"><canvas id="meds-taken-scatter" role="img" aria-label="Meds taken vs severity"></canvas></div>
+          <div class="card-title">Pills taken vs severity</div>
+          <div class="card-desc">Does higher severity require more doses to manage?</div>
+          <div style="position:relative;height:200px"><canvas id="meds-taken-scatter" role="img" aria-label="Pills taken vs severity"></canvas></div>
         </div>
       </div>
     </div>
@@ -610,7 +617,22 @@ let charts = {};
 /* ── helpers ─────────────────────────────────────────────────────── */
 function n(v){ return (v===''||v==null)?null:parseFloat(v); }
 
-/* Parse HH:MM or HH:MM:SS to decimal hours. Also handles :MM (missing leading 00) */
+/* ── symptom abbreviation expander ───────────────────────────────── */
+const SYMPTOM_ABBR = {
+  'D': 'Dizziness',
+  'L': 'Light sensitivity',
+  'V': 'Vertigo',
+  'S': 'Sound sensitivity',
+  'M': 'Movement sensitivity',
+};
+
+function expandSymptoms(raw){
+  if(!raw||!raw.trim()) return [];
+  return raw.split(/[;,]+/)
+    .map(s=>s.trim())
+    .filter(Boolean)
+    .map(s=> SYMPTOM_ABBR[s.toUpperCase()] || s);
+}
 function parseTimeToHours(v){
   if(!v||!String(v).trim()) return null;
   const s = String(v).trim();
@@ -1018,9 +1040,13 @@ function render(){
   makeScatter('hrvScatter', activeRows.map(r=>n(r['HRV'])), sev, 'HRV', 'Severity', '#d4537e');
   makeScatter('awakeScatter', activeRows.map(r=>n(r['Awake Time (mins)'])), sev, 'Awake time (mins)', 'Severity', '#993C1D');
 
-  /* trigger: symptoms */
+  /* trigger: symptoms (expanded) */
   const symCounts = {};
-  activeRows.forEach(r=>{ if(r['Other Symptoms']) r['Other Symptoms'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{symCounts[s]=(symCounts[s]||0)+1;}); });
+  activeRows.forEach(r=>{
+    expandSymptoms(r['Other Symptoms']).forEach(s=>{
+      symCounts[s]=(symCounts[s]||0)+1;
+    });
+  });
   const sortedSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]);
   destroyChart('symptomChart');
   const symWrap = document.getElementById('symptom-wrap');
@@ -1041,35 +1067,14 @@ function render(){
         scales:{ x:{ title:{display:true,text:'Occurrences',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
       }
     });
-  } else { symWrap.style.height='80px'; symCanvas.style.display='none'; symWrap.insertAdjacentHTML('beforeend','<div class="empty" style="padding-top:1.5rem">No symptom data yet</div>'); }
-
-  /* trigger: meds */
-  const medCounts = {};
-  activeRows.forEach(r=>{ if(r['Medications Taken']) r['Medications Taken'].split(/[;,]+/).map(s=>s.trim()).filter(Boolean).forEach(s=>{medCounts[s]=(medCounts[s]||0)+1;}); });
-  const sortedMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]);
-  destroyChart('medChart');
-  const medWrap = document.getElementById('med-wrap');
-  medWrap.innerHTML = '';
-  const medCanvas = document.createElement('canvas');
-  medCanvas.id = 'medChart';
-  medCanvas.setAttribute('role','img');
-  medCanvas.setAttribute('aria-label','Medication frequency');
-  medWrap.appendChild(medCanvas);
-  if(sortedMeds.length){
-    medWrap.style.height = Math.max(120, sortedMeds.length*40+60)+'px';
-    charts['medChart'] = new Chart(medCanvas, {
-      type:'bar',
-      data:{ labels:sortedMeds.map(e=>e[0]), datasets:[{ data:sortedMeds.map(e=>e[1]), backgroundColor:'#7c6ff744', borderColor:'#7c6ff7', borderWidth:1 }] },
-      options:{
-        indexAxis:'y', responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{display:false} },
-        scales:{ x:{ title:{display:true,text:'Times used',font:{size:10},color:'#8b91a8'}, ticks:{color:'#8b91a8'}, grid:{color:'rgba(255,255,255,.05)'} }, y:{ ticks:{color:'#8b91a8',font:{size:12}}, grid:{display:false} } }
-      }
-    });
-  } else { medWrap.style.height='80px'; medCanvas.style.display='none'; medWrap.insertAdjacentHTML('beforeend','<div class="empty" style="padding-top:1.5rem">No medication data yet</div>'); }
+  } else {
+    symWrap.style.height='80px';
+    symCanvas.style.display='none';
+    symWrap.insertAdjacentHTML('beforeend','<div class="empty" style="padding-top:1.5rem">No symptom data yet</div>');
+  }
 
   makeScatter('hrScatter', activeRows.map(r=>n(r['Avg HR (bpm)'])), sev, 'Avg HR (bpm)', 'Severity', '#e09a2f');
-  makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Doses taken', 'Severity', '#d4537e');
+  makeScatter('meds-taken-scatter', activeRows.map(r=>n(r['# Taken'])), sev, 'Pills taken', 'Severity', '#d4537e');
 
   /* log table */
   // Col definitions: key, display label, width class ('' = narrow 36px, 'th-med', 'th-wide')
@@ -1092,11 +1097,11 @@ function render(){
     { k:'Deep Sleep (mins)',     h:'Deep Sleep (mins)',     w:''        },
     { k:'Avg HR (bpm)',          h:'Avg HR (bpm)',          w:''        },
     { k:'HRV',                   h:'HRV',                   w:''        },
-    { k:'Medications Taken',     h:'Medications Taken',     w:'th-wide' },
     { k:'Notes',                 h:'Notes',                 w:'th-wide' },
   ];
   const tdClass = { 'th-wide':'td-wide', 'th-med':'td-med', '':'' };
   const sevIdx = logCols.findIndex(c=>c.k==='Severity');
+  const symIdx = logCols.findIndex(c=>c.k==='Other Symptoms');
   document.getElementById('log-head').innerHTML = logCols.map(c=>
     `<th class="${c.w}"><span>${c.h}</span></th>`
   ).join('');
@@ -1107,7 +1112,9 @@ function render(){
       const badge = s===null?'':s===0?`<span class="badge b-none">0</span>`:s>=7?`<span class="badge b-high">${s}</span>`:s>=4?`<span class="badge b-med">${s}</span>`:`<span class="badge b-low">${s}</span>`;
       return `<tr>${logCols.map((c,i)=>{
         const cls = tdClass[c.w] ? ` class="${tdClass[c.w]}"` : '';
-        return i===sevIdx ? `<td${cls}>${badge}</td>` : `<td${cls}>${r[c.k]||''}</td>`;
+        if(i===sevIdx) return `<td${cls}>${badge}</td>`;
+        if(i===symIdx) return `<td${cls}>${expandSymptoms(r[c.k]).join(', ')}</td>`;
+        return `<td${cls}>${r[c.k]||''}</td>`;
       }).join('')}</tr>`;
     }).join('');
 
@@ -1204,8 +1211,7 @@ function renderHeatmap(){
           html += `<div class="ht-row"><span>Severity</span><span>${row['Severity']||'—'}</span></div>`;
           if(row['Pressure (hPa)']) html += `<div class="ht-row"><span>Pressure</span><span>${row['Pressure (hPa)']} hPa</span></div>`;
           if(row['Sleep Duration (hrs)']) html += `<div class="ht-row"><span>Sleep</span><span>${row['Sleep Duration (hrs)']}h</span></div>`;
-          if(row['Medications Taken']) html += `<div class="ht-row"><span>Meds</span><span>${row['Medications Taken']}</span></div>`;
-          if(row['Other Symptoms']) html += `<div class="ht-row"><span>Symptoms</span><span>${row['Other Symptoms']}</span></div>`;
+        if(row['Other Symptoms']) html += `<div class="ht-row"><span>Symptoms</span><span>${expandSymptoms(row['Other Symptoms']).join(', ')}</span></div>`;
         }
         tooltip.innerHTML = html;
         tooltip.style.display = 'block';
@@ -1297,7 +1303,7 @@ function renderCompleteness(){
   const fields = [
     'Severity','Pressure (hPa)','Pressure Change (Δ)','Humidity (%)','Temperature (°C)',
     'Temp Change (Δ)','Rain','Sleep Duration (hrs)','Sleep Efficiency (%)','Awake Time (mins)',
-    'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV','Medications Taken','Other Symptoms','Notes'
+    'REM Duration (mins)','Deep Sleep (mins)','Avg HR (bpm)','HRV','Other Symptoms','Notes'
   ];
   const total = activeRows.length;
   let html = '';
@@ -2041,8 +2047,7 @@ async function exportPDF(){
       {h:'Deep Sleep mins',   k:'Deep Sleep (mins)',       w:14},
       {h:'Avg HR bpm',        k:'Avg HR (bpm)',            w:13},
       {h:'HRV',               k:'HRV',                    w:10},
-      {h:'Other Symptoms',    k:'Other Symptoms',          w:20},
-      {h:'Medications',       k:'Medications Taken',       w:20},
+      {h:'Other Symptoms',    k:'Other Symptoms',          w:28},
       {h:'Notes',             k:'Notes',                   w:18},
     ];
     // auto-adjust last column so widths sum exactly to usableW
@@ -2089,7 +2094,9 @@ async function exportPDF(){
       const sev = n(row['Severity']);
       let x = margin+1.5;
       cols.forEach(c=>{
-        let val = String(row[c.k] != null ? row[c.k] : '');
+        let val = c.k==='Other Symptoms'
+          ? expandSymptoms(row[c.k]).join(', ')
+          : String(row[c.k] != null ? row[c.k] : '');
         const maxCh = Math.floor((c.w - 1.5) / 1.55);
         if(val.length > maxCh) val = val.slice(0, maxCh-1)+'...';
 
