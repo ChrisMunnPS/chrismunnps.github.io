@@ -330,6 +330,42 @@ body {
 }
 .field-head .field-label { margin-bottom: 0; }
 .mini-actions { display: inline-flex; gap: 2px; }
+.count-max { font-size: .72rem; color: var(--muted); }
+.count-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.count-row input[type="number"] {
+  width: 88px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-weight: 650;
+}
+.count-row input[type="number"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.count-hint { font-size: .76rem; color: var(--muted); min-width: 0; flex: 1 1 auto; }
+
+.presets { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent-strong); }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.presets-note { margin: 8px 0 0; font-size: .73rem; color: var(--muted); }
 .linkbtn {
   border: 0;
   background: none;
@@ -405,6 +441,42 @@ body {
 .resume-text strong { display: block; font-size: .84rem; }
 .resume-text p { margin: 2px 0 0; font-size: .78rem; color: var(--muted); }
 .resume-actions { display: flex; gap: 8px; flex: none; }
+
+.srs {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 28px;
+  padding: 18px 22px;
+}
+.srs-head { display: flex; align-items: center; gap: 10px; }
+.srs-head h2 { margin: 0; font-size: 1rem; }
+.srs-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #eef2f9;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+@media (prefers-color-scheme: dark) { .srs-badge { background: #0d1626; } }
+.srs-badge.is-due { background: var(--accent-soft); color: var(--accent-strong); }
+.srs-note { flex: 1 1 300px; margin: 0; font-size: .82rem; line-height: 1.5; color: var(--muted); }
+.srs-stats { display: flex; gap: 20px; margin: 0; }
+.srs-stats dt {
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.srs-stats dd { margin: 2px 0 0; font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
+.srs-actions { display: flex; gap: 8px; margin-left: auto; }
 
 /* ---------------------------------------------------------------- exam */
 
@@ -917,6 +989,8 @@ body {
 .swatch.governance { background: #be185d; }
 
 .stack { display: grid; gap: 9px; margin-top: 16px; }
+.queue-note { margin: 14px 0 0; font-size: .78rem; line-height: 1.5; color: var(--muted); }
+.queue-note strong { color: var(--text); }
 .fineprint { margin: 16px 0 0; font-size: .72rem; color: var(--muted); }
 
 .fatal { max-width: 560px; margin: 60px auto; text-align: center; }
@@ -939,6 +1013,16 @@ body {
   border-radius: 5px;
   overflow-wrap: anywhere;
 }
+
+/* pass fireworks */
+.fireworks {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fireworks canvas { display: block; width: 100%; height: 100%; }
 
 /* --------------------------------------------------------------- modal */
 
@@ -997,7 +1081,7 @@ body {
 #print-area { display: none; }
 
 @media print {
-  .toast, .skip-link, .modal-backdrop { display: none !important; }
+  .toast, .skip-link, .modal-backdrop, .fireworks { display: none !important; }
   body {
     background: #fff !important;
     color: #000 !important;

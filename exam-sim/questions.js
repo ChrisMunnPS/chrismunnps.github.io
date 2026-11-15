@@ -1781,6 +1781,1777 @@ window.QUESTIONS = [
     ],
     "explanation": "**Usage and insights** — the application-centric report showing the most used apps, apps with the most failed sign-ins, and top sign-in errors — requires **P1 or P2** and a Security Administrator, Security Reader, or Reports Reader role. **Identity Secure Score** is available in **all editions** and is a percentage indicating alignment with Microsoft's best-practice recommendations.\n\n- **B** is wrong. Only usage and insights is gated.\n- **D** is wrong. No Governance license is required.\n\nOn scoring: some controls are **binary** (100% when configured as recommended), others are a **percentage of total configuration**. The course's worked example: the MFA control is worth a maximum **10.71%**, and protecting **5 of 100** users yields **5/100 × 10.71% ≈ 0.53%**. The dashboard includes the score, a comparison against tenants in the **same industry and similar size**, a **trend graph**, and a list of improvement actions. Path: **Microsoft Entra ID > Security > Identity Secure Score**.",
     "source": "LP4 Module 4.6 / 4.7."
+  },
+  {
+    "id": 61,
+    "domain": "identity",
+    "topic": "Temporary Access Pass onboarding",
+    "stem": "A contractor starts tomorrow and has no company phone. The contractor must sign in once to register a FIDO2 security key, and the credential must stop working after it is used. The solution must not create a permanent password.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A Temporary Access Pass configured for one-time use and a short lifetime, with Temporary Access Pass enabled in the authentication methods policy."
+      },
+      {
+        "letter": "B",
+        "text": "A temporary password that must be changed at next sign-in."
+      },
+      {
+        "letter": "C",
+        "text": "A self-service password reset registration link sent by email."
+      },
+      {
+        "letter": "D",
+        "text": "An access package assignment that expires after one day."
+      },
+      {
+        "letter": "E",
+        "text": "A Windows Hello for Business PIN reset."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A **Temporary Access Pass (TAP)** is a time-limited passcode that can be configured as **one-time** or **multi-use**. It lets a user sign in to register passwordless methods, including a FIDO2 security key, without a permanent password.\n- TAP must be enabled in the **authentication methods policy**, and its lifetime must fall within the tenant's maximum TAP lifetime.\n\n- **B** creates a password, which the requirement forbids.\n- **C** assumes the user can already sign in and complete SSPR.\n- **D** grants resource access; it does not provide an authentication method.\n- **E** assumes Windows Hello for Business is already enrolled.",
+    "source": "LP1 Module 2.4 / 2.5 (passwordless and temporary access pass)."
+  },
+  {
+    "id": 62,
+    "domain": "identity",
+    "topic": "Cross-tenant synchronization",
+    "stem": "Fabrikam has its own Microsoft Entra tenant. Contoso acquires Fabrikam. Fabrikam users must appear as guests in Contoso, and changes to their display name and department in Fabrikam must flow to Contoso automatically. Users must not redeem invitations manually.\n\nWhich two actions should you perform? (Choose two.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Configure cross-tenant synchronization in the Fabrikam source tenant."
+      },
+      {
+        "letter": "B",
+        "text": "Enable automatic redemption for inbound cross-tenant synchronization in the Contoso target tenant."
+      },
+      {
+        "letter": "C",
+        "text": "Create a B2B collaboration invitation for every Fabrikam user."
+      },
+      {
+        "letter": "D",
+        "text": "Add Fabrikam as a connected organization in an entitlement management catalog."
+      },
+      {
+        "letter": "E",
+        "text": "Add Fabrikam as a federated domain in Contoso."
+      }
+    ],
+    "answers": [
+      "A",
+      "B"
+    ],
+    "explanation": "- **Cross-tenant synchronization** creates and maintains guest accounts in a target tenant from a source tenant. It keeps selected user attributes synchronized, so changes in Fabrikam flow to Contoso.\n- The target tenant must allow **inbound cross-tenant synchronization** and enable **automatic redemption** so users do not redeem a B2B invitation.\n\n- **C** creates one-time invitations and does not keep attributes synchronized.\n- **D** supports access packages, not continuous user provisioning.\n- **E** is domain federation, which is unrelated to guest account lifecycle.",
+    "source": "LP1 Module 3.6 / 3.7 (cross-tenant access and synchronization)."
+  },
+  {
+    "id": 63,
+    "domain": "identity",
+    "topic": "Cloud Sync vs Connect Sync",
+    "stem": "Contoso has three Active Directory forests with no trusts between them. The synchronization server must not accept inbound connections from the internet, must support password hash synchronization, and must continue if one synchronization agent fails.\n\nWhat should you deploy?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Microsoft Entra Cloud Sync with lightweight agents in each forest and at least two agents for high availability."
+      },
+      {
+        "letter": "B",
+        "text": "Microsoft Entra Connect Sync on a single server in staging mode."
+      },
+      {
+        "letter": "C",
+        "text": "Pass-through authentication agents in each forest."
+      },
+      {
+        "letter": "D",
+        "text": "An Active Directory Federation Services farm in each forest."
+      },
+      {
+        "letter": "E",
+        "text": "Microsoft Entra Connect Sync with directory synchronization disabled."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Cloud Sync** uses lightweight agents that make only **outbound** connections to Microsoft Entra ID, so no inbound firewall rule is required.\n- It supports **password hash synchronization**, multiple forests without trusts, and **high availability** when multiple agents are installed.\n\n- **B** is a single server and staging mode does not export changes.\n- **C** provides authentication, not directory synchronization.\n- **D** provides federation and still needs a synchronization source.\n- **E** stops directory synchronization entirely.",
+    "source": "LP1 Module 4.2 (Cloud Sync)."
+  },
+  {
+    "id": 64,
+    "domain": "identity",
+    "topic": "Seamless single sign-on",
+    "stem": "Users on domain-joined computers on the corporate network are prompted for credentials when they open Microsoft 365. Password hash synchronization is already configured. You must remove the prompt without deploying federation, and users must still complete MFA when they work from home.\n\nWhat should you enable?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Microsoft Entra seamless single sign-on."
+      },
+      {
+        "letter": "B",
+        "text": "Pass-through authentication."
+      },
+      {
+        "letter": "C",
+        "text": "Active Directory Federation Services."
+      },
+      {
+        "letter": "D",
+        "text": "Windows Hello for Business certificate trust."
+      },
+      {
+        "letter": "E",
+        "text": "Per-user MFA with trusted IPs disabled."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Seamless SSO** uses the Kerberos ticket of the signed-in domain user to sign the user in to Microsoft Entra ID without an extra prompt. It relies on the **AZUREADSSOACC** computer account created in Active Directory.\n- Because the user is still authenticating to Microsoft Entra ID, **Conditional Access MFA** continues to apply when the user is off the corporate network.\n\n- **B** replaces password hash synchronization and still prompts in this scenario.\n- **C** is federation, which the requirement excludes.\n- **D** changes the Windows sign-in method, not the browser prompt.\n- **E** does not provide single sign-on.",
+    "source": "LP1 Module 4.3 (seamless single sign-on)."
+  },
+  {
+    "id": 65,
+    "domain": "identity",
+    "topic": "External ID self-service sign-up",
+    "stem": "Contoso wants consumers to sign up for a customer portal by using their own email address or a Google account. The sign-up page must show Contoso branding, and customers must manage their own profile without an invitation from Contoso.\n\nWhich solution should you use?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A Microsoft Entra External ID external tenant with a sign-up and sign-in user flow and social identity providers."
+      },
+      {
+        "letter": "B",
+        "text": "B2B collaboration with one invitation per customer."
+      },
+      {
+        "letter": "C",
+        "text": "Cross-tenant synchronization from a customer tenant."
+      },
+      {
+        "letter": "D",
+        "text": "An entitlement management connected organization."
+      },
+      {
+        "letter": "E",
+        "text": "Active Directory Federation Services with SAML claims."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Microsoft Entra External ID** external tenants provide consumer identity for apps, including **self-service sign-up**, **company branding**, social identity providers such as Google, and local email accounts.\n- A **user flow** defines the sign-up and sign-in experience and which identity providers are offered.\n\n- **B** requires an invitation and is designed for business guests.\n- **C** synchronizes users from another Microsoft Entra tenant, not consumers.\n- **D** governs access packages for existing users.\n- **E** requires a federation trust and does not provide self-service consumer sign-up.",
+    "source": "LP1 Module 3.6 (external identities)."
+  },
+  {
+    "id": 66,
+    "domain": "identity",
+    "topic": "Dynamic group rule syntax",
+    "stem": "All Windows devices that are company-owned and not compliant must join a group automatically.\n\nWhich dynamic membership rule should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "`(device.deviceOSType -eq \"Windows\") -and (device.deviceOwnership -eq \"Company\") -and (device.isCompliant -eq False)`"
+      },
+      {
+        "letter": "B",
+        "text": "`(device.deviceOSType -eq \"Windows\") && (device.deviceOwnership -eq \"Company\")`"
+      },
+      {
+        "letter": "C",
+        "text": "`(user.deviceOSType -eq \"Windows\") -and (user.isCompliant -eq False)`"
+      },
+      {
+        "letter": "D",
+        "text": "`(device.deviceOSType -eq \"Windows\") -or (device.isCompliant -eq True)`"
+      },
+      {
+        "letter": "E",
+        "text": "`(device.deviceOSType -contains \"Windows\") -and (device.isCompliant -eq No)`"
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Dynamic device rules use the **`device.`** property prefix, the **`-eq`** comparison operator, and **`-and`** to require every condition.\n- The correct properties are **`deviceOSType`**, **`deviceOwnership`**, and **`isCompliant`**. Boolean values are **`True`** and **`False`**.\n\n- **B** uses unsupported C-style **`&&`** and omits the compliance condition.\n- **C** uses user properties for a device group.\n- **D** uses **`-or`**, which includes compliant devices.\n- **E** uses **`-contains`** and **`No`**, neither of which is valid here.",
+    "source": "LP1 Module 3.4 (dynamic groups)."
+  },
+  {
+    "id": 67,
+    "domain": "identity",
+    "topic": "Group-based licensing errors",
+    "stem": "Licenses are assigned to users through a group. A new user in the United Kingdom receives the group membership, but the license is not assigned. The user object has no location configured.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Set the user's Usage location, either directly or through a directory synchronization mapping."
+      },
+      {
+        "letter": "B",
+        "text": "Assign the license directly to the user as well."
+      },
+      {
+        "letter": "C",
+        "text": "Convert the licensing group from Assigned to Dynamic."
+      },
+      {
+        "letter": "D",
+        "text": "Remove the user from the group and add the user again."
+      },
+      {
+        "letter": "E",
+        "text": "Enable group-based licensing on the tenant."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Group-based licensing requires a valid **Usage location** before a license with location-dependent service plans can be assigned. If the location is missing, the assignment fails with a licensing error.\n- Set the location on the user, or map it from the on-premises directory so new users receive it automatically.\n\n- **B** fails for the same reason.\n- **C** changes membership, not licensing prerequisites.\n- **D** does not add the missing location.\n- **E** is already working for other users.",
+    "source": "LP1 Module 3.3 (group-based licensing)."
+  },
+  {
+    "id": 68,
+    "domain": "identity",
+    "topic": "Custom security attribute roles",
+    "stem": "Contoso uses custom security attributes to store clearance levels. The identity team must create attribute sets and definitions. The security team must assign attribute values to users. Neither team may receive the Global Administrator role.\n\nWhich two roles should you assign? (Choose two.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Attribute Definition Administrator."
+      },
+      {
+        "letter": "B",
+        "text": "Attribute Assignment Administrator."
+      },
+      {
+        "letter": "C",
+        "text": "User Administrator."
+      },
+      {
+        "letter": "D",
+        "text": "Attribute Definition Reader."
+      },
+      {
+        "letter": "E",
+        "text": "Privileged Role Administrator."
+      }
+    ],
+    "answers": [
+      "A",
+      "B"
+    ],
+    "explanation": "- **Attribute Definition Administrator** can create and manage attribute sets and custom security attribute definitions.\n- **Attribute Assignment Administrator** can assign values of custom security attributes to users, service principals, and managed identities.\n\n- **C** manages users but not custom security attribute definitions or assignments by default.\n- **D** is read-only.\n- **E** manages role assignments, not attribute schema or values.",
+    "source": "LP1 Module 3.8 (custom security attributes)."
+  },
+  {
+    "id": 69,
+    "domain": "identity",
+    "topic": "Restricted management administrative units",
+    "stem": "Contoso has break-glass and executive administrator accounts. Helpdesk staff must not be able to reset the passwords or change the properties of these accounts, even when they hold the User Administrator role.\n\nWhat should you create?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A restricted management administrative unit that contains the protected accounts."
+      },
+      {
+        "letter": "B",
+        "text": "A standard administrative unit that contains the protected accounts and assign Helpdesk Administrator to it."
+      },
+      {
+        "letter": "C",
+        "text": "A dynamic security group that contains the protected accounts."
+      },
+      {
+        "letter": "D",
+        "text": "A Privileged Identity Management eligible assignment for User Administrator."
+      },
+      {
+        "letter": "E",
+        "text": "A Conditional Access policy that blocks password reset."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A **restricted management administrative unit (RMAU)** protects its members from directory-level administrators. Only users with a role scoped directly to the RMAU can manage those objects.\n- Adding the protected accounts to an RMAU prevents a tenant-scoped User Administrator or Helpdesk Administrator from managing them.\n\n- **B** grants the helpdesk more control.\n- **C** groups do not restrict administrative scope.\n- **D** changes how the admin activates a role, not what the role can manage.\n- **E** cannot restrict directory password reset operations.",
+    "source": "LP1 Module 1.4 / 1.5 (administrative units)."
+  },
+  {
+    "id": 70,
+    "domain": "identity",
+    "topic": "Entra Connect staging mode",
+    "stem": "Contoso must test new synchronization rules on a second Microsoft Entra Connect server before changing production. Production synchronization must continue during the test.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Install Microsoft Entra Connect on the second server, enable staging mode, import and validate the configuration, then promote the server by disabling staging mode and stopping the original server."
+      },
+      {
+        "letter": "B",
+        "text": "Enable staging mode on the production server while the rules are tested."
+      },
+      {
+        "letter": "C",
+        "text": "Replace Microsoft Entra Connect with Cloud Sync on the second server."
+      },
+      {
+        "letter": "D",
+        "text": "Export the synchronization rules from the second server and import them into production without testing."
+      },
+      {
+        "letter": "E",
+        "text": "Install pass-through authentication agents on the second server."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A server in **staging mode** imports and synchronizes data but does not export changes to Microsoft Entra ID. It is the supported way to validate a new configuration alongside production.\n- After validation, disable staging mode on the new server and stop the original server so only one server exports.\n\n- **B** would put production into staging mode and stop updates.\n- **C** changes the synchronization engine and does not test the Connect rules.\n- **D** skips validation entirely.\n- **E** adds an authentication agent, not a staging synchronization server.",
+    "source": "LP1 Module 4.1 (Microsoft Entra Connect)."
+  },
+  {
+    "id": 71,
+    "domain": "identity",
+    "topic": "License service plan conflicts",
+    "stem": "A user has an E3 license assigned directly and an E5 license assigned through a group. A feature that is included in E5 is unavailable, and the license details show the service plan as disabled.\n\nWhat is the cause?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A service plan disabled in one license overrides the same plan enabled in another license."
+      },
+      {
+        "letter": "B",
+        "text": "The user's Usage location is set to the wrong country."
+      },
+      {
+        "letter": "C",
+        "text": "The user is a member of too many licensing groups."
+      },
+      {
+        "letter": "D",
+        "text": "The E5 group is nested inside another group."
+      },
+      {
+        "letter": "E",
+        "text": "The tenant has no Microsoft Entra ID P1 licenses."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- When multiple licenses are assigned, a **service plan that is disabled in any one of them stays disabled**. Disabling the plan in the E3 license overrides the enabled plan in E5.\n- Resolve the conflict by enabling the plan in the E3 assignment, or by removing the conflicting license.\n\n- **B** blocks license assignment entirely rather than selectively disabling a plan.\n- **C** and **D** do not cause this specific service-plan conflict.\n- **E** affects feature entitlement, not the disabled state of a plan.",
+    "source": "LP1 Module 3.3 (license service plans)."
+  },
+  {
+    "id": 72,
+    "domain": "identity",
+    "topic": "Federated to managed domain conversion",
+    "stem": "Contoso retires its AD FS farm. The domain `contoso.com` is currently configured as a federated domain, and users must sign in with their cloud passwords after the cutover.\n\nWhat should you do to `contoso.com`?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Convert the domain from federated to managed."
+      },
+      {
+        "letter": "B",
+        "text": "Verify the domain again and set it as the primary domain."
+      },
+      {
+        "letter": "C",
+        "text": "Enable seamless single sign-on and leave the domain federated."
+      },
+      {
+        "letter": "D",
+        "text": "Delete the domain and recreate it as a custom domain."
+      },
+      {
+        "letter": "E",
+        "text": "Add the domain to a new tenant."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Changing the domain's **AuthenticationType** from **Federated** to **Managed** makes Microsoft Entra ID the authentication authority. Users then sign in with their cloud password, validated by password hash synchronization or pass-through authentication.\n- Plan the change so that password hash synchronization or pass-through authentication is healthy before the cutover.\n\n- **B** does not change the authentication authority.\n- **C** still relies on federation.\n- **D** would disrupt every user and is unnecessary.\n- **E** moves users to a different tenant.",
+    "source": "LP1 Module 4.4 / 4.5 (domain management)."
+  },
+  {
+    "id": 73,
+    "domain": "identity",
+    "topic": "Organizational unit filtering",
+    "stem": "Only users in the Sales and Marketing organizational units must synchronize to Microsoft Entra ID. Users in every other organizational unit must never appear in the cloud directory.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Organizational unit filtering in Microsoft Entra Connect or Cloud Sync."
+      },
+      {
+        "letter": "B",
+        "text": "A dynamic group that contains only Sales and Marketing users."
+      },
+      {
+        "letter": "C",
+        "text": "An attribute-based synchronization rule that sets accountEnabled to False."
+      },
+      {
+        "letter": "D",
+        "text": "A Conditional Access policy scoped to Sales and Marketing."
+      },
+      {
+        "letter": "E",
+        "text": "A bulk update that deletes the other users from Microsoft Entra ID."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Organizational unit filtering** limits directory synchronization to selected OUs. Objects in excluded OUs are not imported or exported to Microsoft Entra ID.\n- Cloud Sync also supports scoping synchronization to specific OUs or groups.\n\n- **B** groups do not control which objects synchronize.\n- **C** leaves the accounts present but disabled.\n- **D** controls access, not directory synchronization.\n- **E** is destructive and would be repeated on the next synchronization cycle.",
+    "source": "LP1 Module 4.1 / 4.2 (synchronization scoping)."
+  },
+  {
+    "id": 74,
+    "domain": "auth",
+    "topic": "Authentication strengths",
+    "stem": "Administrators must use phishing-resistant MFA to access the Azure portal. A password plus a Microsoft Authenticator push notification must not satisfy the requirement.\n\nWhich Conditional Access configuration should you use?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A grant control that requires the built-in Phishing-resistant MFA authentication strength."
+      },
+      {
+        "letter": "B",
+        "text": "A grant control that requires multifactor authentication."
+      },
+      {
+        "letter": "C",
+        "text": "A grant control that requires a compliant device."
+      },
+      {
+        "letter": "D",
+        "text": "A session control that sets sign-in frequency to every hour."
+      },
+      {
+        "letter": "E",
+        "text": "A policy that blocks legacy authentication clients."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Authentication strengths** let a Conditional Access policy require specific method combinations. The built-in **Phishing-resistant MFA** strength accepts methods such as FIDO2 security keys, Windows Hello for Business, and certificate-based authentication.\n- Password plus Authenticator push satisfies the weaker **Multifactor authentication** strength but not the phishing-resistant strength.\n\n- **B** allows push notifications.\n- **C** checks device state, not the authentication method.\n- **D** changes how often a user signs in.\n- **E** blocks older client protocols.",
+    "source": "LP2 Module 3.4 (authentication strengths)."
+  },
+  {
+    "id": 75,
+    "domain": "auth",
+    "topic": "Passkey profiles and attestation",
+    "stem": "Security requires FIDO2 passkeys only from two approved hardware vendors. The solution must verify that a passkey is genuine and must block passkeys from every other authenticator model.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A passkey (FIDO2) profile with attestation enforced and an allow list of the approved authenticator AAGUIDs."
+      },
+      {
+        "letter": "B",
+        "text": "A Conditional Access policy that requires a compliant device."
+      },
+      {
+        "letter": "C",
+        "text": "An authentication strength that requires passwordless MFA."
+      },
+      {
+        "letter": "D",
+        "text": "A named location that contains the office IP addresses."
+      },
+      {
+        "letter": "E",
+        "text": "Windows Hello for Business certificate trust."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Passkey profiles** provide group-scoped FIDO2 settings, including **enforce attestation**, allowed passkey types, and **AAGUID** restrictions.\n- An **AAGUID** identifies an authenticator model. Allowing only the approved AAGUIDs blocks every other model, and attestation verifies that the authenticator is genuine.\n\n- **B** does not inspect the authenticator model.\n- **C** requires a class of methods but does not restrict vendors.\n- **D** restricts network location.\n- **E** configures Windows Hello for Business, not FIDO2 security keys.",
+    "source": "LP2 Module 2.2 / 2.3 (passkeys and FIDO2)."
+  },
+  {
+    "id": 76,
+    "domain": "auth",
+    "topic": "Windows Hello for Business trust models",
+    "stem": "Which three statements about Windows Hello for Business trust models are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Key trust registers the public key of the Windows Hello for Business key pair with the device object in Microsoft Entra ID, so no client authentication certificate is required."
+      },
+      {
+        "letter": "B",
+        "text": "Certificate trust requires a public key infrastructure such as Active Directory Certificate Services."
+      },
+      {
+        "letter": "C",
+        "text": "Cloud Kerberos trust can provide passwordless access to on-premises resources without deploying AD CS."
+      },
+      {
+        "letter": "D",
+        "text": "Key trust requires a client authentication certificate on every device."
+      },
+      {
+        "letter": "E",
+        "text": "Certificate trust stores only the public key in Microsoft Entra ID."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- **Key trust** registers the public key of the Windows Hello for Business key pair with the device object in Microsoft Entra ID. It does not require client certificates or AD CS.\n- **Certificate trust** issues a certificate to the device or user from a PKI, so AD CS or another CA is required.\n- **Cloud Kerberos trust** uses Microsoft Entra Kerberos to obtain a partial TGT, giving passwordless access to on-premises resources without AD CS.\n\n- **D** describes certificate trust, not key trust.\n- **E** describes key trust, not certificate trust.",
+    "source": "LP2 Module 2.4 (Windows Hello for Business)."
+  },
+  {
+    "id": 77,
+    "domain": "auth",
+    "topic": "Temporary Access Pass lifetime",
+    "stem": "An administrator must issue a Temporary Access Pass that remains valid for five days and can be used more than once.\n\nWhat is the maximum lifetime that can be configured for the pass?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "30 days."
+      },
+      {
+        "letter": "B",
+        "text": "7 days."
+      },
+      {
+        "letter": "C",
+        "text": "14 days."
+      },
+      {
+        "letter": "D",
+        "text": "24 hours."
+      },
+      {
+        "letter": "E",
+        "text": "90 days."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A Temporary Access Pass can be configured as **one-time** or **multi-use**, and its lifetime can be set up to a maximum of **30 days**. The tenant policy sets the maximum that administrators can choose.\n- Five days is within that maximum, so the requirement can be met.\n\n- **B**, **C**, **D**, and **E** are either shorter than five days or exceed the supported maximum.",
+    "source": "LP2 Module 2.5 (Temporary Access Pass)."
+  },
+  {
+    "id": 78,
+    "domain": "auth",
+    "topic": "Number matching and MFA fatigue",
+    "stem": "Users report repeated Microsoft Authenticator prompts that they did not initiate, and several users approved one of the prompts. You must reduce the risk without removing MFA.\n\nWhat should you enable first?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Number matching and additional context for Microsoft Authenticator notifications."
+      },
+      {
+        "letter": "B",
+        "text": "SMS as the only MFA method."
+      },
+      {
+        "letter": "C",
+        "text": "A Conditional Access policy that blocks all mobile devices."
+      },
+      {
+        "letter": "D",
+        "text": "A shorter smart lockout duration."
+      },
+      {
+        "letter": "E",
+        "text": "Passwordless phone sign-in for every user."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Number matching** requires the user to enter the two-digit number shown on the sign-in screen into the Authenticator app, so a blind push approval no longer succeeds.\n- **Additional context** shows the application and location, helping users recognize an unexpected prompt.\n\n- **B** weakens MFA and does not solve prompt bombing.\n- **C** blocks legitimate devices.\n- **D** has no effect on push approvals.\n- **E** changes the sign-in method but does not require the user to match a number.",
+    "source": "LP2 Module 2.2 / 2.3 (Microsoft Authenticator)."
+  },
+  {
+    "id": 79,
+    "domain": "auth",
+    "topic": "Conditional Access device filters",
+    "stem": "A Conditional Access policy must apply only to company-owned Windows devices that are not compliant. Personal devices must not be affected.\n\nWhich condition should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A device filter rule of `device.deviceOwnership -eq \"Company\" -and device.isCompliant -eq False`, with the Windows platform selected."
+      },
+      {
+        "letter": "B",
+        "text": "A device filter rule of `device.isCompliant -eq False` only."
+      },
+      {
+        "letter": "C",
+        "text": "A device filter rule of `user.deviceOwnership -eq \"Company\"`."
+      },
+      {
+        "letter": "D",
+        "text": "A grant control that requires a compliant device."
+      },
+      {
+        "letter": "E",
+        "text": "A named location that contains the corporate network."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Filter for devices** is a Conditional Access condition that evaluates device properties with a rule expression. Using `deviceOwnership` and `isCompliant` together limits the policy to company-owned, noncompliant devices.\n- Selecting the **Windows** platform further narrows the policy to Windows devices.\n\n- **B** also matches personal devices that are not compliant.\n- **C** uses a user property in a device filter.\n- **D** blocks noncompliant devices but does not target company-owned devices only.\n- **E** evaluates network location, not device ownership or compliance.",
+    "source": "LP2 Module 3.2 / 3.3 (Conditional Access conditions)."
+  },
+  {
+    "id": 80,
+    "domain": "auth",
+    "topic": "Conditional Access policy evaluation",
+    "stem": "Which three statements about how Conditional Access policies are evaluated are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Every policy that applies to a user and sign-in must be satisfied."
+      },
+      {
+        "letter": "B",
+        "text": "A block policy overrides grant controls from other policies."
+      },
+      {
+        "letter": "C",
+        "text": "Report-only mode evaluates a policy and records the result without enforcing it."
+      },
+      {
+        "letter": "D",
+        "text": "Excluding a user from one policy excludes the user from every policy."
+      },
+      {
+        "letter": "E",
+        "text": "When two policies require different grant controls, the user can choose either one."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- Conditional Access evaluates all applicable policies. The user must satisfy the grant controls of **every** policy that applies.\n- A **block** policy denies the sign-in regardless of grant controls in other policies.\n- **Report-only** mode shows what the policy would do in the sign-in log without blocking or challenging the user.\n\n- **D** is false: an exclusion applies only to the policy that contains it.\n- **E** is false: the user must satisfy both requirements, not choose one.",
+    "source": "LP2 Module 3.1 / 3.2 (Conditional Access evaluation)."
+  },
+  {
+    "id": 81,
+    "domain": "auth",
+    "topic": "Trusted named locations",
+    "stem": "Users on the corporate network egress through the public IP range `203.0.113.0/24`. They must not receive MFA prompts when they access Microsoft 365 from that network. When they work from home, MFA must still be required.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A named location that contains `203.0.113.0/24` marked as trusted, excluded from the Conditional Access MFA policy."
+      },
+      {
+        "letter": "B",
+        "text": "Per-user MFA with the corporate IP range added as a trusted IP."
+      },
+      {
+        "letter": "C",
+        "text": "A Conditional Access policy that requires a compliant device for all users."
+      },
+      {
+        "letter": "D",
+        "text": "Security defaults with MFA enforced for all users."
+      },
+      {
+        "letter": "E",
+        "text": "A sign-in frequency session control of 30 days."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Named locations** define network boundaries by IP range or country. Marking the corporate range as **trusted** lets a Conditional Access policy exclude that location from an MFA requirement.\n- Home and other external networks remain in scope, so MFA is still required there.\n\n- **B** is a legacy per-user MFA setting; it does not integrate with Conditional Access policy scoping and is not the recommended approach.\n- **C** does not exempt the corporate network.\n- **D** enforces MFA everywhere.\n- **E** changes session lifetime, not the MFA requirement.",
+    "source": "LP2 Module 3.2 / 3.5 (named locations)."
+  },
+  {
+    "id": 82,
+    "domain": "auth",
+    "topic": "Session controls",
+    "stem": "Finance users on unmanaged devices must sign in again after four hours. They must not remain signed in after they close the browser.\n\nWhich two session controls should you configure? (Choose two.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Sign-in frequency of four hours."
+      },
+      {
+        "letter": "B",
+        "text": "Persistent browser session set to Never."
+      },
+      {
+        "letter": "C",
+        "text": "Continuous access evaluation in strict enforcement mode."
+      },
+      {
+        "letter": "D",
+        "text": "Sign-in frequency of 30 days."
+      },
+      {
+        "letter": "E",
+        "text": "Application enforced restrictions."
+      }
+    ],
+    "answers": [
+      "A",
+      "B"
+    ],
+    "explanation": "- **Sign-in frequency** controls how often a user must sign in again. Four hours enforces the reauthentication requirement.\n- **Persistent browser session** set to **Never** prevents the browser from keeping the session after it closes.\n\n- **C** revokes tokens when critical events occur; it is not a four-hour timer.\n- **D** allows a much longer session.\n- **E** limits data access in unmanaged browsers but does not set the reauthentication interval.",
+    "source": "LP2 Module 3.6 (session controls)."
+  },
+  {
+    "id": 83,
+    "domain": "auth",
+    "topic": "Authentication methods policy",
+    "stem": "Which three statements about the Microsoft Entra authentication methods policy are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A method can be enabled for specific groups and excluded from other groups."
+      },
+      {
+        "letter": "B",
+        "text": "Microsoft Authenticator settings include number matching and additional context."
+      },
+      {
+        "letter": "C",
+        "text": "Enabling Temporary Access Pass requires the method to be enabled in the policy."
+      },
+      {
+        "letter": "D",
+        "text": "FIDO2 security keys work for all users as soon as the tenant is created."
+      },
+      {
+        "letter": "E",
+        "text": "The policy applies only to users who hold privileged directory roles."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- The authentication methods policy supports **group targeting**, so different users can be allowed different methods.\n- It controls **Authenticator** behavior, including **number matching** and **additional context**.\n- **Temporary Access Pass** must be enabled in the policy before administrators can issue passes.\n\n- **D** is false: FIDO2 must be enabled and configured, and users must register a key.\n- **E** is false: the policy applies to all targeted users, not only privileged roles.",
+    "source": "LP2 Module 2.1 / 2.2 (authentication methods policy)."
+  },
+  {
+    "id": 84,
+    "domain": "auth",
+    "topic": "Self-service password reset methods",
+    "stem": "Users must reset their passwords by using Microsoft Authenticator or SMS. Security questions must not be available. Administrators must also be able to reset their own passwords.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Enable SSPR for all users, require two methods, enable Authenticator and SMS, and disable security questions."
+      },
+      {
+        "letter": "B",
+        "text": "Enable SSPR for users only and require one method."
+      },
+      {
+        "letter": "C",
+        "text": "Enable email one-time passcode as the only SSPR method."
+      },
+      {
+        "letter": "D",
+        "text": "Enable per-user MFA and disable SSPR for administrators."
+      },
+      {
+        "letter": "E",
+        "text": "Require users to call the helpdesk and verify their identity."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **SSPR** can be enabled for all users or selected groups. Enabling **Authenticator** and **SMS** gives users the required methods.\n- **Administrators always require two methods** when they use SSPR, so requiring two methods for everyone matches the administrator behavior.\n- Disabling **security questions** removes that method.\n\n- **B** does not meet the two-method requirement for administrators.\n- **C** uses a method the requirement excludes.\n- **D** does not provide SSPR.\n- **E** is not self-service.",
+    "source": "LP2 Module 2.6 (self-service password reset)."
+  },
+  {
+    "id": 85,
+    "domain": "auth",
+    "topic": "Password writeback",
+    "stem": "A hybrid tenant uses Microsoft Entra Connect. Users must reset their passwords in the cloud, and the new password must be written back to on-premises Active Directory.\n\nWhich two components are required? (Choose two.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Password writeback enabled in Microsoft Entra Connect or Cloud Sync."
+      },
+      {
+        "letter": "B",
+        "text": "Microsoft Entra ID P1 or P2 licenses for the users who reset passwords."
+      },
+      {
+        "letter": "C",
+        "text": "Active Directory Federation Services."
+      },
+      {
+        "letter": "D",
+        "text": "Seamless single sign-on."
+      },
+      {
+        "letter": "E",
+        "text": "A read-only domain controller in every site."
+      }
+    ],
+    "answers": [
+      "A",
+      "B"
+    ],
+    "explanation": "- **Password writeback** is the connector feature that sends a cloud password change back to Active Directory. It can be enabled in Microsoft Entra Connect or Cloud Sync.\n- SSPR with writeback requires **Microsoft Entra ID P1 or P2** for the users who use the feature.\n\n- **C** is an authentication topology, not a writeback component.\n- **D** reduces sign-in prompts but does not write passwords back.\n- **E** is unrelated to password writeback.",
+    "source": "LP2 Module 2.6 / 4.2 (password writeback)."
+  },
+  {
+    "id": 86,
+    "domain": "auth",
+    "topic": "Identity Protection user risk",
+    "stem": "Users who are detected with leaked credentials must change their password before they can access Microsoft 365. Users at medium risk must not be blocked.\n\nWhich policy should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A user risk policy set to High with the Require password change control."
+      },
+      {
+        "letter": "B",
+        "text": "A sign-in risk policy set to High with the Block access control."
+      },
+      {
+        "letter": "C",
+        "text": "The MFA registration policy for all users."
+      },
+      {
+        "letter": "D",
+        "text": "Security defaults with MFA enforced."
+      },
+      {
+        "letter": "E",
+        "text": "A Conditional Access policy that requires a compliant device."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **User risk** represents the probability that an identity is compromised. A user risk policy can require a **password change** when risk reaches the configured level.\n- Setting the threshold to **High** leaves medium-risk users unaffected, which matches the requirement.\n- After the password change, Identity Protection can dismiss the risk.\n\n- **B** evaluates the risk of a specific sign-in and blocks rather than remediates.\n- **C** encourages MFA registration but does not respond to leaked credentials.\n- **D** enforces MFA but does not require a password change.\n- **E** checks device compliance.",
+    "source": "LP2 Module 3.7 (Identity Protection)."
+  },
+  {
+    "id": 87,
+    "domain": "auth",
+    "topic": "Certificate-based authentication",
+    "stem": "Which three statements about certificate-based authentication (CBA) in Microsoft Entra ID are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "CBA can satisfy MFA when the certificate is configured as a multifactor authentication method."
+      },
+      {
+        "letter": "B",
+        "text": "You upload the root or intermediate CA certificates and enable CBA in the authentication methods policy."
+      },
+      {
+        "letter": "C",
+        "text": "Certificates are mapped to users by using the certificate principal name (UPN) or the RFC822 name."
+      },
+      {
+        "letter": "D",
+        "text": "CBA requires the domain to be federated."
+      },
+      {
+        "letter": "E",
+        "text": "CBA works only on Windows devices."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- **CBA** authenticates a user with an X.509 certificate. When configured for MFA, the certificate satisfies a multifactor requirement without an additional prompt.\n- Administrators upload the trusted **root or intermediate CA** certificates and enable CBA in the authentication methods policy.\n- User binding uses the **principal name (UPN)** or the **RFC822** name in the certificate.\n\n- **D** is false: CBA works with managed domains.\n- **E** is false: CBA is supported on multiple platforms and browsers.",
+    "source": "LP2 Module 2.7 (certificate-based authentication)."
+  },
+  {
+    "id": 88,
+    "domain": "auth",
+    "topic": "Global Secure Access Internet Access",
+    "stem": "Contoso wants internet-bound traffic from managed Windows devices inspected by Microsoft's Security Service Edge. On-premises applications must remain reachable through Private Access.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Install the Global Secure Access client and enable the Internet Access traffic forwarding profile."
+      },
+      {
+        "letter": "B",
+        "text": "Deploy Azure Application Proxy connectors for every internet site."
+      },
+      {
+        "letter": "C",
+        "text": "Configure a site-to-site VPN to Microsoft Azure."
+      },
+      {
+        "letter": "D",
+        "text": "Create a Conditional Access policy that blocks unmanaged devices."
+      },
+      {
+        "letter": "E",
+        "text": "Enable Security defaults in Microsoft Entra ID."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Global Secure Access** uses a client and **traffic forwarding profiles**. The **Internet Access** profile sends internet traffic through Microsoft's Security Service Edge for filtering and inspection.\n- **Private Access** is a separate profile for private applications, so both can be enabled together.\n\n- **B** publishes internal apps and does not inspect internet traffic.\n- **C** connects networks but does not provide Microsoft's security edge.\n- **D** controls access decisions, not traffic forwarding.\n- **E** is a baseline identity security setting.",
+    "source": "LP2 Module 5.1 / 5.2 (Global Secure Access)."
+  },
+  {
+    "id": 89,
+    "domain": "apps",
+    "topic": "Workload identity federation",
+    "stem": "A GitHub Actions workflow must deploy resources to Azure without storing a client secret in the repository or in Azure Key Vault.\n\nWhat should you configure on the app registration?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A federated identity credential that trusts the GitHub OpenID Connect issuer and the repository's subject claim."
+      },
+      {
+        "letter": "B",
+        "text": "A client secret with a 24-month expiration stored as a GitHub secret."
+      },
+      {
+        "letter": "C",
+        "text": "A certificate uploaded to the app registration and exported to the runner."
+      },
+      {
+        "letter": "D",
+        "text": "A system-assigned managed identity on the GitHub-hosted runner."
+      },
+      {
+        "letter": "E",
+        "text": "A service principal password stored in a pipeline variable."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Workload identity federation** lets an external identity provider, such as GitHub Actions, obtain a short-lived token from Microsoft Entra ID. The app registration trusts the external **issuer** and a specific **subject** claim.\n- No client secret or certificate is stored, so there is nothing to leak or rotate.\n\n- **B** and **E** store a secret.\n- **C** still requires certificate material on the runner.\n- **D** is not possible on a GitHub-hosted runner, and managed identities are for Azure-hosted resources.",
+    "source": "LP1 Module 4.6 / 4.7 (workload identity federation)."
+  },
+  {
+    "id": 90,
+    "domain": "apps",
+    "topic": "Managed identity lifecycle",
+    "stem": "Which three statements about managed identities are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A system-assigned identity is deleted when the Azure resource is deleted."
+      },
+      {
+        "letter": "B",
+        "text": "A user-assigned identity can be attached to multiple Azure resources."
+      },
+      {
+        "letter": "C",
+        "text": "A managed identity can authenticate to resources that support Microsoft Entra authentication without storing credentials."
+      },
+      {
+        "letter": "D",
+        "text": "A user-assigned identity is tied to the lifecycle of a single virtual machine."
+      },
+      {
+        "letter": "E",
+        "text": "A managed identity can be used as a client secret for an app registration."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- A **system-assigned** identity shares the lifecycle of its Azure resource; deleting the resource deletes the identity.\n- A **user-assigned** identity is a standalone Azure resource that can be attached to several resources.\n- Managed identities obtain tokens from Microsoft Entra ID, so no secret is stored in code or configuration.\n\n- **D** describes a system-assigned identity.\n- **E** is false: managed identities are service principals, not credentials for an app registration.",
+    "source": "LP1 Module 4.6 / 4.7 (managed identities)."
+  },
+  {
+    "id": 91,
+    "domain": "apps",
+    "topic": "SCIM provisioning",
+    "stem": "Users are created in a human resources system and must be provisioned automatically into a SaaS application. When a user leaves, the SaaS account must be disabled within an hour.\n\nWhich feature should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Automatic provisioning with SCIM and attribute mappings for the enterprise application."
+      },
+      {
+        "letter": "B",
+        "text": "SAML single sign-on for the enterprise application."
+      },
+      {
+        "letter": "C",
+        "text": "An access review for the SaaS application."
+      },
+      {
+        "letter": "D",
+        "text": "Microsoft Entra Application Proxy."
+      },
+      {
+        "letter": "E",
+        "text": "Privileged Identity Management for the SaaS application."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **SCIM provisioning** creates, updates, and disables accounts in the target application. **Attribute mappings** determine which directory values populate the application's user fields.\n- The provisioning job can deactivate a leaver's account automatically when the user is disabled or removed from scope.\n\n- **B** authenticates users but does not create or disable accounts.\n- **C** reviews access periodically; it does not provision accounts.\n- **D** publishes on-premises apps.\n- **E** manages privileged role activation.",
+    "source": "LP1 Module 3.7 (application provisioning)."
+  },
+  {
+    "id": 92,
+    "domain": "apps",
+    "topic": "SAML identifier mismatch",
+    "stem": "A SAML-based enterprise application has just been configured. Users can authenticate, but the application returns an audience mismatch error after the SAML response is posted.\n\nWhat should you check first?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "The Identifier (Entity ID) configured in the enterprise application matches the value the application expects."
+      },
+      {
+        "letter": "B",
+        "text": "The Reply URL (Assertion Consumer Service URL) matches the application's callback path."
+      },
+      {
+        "letter": "C",
+        "text": "The SAML signing certificate has not expired."
+      },
+      {
+        "letter": "D",
+        "text": "The user has been assigned to the application."
+      },
+      {
+        "letter": "E",
+        "text": "The application's implicit grant settings are enabled."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- The **Identifier (Entity ID)** is the audience value that the application validates in the SAML assertion. If it differs from the expected value, the application rejects the assertion with an audience mismatch.\n- Correct the identifier in the enterprise application's single sign-on configuration.\n\n- **B** affects where the response is posted, not the audience.\n- **C** produces a signature or certificate error.\n- **D** produces an assignment or sign-in error before the assertion is posted.\n- **E** applies to OpenID Connect implicit flows, not SAML audience validation.",
+    "source": "LP1 Module 3.5 (SAML single sign-on)."
+  },
+  {
+    "id": 93,
+    "domain": "apps",
+    "topic": "Admin consent workflow",
+    "stem": "Users must be able to request access to third-party applications. A designated security team must review every request, and users must not be able to grant consent themselves.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "The admin consent workflow with a reviewer group, and user consent disabled."
+      },
+      {
+        "letter": "B",
+        "text": "A Conditional Access policy that blocks third-party applications."
+      },
+      {
+        "letter": "C",
+        "text": "An access package with an approval policy."
+      },
+      {
+        "letter": "D",
+        "text": "Privileged Identity Management for the Application Administrator role."
+      },
+      {
+        "letter": "E",
+        "text": "A dynamic group that contains all users who request access."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- The **admin consent workflow** lets users request consent and routes the request to configured **reviewers**. Reviewers approve or deny from the Microsoft Entra admin center.\n- Disabling **user consent** ensures users cannot grant consent themselves.\n\n- **B** blocks the apps instead of allowing a reviewed request.\n- **C** governs access packages, not application consent.\n- **D** manages role activation.\n- **E** does not collect or route consent requests.",
+    "source": "LP1 Module 3.6 (admin consent workflow)."
+  },
+  {
+    "id": 94,
+    "domain": "apps",
+    "topic": "Publisher verification",
+    "stem": "An independent software vendor wants a verified publisher badge on its multitenant application and wants to reduce the warnings users see during consent.\n\nWhat should the vendor do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Complete publisher verification in Partner Center with a Microsoft Partner Network account and associate the app registration with the verified publisher."
+      },
+      {
+        "letter": "B",
+        "text": "Purchase Microsoft Entra ID P2 for every customer tenant."
+      },
+      {
+        "letter": "C",
+        "text": "Add a DNS TXT record that contains the application ID."
+      },
+      {
+        "letter": "D",
+        "text": "Publish the application in the Azure Marketplace."
+      },
+      {
+        "letter": "E",
+        "text": "Convert the app registration to a managed identity."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Publisher verification** confirms that the publisher of an app is a legitimate Microsoft Partner Network member. The verified publisher can associate its Partner Center account with the app registration.\n- Verified apps show a **verified publisher** badge and produce fewer consent warnings.\n\n- **B** does not verify the publisher.\n- **C** is a domain-verification step for a custom domain, not publisher verification.\n- **D** is a marketplace listing, not publisher verification.\n- **E** is unrelated to a multitenant application.",
+    "source": "LP1 Module 3.6 / 3.9 (publisher verification and app governance)."
+  },
+  {
+    "id": 95,
+    "domain": "apps",
+    "topic": "User consent policies",
+    "stem": "Which three statements about user consent and app consent policies are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A user consent policy can allow consent only for apps from verified publishers."
+      },
+      {
+        "letter": "B",
+        "text": "A user consent policy can block consent for applications that request high-risk permissions."
+      },
+      {
+        "letter": "C",
+        "text": "The admin consent workflow lets users request consent from a designated reviewer."
+      },
+      {
+        "letter": "D",
+        "text": "Disabling user consent prevents administrators from granting tenant-wide consent."
+      },
+      {
+        "letter": "E",
+        "text": "User consent policies apply only to guest users."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- **App consent policies** define conditions under which users may consent, including publisher verification and the risk level of the requested permissions.\n- The **admin consent workflow** provides a reviewed path when user consent is not allowed.\n\n- **D** is false: administrators can still grant consent.\n- **E** is false: consent policies apply to member and guest users, not guests only.",
+    "source": "LP1 Module 3.6 (app consent policies)."
+  },
+  {
+    "id": 96,
+    "domain": "apps",
+    "topic": "Application Proxy Kerberos delegation",
+    "stem": "You must publish an on-premises IIS application that uses Windows Integrated Authentication. No inbound ports can be opened, and users must sign in with Microsoft Entra ID.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Microsoft Entra Application Proxy with a connector and Kerberos constrained delegation to a service account."
+      },
+      {
+        "letter": "B",
+        "text": "A site-to-site VPN between Azure and the on-premises network."
+      },
+      {
+        "letter": "C",
+        "text": "An Azure Firewall DNAT rule for the IIS server."
+      },
+      {
+        "letter": "D",
+        "text": "SAML single sign-on directly to the IIS application."
+      },
+      {
+        "letter": "E",
+        "text": "Global Secure Access Private Access without a connector."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Application Proxy** publishes the internal application through an outbound-only connector, so no inbound port is required.\n- For **Windows Integrated Authentication**, the connector uses **Kerberos constrained delegation (KCD)** to request a Kerberos ticket for the user and present it to the IIS application.\n\n- **B** and **C** expose the network or the server and do not provide Entra authentication.\n- **D** requires application changes and does not address integrated Windows authentication.\n- **E** requires a connector for private applications.",
+    "source": "LP1 Module 3.8 (Application Proxy)."
+  },
+  {
+    "id": 97,
+    "domain": "apps",
+    "topic": "App credential rotation",
+    "stem": "An app registration uses a client secret that expires in 30 days. You must eliminate secret-based credentials and avoid another outage.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Replace the client secret with a certificate or a federated identity credential, and monitor credential expiration."
+      },
+      {
+        "letter": "B",
+        "text": "Extend the client secret expiration to two years."
+      },
+      {
+        "letter": "C",
+        "text": "Store the client secret in Azure Key Vault and keep using it."
+      },
+      {
+        "letter": "D",
+        "text": "Assign a managed identity to the app registration."
+      },
+      {
+        "letter": "E",
+        "text": "Rotate the client secret every month."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A **certificate** or a **federated identity credential** removes the shared secret from the application. Federated credentials are preferred when the app runs on a platform that supports OpenID Connect.\n- Credential expiration should be monitored so a future change does not cause another outage.\n\n- **B**, **C**, and **E** still rely on a client secret.\n- **D** is not how an app registration obtains a managed identity; managed identities are separate Azure resources.",
+    "source": "LP1 Module 3.5 / 4.6 (app credentials)."
+  },
+  {
+    "id": 98,
+    "domain": "apps",
+    "topic": "Multitenant account types",
+    "stem": "An application must accept users from any Microsoft Entra tenant but must reject personal Microsoft accounts.\n\nWhich supported account type should you select?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Accounts in any organizational directory (Any Microsoft Entra directory - Multitenant)."
+      },
+      {
+        "letter": "B",
+        "text": "Accounts in any organizational directory and personal Microsoft accounts."
+      },
+      {
+        "letter": "C",
+        "text": "Accounts in this organizational directory only (single tenant)."
+      },
+      {
+        "letter": "D",
+        "text": "Personal Microsoft accounts only."
+      },
+      {
+        "letter": "E",
+        "text": "Azure AD B2C social accounts only."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Accounts in any organizational directory** allows users from any Microsoft Entra tenant to sign in, while excluding personal Microsoft accounts.\n- This is the standard multitenant configuration for business applications.\n\n- **B** includes personal accounts.\n- **C** limits sign-in to Contoso.\n- **D** excludes organizational accounts.\n- **E** is a consumer identity scenario, not a multitenant app registration.",
+    "source": "LP1 Module 3.5 / 4.6 (app registration account types)."
+  },
+  {
+    "id": 99,
+    "domain": "governance",
+    "topic": "Lifecycle workflows",
+    "stem": "New hires must be added to their department group and have their manager notified on their first day. The process must run automatically when a new employee record appears in Microsoft Entra ID.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A lifecycle workflow with a joiner trigger and the required built-in tasks."
+      },
+      {
+        "letter": "B",
+        "text": "A dynamic group with a rule based on the department attribute."
+      },
+      {
+        "letter": "C",
+        "text": "An access package with an automatic assignment policy."
+      },
+      {
+        "letter": "D",
+        "text": "A PIM eligible assignment for the department group."
+      },
+      {
+        "letter": "E",
+        "text": "A provisioning job for the department group."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Lifecycle workflows** automate joiner, mover, and leaver tasks. A **joiner** trigger can run when a new employee is created or when the employee hire date arrives.\n- Built-in tasks can add group membership and send notifications to the manager.\n\n- **B** updates membership but does not notify the manager or schedule first-day tasks.\n- **C** grants access through an access package.\n- **D** manages role activation.\n- **E** provisions accounts to applications.",
+    "source": "LP4 Module 1.6 / 1.7 (lifecycle workflows)."
+  },
+  {
+    "id": 100,
+    "domain": "governance",
+    "topic": "PIM activation requirements",
+    "stem": "Administrators must activate a privileged role for no more than four hours. Each activation must include a justification and approval by a manager.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "The PIM role settings for the role, with a four-hour maximum activation duration, approval required, and justification required."
+      },
+      {
+        "letter": "B",
+        "text": "A Conditional Access policy that requires MFA for administrators."
+      },
+      {
+        "letter": "C",
+        "text": "An access review for users assigned to the role."
+      },
+      {
+        "letter": "D",
+        "text": "An access package that expires after four hours."
+      },
+      {
+        "letter": "E",
+        "text": "A dynamic group that contains administrators."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **PIM role settings** control activation requirements for a role, including **maximum activation duration**, **approval**, and **justification**.\n- Setting the duration to four hours and enabling approval and justification meets every requirement.\n\n- **B** adds an authentication requirement but not time limits or approval.\n- **C** reviews existing assignments periodically.\n- **D** governs resource access packages, not directory role activation.\n- **E** does not control activation.",
+    "source": "LP4 Module 3.2 / 3.3 (PIM role settings)."
+  },
+  {
+    "id": 101,
+    "domain": "governance",
+    "topic": "PIM authentication context",
+    "stem": "Activation of the Global Administrator role must require phishing-resistant MFA. Other Conditional Access policies that target administrators must not affect role activation.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A PIM role setting that requires a Conditional Access authentication context, plus a Conditional Access policy that targets that authentication context and requires a phishing-resistant authentication strength."
+      },
+      {
+        "letter": "B",
+        "text": "A PIM role setting that requires MFA on activation."
+      },
+      {
+        "letter": "C",
+        "text": "A Conditional Access policy that targets all administrators and requires MFA."
+      },
+      {
+        "letter": "D",
+        "text": "An access review that requires reviewers to approve each activation."
+      },
+      {
+        "letter": "E",
+        "text": "A PIM role setting that requires approval and justification."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- PIM can require a **Conditional Access authentication context** during activation. The authentication context is a dedicated scope that only the matching Conditional Access policy targets.\n- A policy that applies to that authentication context can require a **phishing-resistant authentication strength**, leaving other administrator policies separate.\n\n- **B** requires MFA but cannot distinguish phishing-resistant methods.\n- **C** affects other administrator sessions.\n- **D** adds approval, not a specific authentication method.\n- **E** adds approval and justification but not authentication strength.",
+    "source": "LP4 Module 3.2 / 3.4 (PIM and authentication context)."
+  },
+  {
+    "id": 102,
+    "domain": "governance",
+    "topic": "PIM alerts",
+    "stem": "The security team must be notified when a privileged role is assigned outside PIM and when a role has an excessive number of permanent administrators.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "PIM alerts with notification recipients configured for the relevant alert rules."
+      },
+      {
+        "letter": "B",
+        "text": "An access review for every privileged role."
+      },
+      {
+        "letter": "C",
+        "text": "A sign-in log export to Azure Monitor."
+      },
+      {
+        "letter": "D",
+        "text": "The Identity Secure Score."
+      },
+      {
+        "letter": "E",
+        "text": "A Conditional Access policy that blocks privileged roles."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **PIM alerts** detect conditions such as **roles assigned outside PIM**, too many permanent administrators, and stale assignments.\n- Each alert can send email notifications to configured recipients and appears in the PIM alerts page.\n\n- **B** reviews access but does not produce these event alerts.\n- **C** stores logs but does not evaluate PIM-specific conditions.\n- **D** reports a security posture score.\n- **E** controls access but does not alert on assignments.",
+    "source": "LP4 Module 3.4 (PIM alerts)."
+  },
+  {
+    "id": 103,
+    "domain": "governance",
+    "topic": "Access package assignment policy",
+    "stem": "Contractors must request access to a group. Their manager must approve the request, access must expire after 90 days, and access must be reviewed every quarter.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "An access package assignment policy with manager approval, a 90-day expiration, and a quarterly access review."
+      },
+      {
+        "letter": "B",
+        "text": "A PIM eligible assignment for the group."
+      },
+      {
+        "letter": "C",
+        "text": "A standalone access review for the group."
+      },
+      {
+        "letter": "D",
+        "text": "A dynamic group based on the contractor attribute."
+      },
+      {
+        "letter": "E",
+        "text": "A Conditional Access policy that requires MFA."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- An **access package assignment policy** defines who can request access, the **approval** requirements, the **expiration**, and the **access review** schedule.\n- A manager approval, 90-day expiration, and quarterly review are all policy settings.\n\n- **B** manages role activation, not group access requests.\n- **C** reviews access but does not handle requests or expiration.\n- **D** grants membership automatically without approval.\n- **E** adds an authentication requirement.",
+    "source": "LP4 Module 2.1 / 2.2 (entitlement management)."
+  },
+  {
+    "id": 104,
+    "domain": "governance",
+    "topic": "Access review scheduling",
+    "stem": "Which three statements about Microsoft Entra access reviews are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A review can be configured to recur on a schedule, such as monthly or quarterly."
+      },
+      {
+        "letter": "B",
+        "text": "Auto-apply results can remove access when a reviewer denies it or does not respond, depending on the configured behavior."
+      },
+      {
+        "letter": "C",
+        "text": "Reviewers can be the users themselves, their managers, or a specified group of reviewers."
+      },
+      {
+        "letter": "D",
+        "text": "Every review decision must be approved by a Global Administrator."
+      },
+      {
+        "letter": "E",
+        "text": "Access reviews can review only guest users."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- Access reviews support **recurring schedules** and can run monthly, quarterly, annually, or at a custom interval.\n- **Auto-apply results** updates the resource after the review. The \"if reviewers don't respond\" setting can remove access, approve access, or take the system recommendation.\n- Reviewers can be **the users**, **their managers**, or **specific users or groups**.\n\n- **D** is false: reviewers make decisions within their scope.\n- **E** is false: reviews can target members, guests, and other scopes.",
+    "source": "LP4 Module 2.3 / 2.4 (access reviews)."
+  },
+  {
+    "id": 105,
+    "domain": "governance",
+    "topic": "Separation of duties",
+    "stem": "Contoso must prevent a user from holding both the Vendor payments and Vendor approval access packages at the same time.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "An incompatible access package relationship on one of the access packages."
+      },
+      {
+        "letter": "B",
+        "text": "An access review that removes one of the packages."
+      },
+      {
+        "letter": "C",
+        "text": "A Conditional Access policy that blocks the vendor application."
+      },
+      {
+        "letter": "D",
+        "text": "A PIM eligible assignment for the vendor role."
+      },
+      {
+        "letter": "E",
+        "text": "A dynamic group that contains both vendor teams."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Entitlement management supports **incompatible access packages**. When a user already has one package, a request for the incompatible package is blocked or requires remediation.\n- This enforces **separation of duties** without manual monitoring.\n\n- **B** detects the conflict only after the fact.\n- **C** blocks the application rather than the conflicting assignments.\n- **D** is unrelated to access package compatibility.\n- **E** does not prevent the conflict.",
+    "source": "LP4 Module 2.2 (entitlement management and separation of duties)."
+  },
+  {
+    "id": 106,
+    "domain": "governance",
+    "topic": "Access review auto-apply",
+    "stem": "Reviewers complete an access review and deny several users, but the users still have access the next day.\n\nWhat setting should you enable?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Auto apply results to the resource when the review completes."
+      },
+      {
+        "letter": "B",
+        "text": "A shorter review duration."
+      },
+      {
+        "letter": "C",
+        "text": "Just-in-time access for the resource."
+      },
+      {
+        "letter": "D",
+        "text": "Approval required for access requests."
+      },
+      {
+        "letter": "E",
+        "text": "A longer access package expiration."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Access reviews do not change access by themselves unless **auto-apply** is enabled. With auto-apply, the decisions are written to the reviewed resource when the review completes.\n- Without it, an administrator must apply the results manually.\n\n- **B** changes how long reviewers have, not whether decisions are applied.\n- **C** and **D** govern new access requests.\n- **E** changes expiration, not review application.",
+    "source": "LP4 Module 2.4 (access review results)."
+  },
+  {
+    "id": 107,
+    "domain": "governance",
+    "topic": "Audit and sign-in log retention",
+    "stem": "Which three statements about Microsoft Entra audit logs and sign-in logs are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Interactive sign-in logs are retained for 30 days in Microsoft Entra ID."
+      },
+      {
+        "letter": "B",
+        "text": "Diagnostic settings can stream logs to Azure Monitor Log Analytics, Azure Storage, or Azure Event Hubs."
+      },
+      {
+        "letter": "C",
+        "text": "Audit logs record changes such as user creation and role assignment."
+      },
+      {
+        "letter": "D",
+        "text": "Sign-in logs are retained for 10 years in Microsoft Entra ID without exporting them."
+      },
+      {
+        "letter": "E",
+        "text": "Audit logs are available only with Microsoft Entra ID P2."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- Microsoft Entra ID retains **interactive sign-in logs for 30 days** in the portal.\n- **Diagnostic settings** can export logs to Log Analytics, Storage, or Event Hubs for longer retention and analysis.\n- **Audit logs** record directory changes, including user creation and role assignments.\n\n- **D** is false: long retention requires export.\n- **E** is false: audit logs are available with the included Entra ID features, not only P2.",
+    "source": "LP4 Module 4.3 / 4.5 (monitoring and log export)."
+  },
+  {
+    "id": 108,
+    "domain": "governance",
+    "topic": "Terms of use",
+    "stem": "Users must accept a legal notice before they access a cloud application. The acceptance must be recorded for audit.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A terms of use document in Microsoft Entra ID and a Conditional Access policy that requires it."
+      },
+      {
+        "letter": "B",
+        "text": "An acceptable use policy in Microsoft Intune."
+      },
+      {
+        "letter": "C",
+        "text": "An access review for the application."
+      },
+      {
+        "letter": "D",
+        "text": "An access package with an approval policy."
+      },
+      {
+        "letter": "E",
+        "text": "A user consent policy for third-party applications."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Terms of use** presents a PDF during sign-in and records the user's acceptance in the audit log.\n- A **Conditional Access** policy adds the terms of use as a grant control for the selected cloud apps.\n\n- **B** applies to device compliance, not Entra sign-in.\n- **C** reviews access, not legal acceptance.\n- **D** controls access package requests.\n- **E** governs application consent.",
+    "source": "LP4 Module 3.5 (terms of use)."
+  },
+  {
+    "id": 109,
+    "domain": "governance",
+    "topic": "Lifecycle workflow custom task",
+    "stem": "A leaver workflow must call an external REST API to disable an on-premises account. The API is implemented as an Azure Logic App.\n\nWhat should you configure?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "A custom task extension in the lifecycle workflow that calls the Logic App."
+      },
+      {
+        "letter": "B",
+        "text": "An automatic provisioning job for the on-premises application."
+      },
+      {
+        "letter": "C",
+        "text": "A webhook in an access package assignment policy."
+      },
+      {
+        "letter": "D",
+        "text": "A PIM role activation notification."
+      },
+      {
+        "letter": "E",
+        "text": "A Conditional Access policy for the Logic App."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- **Lifecycle workflow custom task extensions** call an Azure Logic App during a workflow. This lets a workflow run logic that is not available as a built-in task.\n- The extension can disable the on-premises account through the Logic App's connector.\n\n- **B** provisions accounts through a connector; it does not run inside the leaver workflow.\n- **C** is not a lifecycle workflow feature.\n- **D** sends role notifications.\n- **E** controls access to the Logic App.",
+    "source": "LP4 Module 1.7 (lifecycle workflow extensions)."
+  },
+  {
+    "id": 110,
+    "domain": "governance",
+    "topic": "Catalog delegation",
+    "stem": "The identity team manages entitlement management. The application team must be able to create and manage its own access packages in a dedicated catalog without receiving Global Administrator.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Create a catalog for the application team and add the team as catalog owners."
+      },
+      {
+        "letter": "B",
+        "text": "Assign the Application Administrator role to the application team."
+      },
+      {
+        "letter": "C",
+        "text": "Make the application team PIM-eligible for Global Administrator."
+      },
+      {
+        "letter": "D",
+        "text": "Create an access review for the catalog."
+      },
+      {
+        "letter": "E",
+        "text": "Add the application team to a dynamic security group."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- A **catalog** is a container for access packages and their resources. **Catalog owners** can create and manage access packages in that catalog without tenant-wide administrative rights.\n- Delegating catalog ownership keeps entitlement management scoped to the application team.\n\n- **B** manages app registrations and enterprise apps, not access packages.\n- **C** grants far more privilege than required.\n- **D** reviews access but does not delegate catalog management.\n- **E** changes group membership only.",
+    "source": "LP4 Module 2.1 (catalogs and delegated administration)."
+  },
+  {
+    "id": 111,
+    "domain": "identity",
+    "topic": "Soft-deleted group recovery",
+    "stem": "A cloud security group that grants access to the finance application was deleted 10 days ago. The group had 240 members and is referenced by a Conditional Access policy. You must bring back the same group object, including its object ID and members, so the existing references keep working.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Restore the group from Deleted groups in the Microsoft Entra admin center within the 30-day soft-delete window."
+      },
+      {
+        "letter": "B",
+        "text": "Recreate the group with the same display name and add the 240 members from an exported list."
+      },
+      {
+        "letter": "C",
+        "text": "Restore the group from the Active Directory Recycle Bin on a domain controller and wait for synchronization."
+      },
+      {
+        "letter": "D",
+        "text": "Open a support request to restore the group after it has been permanently deleted."
+      },
+      {
+        "letter": "E",
+        "text": "Enable hard deletion protection on the group and wait for the next synchronization cycle."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Microsoft 365 groups and cloud security groups are **soft deleted for 30 days**. During that window, **Deleted groups** in the Microsoft Entra admin center or the `Restore-MgDirectoryDeletedItem` cmdlet restores the object with its **object ID, membership, owners, and assignments** intact.\n- Global Administrator, Groups Administrator, and the group's owner (when group settings allow it) can restore the group.\n\n- **B** creates a new object with a new ID, so the Conditional Access policy and the app assignment still point at nothing.\n- **C** covers only on-premises objects; a cloud-only group has no entry in the AD Recycle Bin.\n- **D** cannot work: after 30 days the group is hard deleted and cannot be restored.\n- **E** blocks permanent deletion for seven days after a soft delete; it does not recover anything.",
+    "source": "LP1 Module 1.2 / 3.1 (group lifecycle and recovery)."
+  },
+  {
+    "id": 112,
+    "domain": "apps",
+    "topic": "Deleted app registration recovery",
+    "stem": "A production web application stopped signing users in after an administrator deleted its app registration. The enterprise application no longer appears, and the application's client ID and permissions are gone. The deletion happened yesterday.\n\nWhat should you do?",
+    "options": [
+      {
+        "letter": "A",
+        "text": "Restore the deleted application registration from Deleted applications within the 30-day soft-delete window."
+      },
+      {
+        "letter": "B",
+        "text": "Create a new app registration and update the client ID in the application's configuration."
+      },
+      {
+        "letter": "C",
+        "text": "Restore the enterprise application; the app registration is recreated with the same client ID."
+      },
+      {
+        "letter": "D",
+        "text": "Re-run the infrastructure deployment pipeline to recreate the registration."
+      },
+      {
+        "letter": "E",
+        "text": "Restore the application from the Azure Key Vault soft-delete store."
+      }
+    ],
+    "answers": [
+      "A"
+    ],
+    "explanation": "- Application registrations and service principals are **soft deleted for 30 days**. Restoring the application object from **Deleted applications** (or with `Restore-MgDirectoryDeletedItem`) brings back the same **application (client) ID**, credentials, API permissions, and service principal.\n- Restore first, then confirm that the enterprise application and its user assignments are present.\n\n- **B** and **D** create a new application ID, which invalidates consent, assignments, tokens, and every client that uses the old ID.\n- **C** is backwards: the service principal depends on the application object, and restoring only the service principal does not recreate the registration.\n- **E** is unrelated; Key Vault soft delete protects vault objects, not directory applications.",
+    "source": "LP1 Module 3.5 / 3.9 (application objects and recovery)."
+  },
+  {
+    "id": 113,
+    "domain": "identity",
+    "topic": "Hard deletion protection",
+    "stem": "Contoso must protect a small set of critical cloud groups and app registrations from being permanently deleted out of the recycle bin. Administrators must still be able to delete and restore those objects normally.\n\nWhich three statements about Hard Deletion Protection are true? (Choose three.)",
+    "options": [
+      {
+        "letter": "A",
+        "text": "It blocks permanent deletion during the first seven days after an object is soft deleted."
+      },
+      {
+        "letter": "B",
+        "text": "It can be enabled for cloud-only groups, applications, and service principals."
+      },
+      {
+        "letter": "C",
+        "text": "Enabling it for an object is permanent and cannot be undone."
+      },
+      {
+        "letter": "D",
+        "text": "It automatically restores an object when the protection window ends."
+      },
+      {
+        "letter": "E",
+        "text": "It prevents the initial soft deletion of the object."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "- **Hard Deletion Protection** in Microsoft Entra Backup and Recovery blocks **hard deletion for seven days** after an object is soft deleted. Restoring the object keeps the protection, and deleting it again starts a new seven-day window.\n- Supported object types include **cloud-only groups, applications, service principals, and users that are not synchronized from on-premises**.\n- Protection is **permanent once enabled** and cannot be switched off. If it is enabled by mistake, the object must be soft deleted and left for seven days before it can be permanently removed.\n- Enabling protection requires the **Microsoft Entra Backup Administrator** role and is recorded in the audit log. Separately, a **protected action** can require a Conditional Access authentication context for `microsoft.directory/deletedItems/delete`.\n\n- **D** is false: protection only blocks permanent deletion, and recovery remains a manual restore.\n- **E** is false: soft deletion still succeeds immediately; only the hard-delete step is blocked.",
+    "source": "LP1 Module 1.4 / 4.1 (directory protection and recovery)."
   }
 ];
 

@@ -2,11 +2,11 @@
 
 <p align="center">
   <strong>A complete, offline study kit for Microsoft Exam SC-300: Identity and Access Administrator.</strong><br>
-  60 scenario questions, an interactive exam engine, and a Pearson VUE–style score report.
+  110 scenario questions, an interactive exam engine, and a Pearson VUE–style score report.
 </p>
 
 <p align="center">
-  <img alt="Questions: 60" src="https://img.shields.io/badge/questions-60-2563eb?style=flat-square">
+  <img alt="Questions: 110" src="https://img.shields.io/badge/questions-110-2563eb?style=flat-square">
   <img alt="Passing score: 700 of 1000" src="https://img.shields.io/badge/pass%20score-700%20%2F%201000-16a34a?style=flat-square">
   <img alt="Domains: 4" src="https://img.shields.io/badge/domains-4-7c3aed?style=flat-square">
   <img alt="Works offline" src="https://img.shields.io/badge/offline-ready-0ea5e9?style=flat-square">
@@ -18,13 +18,15 @@
 
 ## 📌 Executive summary
 
-**SC300Exam** is a self-contained practice exam for the Microsoft SC-300 certification. It turns the SC-300T00 Microsoft Learn material into 60 exam-style scenario questions, then gives you two ways to use them: a printable Markdown exam with a full answer key, or a browser-based simulator that times you, scores you, and reports your result the way the real exam does.
+**SC300Exam** is a self-contained practice exam for the Microsoft SC-300 certification. It turns the SC-300T00 Microsoft Learn material into 110 exam-style scenario questions, then gives you two ways to use them: a printable Markdown exam with a full answer key, or a browser-based simulator that times you, scores you, and reports your result the way the real exam does.
 
-- 🎯 **60 questions** weighted to the official blueprint across all four SC-300 domains.
-- 🧠 **Real exam feel** — scenario stems, 21 multiple-answer items scored all-or-nothing, 90 seconds per question.
+- 🎯 **110 questions** weighted to the official blueprint across all four SC-300 domains.
+- 🧠 **Real exam feel** — scenario stems, 33 multiple-answer items scored all-or-nothing, 90 seconds per question.
+- 🎲 **Random 50-question attempt by default** — drawn from the bank in blueprint proportion, or type any question count you want.
 - 🖥️ **No install, no internet** — plain HTML, CSS, and JavaScript that runs from a double-click.
 - 📊 **Actionable results** — scaled score out of 1,000, 700 to pass, per-section breakdown, and a review that explains every distractor.
 - 🎛️ **Your attempt, your rules** — focus on specific sections, switch the timer off, or practise with instant feedback.
+- 🎆 **Celebrate the pass** — a five-second fireworks overlay on a passing score.
 
 ### Start here
 
@@ -42,7 +44,7 @@
 
 1. Download or clone the repository.
 2. Double-click **`exam-sim/index.html`**.
-3. Pick your sections, choose Exam or Practice mode, and start.
+3. Pick your sections, set how many questions you want, choose Exam or Practice mode, and start.
 
 That is the whole setup. There is no build step, no package manager, no server, and no network access. The app loads `questions.js` with a normal `<script>` tag, so it works from `file://` as well as from any static host.
 
@@ -62,13 +64,15 @@ The bank mirrors the published SC-300 skills outline so the score means somethin
 
 | # | Domain | Weight | Questions |
 |---|--------|:------:|:---------:|
-| 1 | Implement an identity management solution | 20–25% | 15 |
-| 2 | Implement an authentication and access management solution | 25–30% | 18 |
-| 3 | Implement access management for apps | 15–20% | 12 |
-| 4 | Plan and implement an identity governance strategy | 20–25% | 15 |
-| | **Total** | **100%** | **60** |
+| 1 | Implement an identity management solution | 20–25% | 28 |
+| 2 | Implement an authentication and access management solution | 25–30% | 33 |
+| 3 | Implement access management for apps | 15–20% | 22 |
+| 4 | Plan and implement an identity governance strategy | 20–25% | 27 |
+| | **Total** | **100%** | **110** |
 
-**Question mix:** 39 single-best-answer scenarios and 21 multiple-answer items (pick two or three). Multi-select is graded all-or-nothing — every required letter must be selected, and nothing else.
+**Question mix:** 77 single-best-answer scenarios and 33 multiple-answer items (pick two or three). Multi-select is graded all-or-nothing — every required letter must be selected, and nothing else.
+
+**How an attempt is drawn:** the simulator picks a random 50-question exam by default, allocating 13 identity / 15 authentication / 10 apps / 12 governance so the mix tracks the blueprint. Change the number in the **Questions** box to draw any other size; the same proportions are applied and every selected section gets at least one question when the count allows. Ask for more than the bank holds and the attempt uses everything available.
 
 Every question is traceable to the Microsoft Learn unit it came from. The source module and unit are shown in the review, so a missed item tells you exactly what to reread.
 
@@ -80,7 +84,7 @@ Every question is traceable to the Microsoft Learn unit it came from. The source
 |---|---|
 | **Scaled score** | `correct ÷ total × 1000`, rounded |
 | **Passing score** | **700** (the published SC-300 pass mark) |
-| **Time** | 90 seconds per question — 90 minutes for the full 60-question exam |
+| **Time** | 90 seconds per question — 75 minutes for the default 50-question exam |
 | **Partial credit** | None. Multi-select items are all-or-nothing |
 | **Unanswered** | Scored as zero |
 
@@ -95,7 +99,10 @@ The real exam weights items and may score differently, so treat the scaled score
 - **Practice** reveals the explanation as you answer and offers a **Check answer** step on multi-select items.
 
 ### 🗂️ Focus on specific sections
-Tick any combination of the four domains to build a shorter attempt. The question count, time limit, and section count update live. **All** and **None** buttons make it quick, and **Start exam** stays disabled until at least one section is selected.
+Tick any combination of the four domains to build a shorter attempt. The question count, time limit, and section count update live. **All** and **None** buttons make it quick, and **Start exam** stays disabled until at least one section is selected and a question count is entered.
+
+### 🔢 Choose how many questions
+The **Questions** box defaults to 50 and accepts any number from 1 to the size of the selected pool. The available count is shown beside the field, the draw is weighted by section, and the time limit recalculates as you type. The number is remembered for your next visit.
 
 ### ⏱️ Optional timer, as a checkbox
 Leave **Timer** ticked for a countdown that auto-submits at zero, or untick it to work untimed — the header then shows elapsed time instead. No surprise submissions when you are studying.
@@ -113,12 +120,14 @@ After submitting you get a report modelled on the Pearson VUE layout:
 - The "score is based on points you earned" footnote from Microsoft's own score report
 - A **Practice detail** card with correct / incorrect / unanswered counts and every next action
 
+Pass the exam and a five-second fireworks display plays over the results screen. It honours `prefers-reduced-motion` (skipped entirely when that is set) and never blocks the page or the print dialog.
+
 ### 🔍 Review every question
 Correct answer, your answer, the full explanation, why each distractor fails, and the source module. Multi-select items show every letter that was required.
 
 ### 🖨️ Print, both ways
 - **Print score report** (or `Ctrl+P` on the results screen) prints just the one-page report.
-- **Print full review** builds a 60-question answer key with explanations.
+- **Print full review** builds an answer key for every question in the attempt, with explanations.
 
 Print styles force light colours, hide the app chrome, and clean up after the dialog closes, so a dark-mode desktop still produces a readable paper report.
 
@@ -150,7 +159,7 @@ SC300Exam/
 ├── README.md                 ← you are here
 ├── LICENSE                   ← MIT
 ├── 00-EXAM-BLUEPRINT.md      ← domain weights, question mix, how to use the kit
-├── 01-PRACTICE-EXAM.md       ← 60 questions, no answers
+├── 01-PRACTICE-EXAM.md       ← 110 questions, no answers
 ├── 02-ANSWER-KEY.md          ← answers, reasoning, distractor analysis, sources
 ├── 03-SCORE-SHEET.md         ← per-domain scoring and remediation map
 └── exam-sim/
@@ -170,11 +179,11 @@ The four numbered documents are the paper version of the exam and still work on 
 | File | What it is for |
 |---|---|
 | **`00-EXAM-BLUEPRINT.md`** | The blueprint: domain weights, question counts, source snapshot, and a four-step study method. |
-| **`01-PRACTICE-EXAM.md`** | All 60 questions, numbered and grouped by domain, with no answers. Print it or read it closed-book. |
+| **`01-PRACTICE-EXAM.md`** | All 110 questions, numbered and grouped by domain, with no answers. Print it or read it closed-book. |
 | **`02-ANSWER-KEY.md`** | The correct letter(s), the reasoning, why each remaining option fails, and the Microsoft Learn unit to review. |
 | **`03-SCORE-SHEET.md`** | A fill-in sheet that turns your raw score into a per-domain percentage with a remediation list. |
 
-A sensible loop: sit `01` closed-book in 90 minutes → mark it with `02` → fill in `03` → reread only the units behind the domains under 80% → retry the missed questions after 48 hours.
+A sensible loop: sit `01` closed-book at the 110-minute pace → mark it with `02` → fill in `03` → reread only the units behind the domains under 80% → retry the missed questions after 48 hours.
 
 ---
 
@@ -217,8 +226,9 @@ This kit was checked rather than assumed:
 - Every answer key entry cross-checked against its stem and option list
 - Lighthouse **100** for accessibility, best practices, and SEO on the start, exam, and results screens
 - Full walkthrough: start → answer → flag → submit → score → review → retake
-- Section filters, empty-filter state, shuffle, resume/discard, and auto-submit at zero all exercised
-- Print verified for both the score report and the 60-question review
+- Section filters, random and custom question counts, empty-filter state, shuffle, resume/discard, and auto-submit at zero all exercised
+- Fireworks overlay measured at five seconds and skipped under reduced-motion
+- Print verified for both the score report and the full-bank review
 - Keyboard-only pass and light/dark visual checks
 
 ---
@@ -227,13 +237,14 @@ This kit was checked rather than assumed:
 
 Ideas for the next revision of the bank, grouped by the SC-300 objective they strengthen:
 
-- [ ] Temporary Access Pass and authentication strength policies
-- [ ] AAGUID, attestation, and Windows Hello for Business key/certificate trust
-- [ ] Conditional Access device filters and policy evaluation order
+- [x] Temporary Access Pass and authentication strength policies
+- [x] AAGUID, attestation, and Windows Hello for Business key/certificate trust
+- [x] Conditional Access device filters and policy evaluation order
+- [x] Password writeback and hybrid identity troubleshooting
+- [x] Workload identity federation for app registrations
 - [ ] Purge protection and soft-delete recovery for groups and apps
-- [ ] Password writeback and hybrid identity troubleshooting
-- [ ] Workload identity federation for app registrations
-- [ ] More question-level timer and per-domain drill presets in the simulator
+- [ ] Per-domain drill presets and a spaced-repetition queue in the simulator
+- [ ] A printable one-page "cheat sheet" per domain
 
 Contributions, corrections, and new questions are welcome — please keep the stem, answer key, and `questions.js` entry consistent.
 

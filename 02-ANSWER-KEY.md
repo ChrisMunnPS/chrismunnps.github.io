@@ -4,18 +4,31 @@ Mark your answers first, then read the explanations.
 
 ## Quick answer grid
 
-| Q | Ans | Q | Ans | Q | Ans | Q | Ans | Q | Ans | Q | Ans |
-|---|-----|---|-----|---|-----|---|-----|---|-----|---|-----|
-| 1 | A | 11 | B | 21 | B | 31 | B | 41 | A | 51 | A and B |
-| 2 | B | 12 | A | 22 | A, C, and D | 32 | A | 42 | A and D | 52 | B |
-| 3 | A and C | 13 | A | 23 | B | 33 | A and C | 43 | A, C, and D | 53 | A and B |
-| 4 | C | 14 | A | 24 | A and B | 34 | A | 44 | A | 54 | A and C |
-| 5 | B | 15 | A and C | 25 | B | 35 | C | 45 | B | 55 | B |
-| 6 | A and B | 16 | A, B, and D | 26 | A and C | 36 | B | 46 | B | 56 | B |
-| 7 | A | 17 | A and C | 27 | A | 37 | A and D | 47 | B | 57 | B |
-| 8 | A and D | 18 | A | 28 | A | 38 | A, B, and C | 48 | B | 58 | A and B |
-| 9 | B | 19 | B | 29 | B | 39 | A | 49 | B | 59 | A |
-| 10 | B | 20 | A and C | 30 | A and B | 40 | B | 50 | B | 60 | A and C |
+| Q | Ans | Q | Ans | Q | Ans | Q | Ans | Q | Ans |
+|---|-----|---|-----|---|-----|---|-----|---|-----|
+| 1 | A | 24 | A and B | 47 | B | 70 | A | 93 | A |
+| 2 | B | 25 | B | 48 | B | 71 | A | 94 | A |
+| 3 | A and C | 26 | A and C | 49 | B | 72 | A | 95 | A, B, and C |
+| 4 | C | 27 | A | 50 | B | 73 | A | 96 | A |
+| 5 | B | 28 | A | 51 | A and B | 74 | A | 97 | A |
+| 6 | A and B | 29 | B | 52 | B | 75 | A | 98 | A |
+| 7 | A | 30 | A and B | 53 | A and B | 76 | A, B, and C | 99 | A |
+| 8 | A and D | 31 | B | 54 | A and C | 77 | A | 100 | A |
+| 9 | B | 32 | A | 55 | B | 78 | A | 101 | A |
+| 10 | B | 33 | A and C | 56 | B | 79 | A | 102 | A |
+| 11 | B | 34 | A | 57 | B | 80 | A, B, and C | 103 | A |
+| 12 | A | 35 | C | 58 | A and B | 81 | A | 104 | A, B, and C |
+| 13 | A | 36 | B | 59 | A | 82 | A and B | 105 | A |
+| 14 | A | 37 | A and D | 60 | A and C | 83 | A, B, and C | 106 | A |
+| 15 | A and C | 38 | A, B, and C | 61 | A | 84 | A | 107 | A, B, and C |
+| 16 | A, B, and D | 39 | A | 62 | A and B | 85 | A and B | 108 | A |
+| 17 | A and C | 40 | B | 63 | A | 86 | A | 109 | A |
+| 18 | A | 41 | A | 64 | A | 87 | A, B, and C | 110 | A |
+| 19 | B | 42 | A and D | 65 | A | 88 | A | 111 | A |
+| 20 | A and C | 43 | A, C, and D | 66 | A | 89 | A | 112 | A |
+| 21 | B | 44 | A | 67 | A | 90 | A, B, and C | 113 | A, B, and C |
+| 22 | A, C, and D | 45 | B | 68 | A and B | 91 | A |  |  |
+| 23 | B | 46 | B | 69 | A | 92 | A |  |  |
 
 Multi-answer items list every required letter.
 
@@ -786,5 +799,740 @@ Correct: **A** and **C**
 
 On scoring: some controls are **binary** (100% when configured as recommended), others are a **percentage of total configuration**. The course's worked example: the MFA control is worth a maximum **10.71%**, and protecting **5 of 100** users yields **5/100 × 10.71% ≈ 0.53%**. The dashboard includes the score, a comparison against tenants in the **same industry and similar size**, a **trend graph**, and a list of improvement actions. Path: **Microsoft Entra ID > Security > Identity Secure Score**.
 Source: LP4 Module 4.6 / 4.7.
+
+## Domain 1 - Implement an identity management solution
+
+### Question 61 - Temporary Access Pass onboarding
+
+Correct: **A**
+
+- A **Temporary Access Pass (TAP)** is a time-limited passcode that can be configured as **one-time** or **multi-use**. It lets a user sign in to register passwordless methods, including a FIDO2 security key, without a permanent password.
+- TAP must be enabled in the **authentication methods policy**, and its lifetime must fall within the tenant's maximum TAP lifetime.
+
+- **B** creates a password, which the requirement forbids.
+- **C** assumes the user can already sign in and complete SSPR.
+- **D** grants resource access; it does not provide an authentication method.
+- **E** assumes Windows Hello for Business is already enrolled.
+
+Source: LP1 Module 2.4 / 2.5 (passwordless and temporary access pass).
+
+### Question 62 - Cross-tenant synchronization
+
+Correct: **A** and **B**
+
+- **Cross-tenant synchronization** creates and maintains guest accounts in a target tenant from a source tenant. It keeps selected user attributes synchronized, so changes in Fabrikam flow to Contoso.
+- The target tenant must allow **inbound cross-tenant synchronization** and enable **automatic redemption** so users do not redeem a B2B invitation.
+
+- **C** creates one-time invitations and does not keep attributes synchronized.
+- **D** supports access packages, not continuous user provisioning.
+- **E** is domain federation, which is unrelated to guest account lifecycle.
+
+Source: LP1 Module 3.6 / 3.7 (cross-tenant access and synchronization).
+
+### Question 63 - Cloud Sync vs Connect Sync
+
+Correct: **A**
+
+- **Cloud Sync** uses lightweight agents that make only **outbound** connections to Microsoft Entra ID, so no inbound firewall rule is required.
+- It supports **password hash synchronization**, multiple forests without trusts, and **high availability** when multiple agents are installed.
+
+- **B** is a single server and staging mode does not export changes.
+- **C** provides authentication, not directory synchronization.
+- **D** provides federation and still needs a synchronization source.
+- **E** stops directory synchronization entirely.
+
+Source: LP1 Module 4.2 (Cloud Sync).
+
+### Question 64 - Seamless single sign-on
+
+Correct: **A**
+
+- **Seamless SSO** uses the Kerberos ticket of the signed-in domain user to sign the user in to Microsoft Entra ID without an extra prompt. It relies on the **AZUREADSSOACC** computer account created in Active Directory.
+- Because the user is still authenticating to Microsoft Entra ID, **Conditional Access MFA** continues to apply when the user is off the corporate network.
+
+- **B** replaces password hash synchronization and still prompts in this scenario.
+- **C** is federation, which the requirement excludes.
+- **D** changes the Windows sign-in method, not the browser prompt.
+- **E** does not provide single sign-on.
+
+Source: LP1 Module 4.3 (seamless single sign-on).
+
+### Question 65 - External ID self-service sign-up
+
+Correct: **A**
+
+- **Microsoft Entra External ID** external tenants provide consumer identity for apps, including **self-service sign-up**, **company branding**, social identity providers such as Google, and local email accounts.
+- A **user flow** defines the sign-up and sign-in experience and which identity providers are offered.
+
+- **B** requires an invitation and is designed for business guests.
+- **C** synchronizes users from another Microsoft Entra tenant, not consumers.
+- **D** governs access packages for existing users.
+- **E** requires a federation trust and does not provide self-service consumer sign-up.
+
+Source: LP1 Module 3.6 (external identities).
+
+### Question 66 - Dynamic group rule syntax
+
+Correct: **A**
+
+- Dynamic device rules use the **`device.`** property prefix, the **`-eq`** comparison operator, and **`-and`** to require every condition.
+- The correct properties are **`deviceOSType`**, **`deviceOwnership`**, and **`isCompliant`**. Boolean values are **`True`** and **`False`**.
+
+- **B** uses unsupported C-style **`&&`** and omits the compliance condition.
+- **C** uses user properties for a device group.
+- **D** uses **`-or`**, which includes compliant devices.
+- **E** uses **`-contains`** and **`No`**, neither of which is valid here.
+
+Source: LP1 Module 3.4 (dynamic groups).
+
+### Question 67 - Group-based licensing errors
+
+Correct: **A**
+
+- Group-based licensing requires a valid **Usage location** before a license with location-dependent service plans can be assigned. If the location is missing, the assignment fails with a licensing error.
+- Set the location on the user, or map it from the on-premises directory so new users receive it automatically.
+
+- **B** fails for the same reason.
+- **C** changes membership, not licensing prerequisites.
+- **D** does not add the missing location.
+- **E** is already working for other users.
+
+Source: LP1 Module 3.3 (group-based licensing).
+
+### Question 68 - Custom security attribute roles
+
+Correct: **A** and **B**
+
+- **Attribute Definition Administrator** can create and manage attribute sets and custom security attribute definitions.
+- **Attribute Assignment Administrator** can assign values of custom security attributes to users, service principals, and managed identities.
+
+- **C** manages users but not custom security attribute definitions or assignments by default.
+- **D** is read-only.
+- **E** manages role assignments, not attribute schema or values.
+
+Source: LP1 Module 3.8 (custom security attributes).
+
+### Question 69 - Restricted management administrative units
+
+Correct: **A**
+
+- A **restricted management administrative unit (RMAU)** protects its members from directory-level administrators. Only users with a role scoped directly to the RMAU can manage those objects.
+- Adding the protected accounts to an RMAU prevents a tenant-scoped User Administrator or Helpdesk Administrator from managing them.
+
+- **B** grants the helpdesk more control.
+- **C** groups do not restrict administrative scope.
+- **D** changes how the admin activates a role, not what the role can manage.
+- **E** cannot restrict directory password reset operations.
+
+Source: LP1 Module 1.4 / 1.5 (administrative units).
+
+### Question 70 - Entra Connect staging mode
+
+Correct: **A**
+
+- A server in **staging mode** imports and synchronizes data but does not export changes to Microsoft Entra ID. It is the supported way to validate a new configuration alongside production.
+- After validation, disable staging mode on the new server and stop the original server so only one server exports.
+
+- **B** would put production into staging mode and stop updates.
+- **C** changes the synchronization engine and does not test the Connect rules.
+- **D** skips validation entirely.
+- **E** adds an authentication agent, not a staging synchronization server.
+
+Source: LP1 Module 4.1 (Microsoft Entra Connect).
+
+### Question 71 - License service plan conflicts
+
+Correct: **A**
+
+- When multiple licenses are assigned, a **service plan that is disabled in any one of them stays disabled**. Disabling the plan in the E3 license overrides the enabled plan in E5.
+- Resolve the conflict by enabling the plan in the E3 assignment, or by removing the conflicting license.
+
+- **B** blocks license assignment entirely rather than selectively disabling a plan.
+- **C** and **D** do not cause this specific service-plan conflict.
+- **E** affects feature entitlement, not the disabled state of a plan.
+
+Source: LP1 Module 3.3 (license service plans).
+
+### Question 72 - Federated to managed domain conversion
+
+Correct: **A**
+
+- Changing the domain's **AuthenticationType** from **Federated** to **Managed** makes Microsoft Entra ID the authentication authority. Users then sign in with their cloud password, validated by password hash synchronization or pass-through authentication.
+- Plan the change so that password hash synchronization or pass-through authentication is healthy before the cutover.
+
+- **B** does not change the authentication authority.
+- **C** still relies on federation.
+- **D** would disrupt every user and is unnecessary.
+- **E** moves users to a different tenant.
+
+Source: LP1 Module 4.4 / 4.5 (domain management).
+
+### Question 73 - Organizational unit filtering
+
+Correct: **A**
+
+- **Organizational unit filtering** limits directory synchronization to selected OUs. Objects in excluded OUs are not imported or exported to Microsoft Entra ID.
+- Cloud Sync also supports scoping synchronization to specific OUs or groups.
+
+- **B** groups do not control which objects synchronize.
+- **C** leaves the accounts present but disabled.
+- **D** controls access, not directory synchronization.
+- **E** is destructive and would be repeated on the next synchronization cycle.
+
+Source: LP1 Module 4.1 / 4.2 (synchronization scoping).
+
+## Domain 2 - Implement an authentication and access management solution
+
+### Question 74 - Authentication strengths
+
+Correct: **A**
+
+- **Authentication strengths** let a Conditional Access policy require specific method combinations. The built-in **Phishing-resistant MFA** strength accepts methods such as FIDO2 security keys, Windows Hello for Business, and certificate-based authentication.
+- Password plus Authenticator push satisfies the weaker **Multifactor authentication** strength but not the phishing-resistant strength.
+
+- **B** allows push notifications.
+- **C** checks device state, not the authentication method.
+- **D** changes how often a user signs in.
+- **E** blocks older client protocols.
+
+Source: LP2 Module 3.4 (authentication strengths).
+
+### Question 75 - Passkey profiles and attestation
+
+Correct: **A**
+
+- **Passkey profiles** provide group-scoped FIDO2 settings, including **enforce attestation**, allowed passkey types, and **AAGUID** restrictions.
+- An **AAGUID** identifies an authenticator model. Allowing only the approved AAGUIDs blocks every other model, and attestation verifies that the authenticator is genuine.
+
+- **B** does not inspect the authenticator model.
+- **C** requires a class of methods but does not restrict vendors.
+- **D** restricts network location.
+- **E** configures Windows Hello for Business, not FIDO2 security keys.
+
+Source: LP2 Module 2.2 / 2.3 (passkeys and FIDO2).
+
+### Question 76 - Windows Hello for Business trust models
+
+Correct: **A**, **B**, and **C**
+
+- **Key trust** registers the public key of the Windows Hello for Business key pair with the device object in Microsoft Entra ID. It does not require client certificates or AD CS.
+- **Certificate trust** issues a certificate to the device or user from a PKI, so AD CS or another CA is required.
+- **Cloud Kerberos trust** uses Microsoft Entra Kerberos to obtain a partial TGT, giving passwordless access to on-premises resources without AD CS.
+
+- **D** describes certificate trust, not key trust.
+- **E** describes key trust, not certificate trust.
+
+Source: LP2 Module 2.4 (Windows Hello for Business).
+
+### Question 77 - Temporary Access Pass lifetime
+
+Correct: **A**
+
+- A Temporary Access Pass can be configured as **one-time** or **multi-use**, and its lifetime can be set up to a maximum of **30 days**. The tenant policy sets the maximum that administrators can choose.
+- Five days is within that maximum, so the requirement can be met.
+
+- **B**, **C**, **D**, and **E** are either shorter than five days or exceed the supported maximum.
+
+Source: LP2 Module 2.5 (Temporary Access Pass).
+
+### Question 78 - Number matching and MFA fatigue
+
+Correct: **A**
+
+- **Number matching** requires the user to enter the two-digit number shown on the sign-in screen into the Authenticator app, so a blind push approval no longer succeeds.
+- **Additional context** shows the application and location, helping users recognize an unexpected prompt.
+
+- **B** weakens MFA and does not solve prompt bombing.
+- **C** blocks legitimate devices.
+- **D** has no effect on push approvals.
+- **E** changes the sign-in method but does not require the user to match a number.
+
+Source: LP2 Module 2.2 / 2.3 (Microsoft Authenticator).
+
+### Question 79 - Conditional Access device filters
+
+Correct: **A**
+
+- **Filter for devices** is a Conditional Access condition that evaluates device properties with a rule expression. Using `deviceOwnership` and `isCompliant` together limits the policy to company-owned, noncompliant devices.
+- Selecting the **Windows** platform further narrows the policy to Windows devices.
+
+- **B** also matches personal devices that are not compliant.
+- **C** uses a user property in a device filter.
+- **D** blocks noncompliant devices but does not target company-owned devices only.
+- **E** evaluates network location, not device ownership or compliance.
+
+Source: LP2 Module 3.2 / 3.3 (Conditional Access conditions).
+
+### Question 80 - Conditional Access policy evaluation
+
+Correct: **A**, **B**, and **C**
+
+- Conditional Access evaluates all applicable policies. The user must satisfy the grant controls of **every** policy that applies.
+- A **block** policy denies the sign-in regardless of grant controls in other policies.
+- **Report-only** mode shows what the policy would do in the sign-in log without blocking or challenging the user.
+
+- **D** is false: an exclusion applies only to the policy that contains it.
+- **E** is false: the user must satisfy both requirements, not choose one.
+
+Source: LP2 Module 3.1 / 3.2 (Conditional Access evaluation).
+
+### Question 81 - Trusted named locations
+
+Correct: **A**
+
+- **Named locations** define network boundaries by IP range or country. Marking the corporate range as **trusted** lets a Conditional Access policy exclude that location from an MFA requirement.
+- Home and other external networks remain in scope, so MFA is still required there.
+
+- **B** is a legacy per-user MFA setting; it does not integrate with Conditional Access policy scoping and is not the recommended approach.
+- **C** does not exempt the corporate network.
+- **D** enforces MFA everywhere.
+- **E** changes session lifetime, not the MFA requirement.
+
+Source: LP2 Module 3.2 / 3.5 (named locations).
+
+### Question 82 - Session controls
+
+Correct: **A** and **B**
+
+- **Sign-in frequency** controls how often a user must sign in again. Four hours enforces the reauthentication requirement.
+- **Persistent browser session** set to **Never** prevents the browser from keeping the session after it closes.
+
+- **C** revokes tokens when critical events occur; it is not a four-hour timer.
+- **D** allows a much longer session.
+- **E** limits data access in unmanaged browsers but does not set the reauthentication interval.
+
+Source: LP2 Module 3.6 (session controls).
+
+### Question 83 - Authentication methods policy
+
+Correct: **A**, **B**, and **C**
+
+- The authentication methods policy supports **group targeting**, so different users can be allowed different methods.
+- It controls **Authenticator** behavior, including **number matching** and **additional context**.
+- **Temporary Access Pass** must be enabled in the policy before administrators can issue passes.
+
+- **D** is false: FIDO2 must be enabled and configured, and users must register a key.
+- **E** is false: the policy applies to all targeted users, not only privileged roles.
+
+Source: LP2 Module 2.1 / 2.2 (authentication methods policy).
+
+### Question 84 - Self-service password reset methods
+
+Correct: **A**
+
+- **SSPR** can be enabled for all users or selected groups. Enabling **Authenticator** and **SMS** gives users the required methods.
+- **Administrators always require two methods** when they use SSPR, so requiring two methods for everyone matches the administrator behavior.
+- Disabling **security questions** removes that method.
+
+- **B** does not meet the two-method requirement for administrators.
+- **C** uses a method the requirement excludes.
+- **D** does not provide SSPR.
+- **E** is not self-service.
+
+Source: LP2 Module 2.6 (self-service password reset).
+
+### Question 85 - Password writeback
+
+Correct: **A** and **B**
+
+- **Password writeback** is the connector feature that sends a cloud password change back to Active Directory. It can be enabled in Microsoft Entra Connect or Cloud Sync.
+- SSPR with writeback requires **Microsoft Entra ID P1 or P2** for the users who use the feature.
+
+- **C** is an authentication topology, not a writeback component.
+- **D** reduces sign-in prompts but does not write passwords back.
+- **E** is unrelated to password writeback.
+
+Source: LP2 Module 2.6 / 4.2 (password writeback).
+
+### Question 86 - Identity Protection user risk
+
+Correct: **A**
+
+- **User risk** represents the probability that an identity is compromised. A user risk policy can require a **password change** when risk reaches the configured level.
+- Setting the threshold to **High** leaves medium-risk users unaffected, which matches the requirement.
+- After the password change, Identity Protection can dismiss the risk.
+
+- **B** evaluates the risk of a specific sign-in and blocks rather than remediates.
+- **C** encourages MFA registration but does not respond to leaked credentials.
+- **D** enforces MFA but does not require a password change.
+- **E** checks device compliance.
+
+Source: LP2 Module 3.7 (Identity Protection).
+
+### Question 87 - Certificate-based authentication
+
+Correct: **A**, **B**, and **C**
+
+- **CBA** authenticates a user with an X.509 certificate. When configured for MFA, the certificate satisfies a multifactor requirement without an additional prompt.
+- Administrators upload the trusted **root or intermediate CA** certificates and enable CBA in the authentication methods policy.
+- User binding uses the **principal name (UPN)** or the **RFC822** name in the certificate.
+
+- **D** is false: CBA works with managed domains.
+- **E** is false: CBA is supported on multiple platforms and browsers.
+
+Source: LP2 Module 2.7 (certificate-based authentication).
+
+### Question 88 - Global Secure Access Internet Access
+
+Correct: **A**
+
+- **Global Secure Access** uses a client and **traffic forwarding profiles**. The **Internet Access** profile sends internet traffic through Microsoft's Security Service Edge for filtering and inspection.
+- **Private Access** is a separate profile for private applications, so both can be enabled together.
+
+- **B** publishes internal apps and does not inspect internet traffic.
+- **C** connects networks but does not provide Microsoft's security edge.
+- **D** controls access decisions, not traffic forwarding.
+- **E** is a baseline identity security setting.
+
+Source: LP2 Module 5.1 / 5.2 (Global Secure Access).
+
+## Domain 3 - Implement access management for apps
+
+### Question 89 - Workload identity federation
+
+Correct: **A**
+
+- **Workload identity federation** lets an external identity provider, such as GitHub Actions, obtain a short-lived token from Microsoft Entra ID. The app registration trusts the external **issuer** and a specific **subject** claim.
+- No client secret or certificate is stored, so there is nothing to leak or rotate.
+
+- **B** and **E** store a secret.
+- **C** still requires certificate material on the runner.
+- **D** is not possible on a GitHub-hosted runner, and managed identities are for Azure-hosted resources.
+
+Source: LP1 Module 4.6 / 4.7 (workload identity federation).
+
+### Question 90 - Managed identity lifecycle
+
+Correct: **A**, **B**, and **C**
+
+- A **system-assigned** identity shares the lifecycle of its Azure resource; deleting the resource deletes the identity.
+- A **user-assigned** identity is a standalone Azure resource that can be attached to several resources.
+- Managed identities obtain tokens from Microsoft Entra ID, so no secret is stored in code or configuration.
+
+- **D** describes a system-assigned identity.
+- **E** is false: managed identities are service principals, not credentials for an app registration.
+
+Source: LP1 Module 4.6 / 4.7 (managed identities).
+
+### Question 91 - SCIM provisioning
+
+Correct: **A**
+
+- **SCIM provisioning** creates, updates, and disables accounts in the target application. **Attribute mappings** determine which directory values populate the application's user fields.
+- The provisioning job can deactivate a leaver's account automatically when the user is disabled or removed from scope.
+
+- **B** authenticates users but does not create or disable accounts.
+- **C** reviews access periodically; it does not provision accounts.
+- **D** publishes on-premises apps.
+- **E** manages privileged role activation.
+
+Source: LP1 Module 3.7 (application provisioning).
+
+### Question 92 - SAML identifier mismatch
+
+Correct: **A**
+
+- The **Identifier (Entity ID)** is the audience value that the application validates in the SAML assertion. If it differs from the expected value, the application rejects the assertion with an audience mismatch.
+- Correct the identifier in the enterprise application's single sign-on configuration.
+
+- **B** affects where the response is posted, not the audience.
+- **C** produces a signature or certificate error.
+- **D** produces an assignment or sign-in error before the assertion is posted.
+- **E** applies to OpenID Connect implicit flows, not SAML audience validation.
+
+Source: LP1 Module 3.5 (SAML single sign-on).
+
+### Question 93 - Admin consent workflow
+
+Correct: **A**
+
+- The **admin consent workflow** lets users request consent and routes the request to configured **reviewers**. Reviewers approve or deny from the Microsoft Entra admin center.
+- Disabling **user consent** ensures users cannot grant consent themselves.
+
+- **B** blocks the apps instead of allowing a reviewed request.
+- **C** governs access packages, not application consent.
+- **D** manages role activation.
+- **E** does not collect or route consent requests.
+
+Source: LP1 Module 3.6 (admin consent workflow).
+
+### Question 94 - Publisher verification
+
+Correct: **A**
+
+- **Publisher verification** confirms that the publisher of an app is a legitimate Microsoft Partner Network member. The verified publisher can associate its Partner Center account with the app registration.
+- Verified apps show a **verified publisher** badge and produce fewer consent warnings.
+
+- **B** does not verify the publisher.
+- **C** is a domain-verification step for a custom domain, not publisher verification.
+- **D** is a marketplace listing, not publisher verification.
+- **E** is unrelated to a multitenant application.
+
+Source: LP1 Module 3.6 / 3.9 (publisher verification and app governance).
+
+### Question 95 - User consent policies
+
+Correct: **A**, **B**, and **C**
+
+- **App consent policies** define conditions under which users may consent, including publisher verification and the risk level of the requested permissions.
+- The **admin consent workflow** provides a reviewed path when user consent is not allowed.
+
+- **D** is false: administrators can still grant consent.
+- **E** is false: consent policies apply to member and guest users, not guests only.
+
+Source: LP1 Module 3.6 (app consent policies).
+
+### Question 96 - Application Proxy Kerberos delegation
+
+Correct: **A**
+
+- **Application Proxy** publishes the internal application through an outbound-only connector, so no inbound port is required.
+- For **Windows Integrated Authentication**, the connector uses **Kerberos constrained delegation (KCD)** to request a Kerberos ticket for the user and present it to the IIS application.
+
+- **B** and **C** expose the network or the server and do not provide Entra authentication.
+- **D** requires application changes and does not address integrated Windows authentication.
+- **E** requires a connector for private applications.
+
+Source: LP1 Module 3.8 (Application Proxy).
+
+### Question 97 - App credential rotation
+
+Correct: **A**
+
+- A **certificate** or a **federated identity credential** removes the shared secret from the application. Federated credentials are preferred when the app runs on a platform that supports OpenID Connect.
+- Credential expiration should be monitored so a future change does not cause another outage.
+
+- **B**, **C**, and **E** still rely on a client secret.
+- **D** is not how an app registration obtains a managed identity; managed identities are separate Azure resources.
+
+Source: LP1 Module 3.5 / 4.6 (app credentials).
+
+### Question 98 - Multitenant account types
+
+Correct: **A**
+
+- **Accounts in any organizational directory** allows users from any Microsoft Entra tenant to sign in, while excluding personal Microsoft accounts.
+- This is the standard multitenant configuration for business applications.
+
+- **B** includes personal accounts.
+- **C** limits sign-in to Contoso.
+- **D** excludes organizational accounts.
+- **E** is a consumer identity scenario, not a multitenant app registration.
+
+Source: LP1 Module 3.5 / 4.6 (app registration account types).
+
+## Domain 4 - Plan and implement an identity governance strategy
+
+### Question 99 - Lifecycle workflows
+
+Correct: **A**
+
+- **Lifecycle workflows** automate joiner, mover, and leaver tasks. A **joiner** trigger can run when a new employee is created or when the employee hire date arrives.
+- Built-in tasks can add group membership and send notifications to the manager.
+
+- **B** updates membership but does not notify the manager or schedule first-day tasks.
+- **C** grants access through an access package.
+- **D** manages role activation.
+- **E** provisions accounts to applications.
+
+Source: LP4 Module 1.6 / 1.7 (lifecycle workflows).
+
+### Question 100 - PIM activation requirements
+
+Correct: **A**
+
+- **PIM role settings** control activation requirements for a role, including **maximum activation duration**, **approval**, and **justification**.
+- Setting the duration to four hours and enabling approval and justification meets every requirement.
+
+- **B** adds an authentication requirement but not time limits or approval.
+- **C** reviews existing assignments periodically.
+- **D** governs resource access packages, not directory role activation.
+- **E** does not control activation.
+
+Source: LP4 Module 3.2 / 3.3 (PIM role settings).
+
+### Question 101 - PIM authentication context
+
+Correct: **A**
+
+- PIM can require a **Conditional Access authentication context** during activation. The authentication context is a dedicated scope that only the matching Conditional Access policy targets.
+- A policy that applies to that authentication context can require a **phishing-resistant authentication strength**, leaving other administrator policies separate.
+
+- **B** requires MFA but cannot distinguish phishing-resistant methods.
+- **C** affects other administrator sessions.
+- **D** adds approval, not a specific authentication method.
+- **E** adds approval and justification but not authentication strength.
+
+Source: LP4 Module 3.2 / 3.4 (PIM and authentication context).
+
+### Question 102 - PIM alerts
+
+Correct: **A**
+
+- **PIM alerts** detect conditions such as **roles assigned outside PIM**, too many permanent administrators, and stale assignments.
+- Each alert can send email notifications to configured recipients and appears in the PIM alerts page.
+
+- **B** reviews access but does not produce these event alerts.
+- **C** stores logs but does not evaluate PIM-specific conditions.
+- **D** reports a security posture score.
+- **E** controls access but does not alert on assignments.
+
+Source: LP4 Module 3.4 (PIM alerts).
+
+### Question 103 - Access package assignment policy
+
+Correct: **A**
+
+- An **access package assignment policy** defines who can request access, the **approval** requirements, the **expiration**, and the **access review** schedule.
+- A manager approval, 90-day expiration, and quarterly review are all policy settings.
+
+- **B** manages role activation, not group access requests.
+- **C** reviews access but does not handle requests or expiration.
+- **D** grants membership automatically without approval.
+- **E** adds an authentication requirement.
+
+Source: LP4 Module 2.1 / 2.2 (entitlement management).
+
+### Question 104 - Access review scheduling
+
+Correct: **A**, **B**, and **C**
+
+- Access reviews support **recurring schedules** and can run monthly, quarterly, annually, or at a custom interval.
+- **Auto-apply results** updates the resource after the review. The "if reviewers don't respond" setting can remove access, approve access, or take the system recommendation.
+- Reviewers can be **the users**, **their managers**, or **specific users or groups**.
+
+- **D** is false: reviewers make decisions within their scope.
+- **E** is false: reviews can target members, guests, and other scopes.
+
+Source: LP4 Module 2.3 / 2.4 (access reviews).
+
+### Question 105 - Separation of duties
+
+Correct: **A**
+
+- Entitlement management supports **incompatible access packages**. When a user already has one package, a request for the incompatible package is blocked or requires remediation.
+- This enforces **separation of duties** without manual monitoring.
+
+- **B** detects the conflict only after the fact.
+- **C** blocks the application rather than the conflicting assignments.
+- **D** is unrelated to access package compatibility.
+- **E** does not prevent the conflict.
+
+Source: LP4 Module 2.2 (entitlement management and separation of duties).
+
+### Question 106 - Access review auto-apply
+
+Correct: **A**
+
+- Access reviews do not change access by themselves unless **auto-apply** is enabled. With auto-apply, the decisions are written to the reviewed resource when the review completes.
+- Without it, an administrator must apply the results manually.
+
+- **B** changes how long reviewers have, not whether decisions are applied.
+- **C** and **D** govern new access requests.
+- **E** changes expiration, not review application.
+
+Source: LP4 Module 2.4 (access review results).
+
+### Question 107 - Audit and sign-in log retention
+
+Correct: **A**, **B**, and **C**
+
+- Microsoft Entra ID retains **interactive sign-in logs for 30 days** in the portal.
+- **Diagnostic settings** can export logs to Log Analytics, Storage, or Event Hubs for longer retention and analysis.
+- **Audit logs** record directory changes, including user creation and role assignments.
+
+- **D** is false: long retention requires export.
+- **E** is false: audit logs are available with the included Entra ID features, not only P2.
+
+Source: LP4 Module 4.3 / 4.5 (monitoring and log export).
+
+### Question 108 - Terms of use
+
+Correct: **A**
+
+- **Terms of use** presents a PDF during sign-in and records the user's acceptance in the audit log.
+- A **Conditional Access** policy adds the terms of use as a grant control for the selected cloud apps.
+
+- **B** applies to device compliance, not Entra sign-in.
+- **C** reviews access, not legal acceptance.
+- **D** controls access package requests.
+- **E** governs application consent.
+
+Source: LP4 Module 3.5 (terms of use).
+
+### Question 109 - Lifecycle workflow custom task
+
+Correct: **A**
+
+- **Lifecycle workflow custom task extensions** call an Azure Logic App during a workflow. This lets a workflow run logic that is not available as a built-in task.
+- The extension can disable the on-premises account through the Logic App's connector.
+
+- **B** provisions accounts through a connector; it does not run inside the leaver workflow.
+- **C** is not a lifecycle workflow feature.
+- **D** sends role notifications.
+- **E** controls access to the Logic App.
+
+Source: LP4 Module 1.7 (lifecycle workflow extensions).
+
+### Question 110 - Catalog delegation
+
+Correct: **A**
+
+- A **catalog** is a container for access packages and their resources. **Catalog owners** can create and manage access packages in that catalog without tenant-wide administrative rights.
+- Delegating catalog ownership keeps entitlement management scoped to the application team.
+
+- **B** manages app registrations and enterprise apps, not access packages.
+- **C** grants far more privilege than required.
+- **D** reviews access but does not delegate catalog management.
+- **E** changes group membership only.
+
+Source: LP4 Module 2.1 (catalogs and delegated administration).
+
+## Domain 1 - Implement an identity management solution
+
+### Question 111 - Soft-deleted group recovery
+
+Correct: **A**
+
+- Microsoft 365 groups and cloud security groups are **soft deleted for 30 days**. During that window, **Deleted groups** in the Microsoft Entra admin center or the `Restore-MgDirectoryDeletedItem` cmdlet restores the object with its **object ID, membership, owners, and assignments** intact.
+- Global Administrator, Groups Administrator, and the group's owner (when group settings allow it) can restore the group.
+
+- **B** creates a new object with a new ID, so the Conditional Access policy and the app assignment still point at nothing.
+- **C** covers only on-premises objects; a cloud-only group has no entry in the AD Recycle Bin.
+- **D** cannot work: after 30 days the group is hard deleted and cannot be restored.
+- **E** blocks permanent deletion for seven days after a soft delete; it does not recover anything.
+
+Source: LP1 Module 1.2 / 3.1 (group lifecycle and recovery).
+
+## Domain 3 - Implement access management for apps
+
+### Question 112 - Deleted app registration recovery
+
+Correct: **A**
+
+- Application registrations and service principals are **soft deleted for 30 days**. Restoring the application object from **Deleted applications** (or with `Restore-MgDirectoryDeletedItem`) brings back the same **application (client) ID**, credentials, API permissions, and service principal.
+- Restore first, then confirm that the enterprise application and its user assignments are present.
+
+- **B** and **D** create a new application ID, which invalidates consent, assignments, tokens, and every client that uses the old ID.
+- **C** is backwards: the service principal depends on the application object, and restoring only the service principal does not recreate the registration.
+- **E** is unrelated; Key Vault soft delete protects vault objects, not directory applications.
+
+Source: LP1 Module 3.5 / 3.9 (application objects and recovery).
+
+## Domain 1 - Implement an identity management solution
+
+### Question 113 - Hard deletion protection
+
+Correct: **A**, **B**, and **C**
+
+- **Hard Deletion Protection** in Microsoft Entra Backup and Recovery blocks **hard deletion for seven days** after an object is soft deleted. Restoring the object keeps the protection, and deleting it again starts a new seven-day window.
+- Supported object types include **cloud-only groups, applications, service principals, and users that are not synchronized from on-premises**.
+- Protection is **permanent once enabled** and cannot be switched off. If it is enabled by mistake, the object must be soft deleted and left for seven days before it can be permanently removed.
+- Enabling protection requires the **Microsoft Entra Backup Administrator** role and is recorded in the audit log. Separately, a **protected action** can require a Conditional Access authentication context for `microsoft.directory/deletedItems/delete`.
+
+- **D** is false: protection only blocks permanent deletion, and recovery remains a manual restore.
+- **E** is false: soft deletion still succeeds immediately; only the hard-delete step is blocked.
+
+Source: LP1 Module 1.4 / 4.1 (directory protection and recovery).
 
 

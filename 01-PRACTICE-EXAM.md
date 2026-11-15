@@ -1,15 +1,18 @@
 # SC-300 Practice Examination
 
-**60 questions - 90 minutes - closed book**
+**113 questions - 113 minutes - closed book**
 
 This bank is drawn from the four Microsoft Learn SC-300 learning paths (18 modules, 194 units),
 snapshot 2026-11-06. The wording and distractors follow the style of the live exam: most items are
 scenarios that ask you to pick the configuration, role, or behavior that fits, and several ask you
 to select two or three correct statements.
 
+The interactive simulator draws a random 50-question exam by default, using the blueprint weights.
+This document contains the full 113-question bank so you can study every item.
+
 ## Instructions
 
-1. Time yourself: 90 minutes. The live exam runs roughly two minutes per question.
+1. Time yourself: about one minute per question. The live exam runs roughly two minutes per question.
 2. Answer every question. There is no penalty for guessing, and the live exam is scored the same way.
 3. Record your answers on paper or in the score sheet before opening the answer key.
 4. Where a question says "Choose two" or "Choose three", every selected answer must be correct and no
@@ -676,6 +679,626 @@ Which statements are true? (Choose two.)
 - B. Both usage and insights and Identity Secure Score require P1 or P2.
 - C. Identity Secure Score is a percentage: some controls are binary, while others are scored as a percentage of total configuration — for example, protecting 5 of 100 users for a control worth 10.71% yields about 0.53%.
 - D. Identity Secure Score requires Microsoft Entra ID Governance.
+
+### Question 61
+
+A contractor starts tomorrow and has no company phone. The contractor must sign in once to register a FIDO2 security key, and the credential must stop working after it is used. The solution must not create a permanent password.
+
+What should you configure?
+
+- A. A Temporary Access Pass configured for one-time use and a short lifetime, with Temporary Access Pass enabled in the authentication methods policy.
+- B. A temporary password that must be changed at next sign-in.
+- C. A self-service password reset registration link sent by email.
+- D. An access package assignment that expires after one day.
+- E. A Windows Hello for Business PIN reset.
+
+### Question 62
+
+Fabrikam has its own Microsoft Entra tenant. Contoso acquires Fabrikam. Fabrikam users must appear as guests in Contoso, and changes to their display name and department in Fabrikam must flow to Contoso automatically. Users must not redeem invitations manually.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Configure cross-tenant synchronization in the Fabrikam source tenant.
+- B. Enable automatic redemption for inbound cross-tenant synchronization in the Contoso target tenant.
+- C. Create a B2B collaboration invitation for every Fabrikam user.
+- D. Add Fabrikam as a connected organization in an entitlement management catalog.
+- E. Add Fabrikam as a federated domain in Contoso.
+
+### Question 63
+
+Contoso has three Active Directory forests with no trusts between them. The synchronization server must not accept inbound connections from the internet, must support password hash synchronization, and must continue if one synchronization agent fails.
+
+What should you deploy?
+
+- A. Microsoft Entra Cloud Sync with lightweight agents in each forest and at least two agents for high availability.
+- B. Microsoft Entra Connect Sync on a single server in staging mode.
+- C. Pass-through authentication agents in each forest.
+- D. An Active Directory Federation Services farm in each forest.
+- E. Microsoft Entra Connect Sync with directory synchronization disabled.
+
+### Question 64
+
+Users on domain-joined computers on the corporate network are prompted for credentials when they open Microsoft 365. Password hash synchronization is already configured. You must remove the prompt without deploying federation, and users must still complete MFA when they work from home.
+
+What should you enable?
+
+- A. Microsoft Entra seamless single sign-on.
+- B. Pass-through authentication.
+- C. Active Directory Federation Services.
+- D. Windows Hello for Business certificate trust.
+- E. Per-user MFA with trusted IPs disabled.
+
+### Question 65
+
+Contoso wants consumers to sign up for a customer portal by using their own email address or a Google account. The sign-up page must show Contoso branding, and customers must manage their own profile without an invitation from Contoso.
+
+Which solution should you use?
+
+- A. A Microsoft Entra External ID external tenant with a sign-up and sign-in user flow and social identity providers.
+- B. B2B collaboration with one invitation per customer.
+- C. Cross-tenant synchronization from a customer tenant.
+- D. An entitlement management connected organization.
+- E. Active Directory Federation Services with SAML claims.
+
+### Question 66
+
+All Windows devices that are company-owned and not compliant must join a group automatically.
+
+Which dynamic membership rule should you configure?
+
+- A. `(device.deviceOSType -eq "Windows") -and (device.deviceOwnership -eq "Company") -and (device.isCompliant -eq False)`
+- B. `(device.deviceOSType -eq "Windows") && (device.deviceOwnership -eq "Company")`
+- C. `(user.deviceOSType -eq "Windows") -and (user.isCompliant -eq False)`
+- D. `(device.deviceOSType -eq "Windows") -or (device.isCompliant -eq True)`
+- E. `(device.deviceOSType -contains "Windows") -and (device.isCompliant -eq No)`
+
+### Question 67
+
+Licenses are assigned to users through a group. A new user in the United Kingdom receives the group membership, but the license is not assigned. The user object has no location configured.
+
+What should you do?
+
+- A. Set the user's Usage location, either directly or through a directory synchronization mapping.
+- B. Assign the license directly to the user as well.
+- C. Convert the licensing group from Assigned to Dynamic.
+- D. Remove the user from the group and add the user again.
+- E. Enable group-based licensing on the tenant.
+
+### Question 68
+
+Contoso uses custom security attributes to store clearance levels. The identity team must create attribute sets and definitions. The security team must assign attribute values to users. Neither team may receive the Global Administrator role.
+
+Which two roles should you assign? (Choose two.)
+
+- A. Attribute Definition Administrator.
+- B. Attribute Assignment Administrator.
+- C. User Administrator.
+- D. Attribute Definition Reader.
+- E. Privileged Role Administrator.
+
+### Question 69
+
+Contoso has break-glass and executive administrator accounts. Helpdesk staff must not be able to reset the passwords or change the properties of these accounts, even when they hold the User Administrator role.
+
+What should you create?
+
+- A. A restricted management administrative unit that contains the protected accounts.
+- B. A standard administrative unit that contains the protected accounts and assign Helpdesk Administrator to it.
+- C. A dynamic security group that contains the protected accounts.
+- D. A Privileged Identity Management eligible assignment for User Administrator.
+- E. A Conditional Access policy that blocks password reset.
+
+### Question 70
+
+Contoso must test new synchronization rules on a second Microsoft Entra Connect server before changing production. Production synchronization must continue during the test.
+
+What should you do?
+
+- A. Install Microsoft Entra Connect on the second server, enable staging mode, import and validate the configuration, then promote the server by disabling staging mode and stopping the original server.
+- B. Enable staging mode on the production server while the rules are tested.
+- C. Replace Microsoft Entra Connect with Cloud Sync on the second server.
+- D. Export the synchronization rules from the second server and import them into production without testing.
+- E. Install pass-through authentication agents on the second server.
+
+### Question 71
+
+A user has an E3 license assigned directly and an E5 license assigned through a group. A feature that is included in E5 is unavailable, and the license details show the service plan as disabled.
+
+What is the cause?
+
+- A. A service plan disabled in one license overrides the same plan enabled in another license.
+- B. The user's Usage location is set to the wrong country.
+- C. The user is a member of too many licensing groups.
+- D. The E5 group is nested inside another group.
+- E. The tenant has no Microsoft Entra ID P1 licenses.
+
+### Question 72
+
+Contoso retires its AD FS farm. The domain `contoso.com` is currently configured as a federated domain, and users must sign in with their cloud passwords after the cutover.
+
+What should you do to `contoso.com`?
+
+- A. Convert the domain from federated to managed.
+- B. Verify the domain again and set it as the primary domain.
+- C. Enable seamless single sign-on and leave the domain federated.
+- D. Delete the domain and recreate it as a custom domain.
+- E. Add the domain to a new tenant.
+
+### Question 73
+
+Only users in the Sales and Marketing organizational units must synchronize to Microsoft Entra ID. Users in every other organizational unit must never appear in the cloud directory.
+
+What should you configure?
+
+- A. Organizational unit filtering in Microsoft Entra Connect or Cloud Sync.
+- B. A dynamic group that contains only Sales and Marketing users.
+- C. An attribute-based synchronization rule that sets accountEnabled to False.
+- D. A Conditional Access policy scoped to Sales and Marketing.
+- E. A bulk update that deletes the other users from Microsoft Entra ID.
+
+### Question 74
+
+Administrators must use phishing-resistant MFA to access the Azure portal. A password plus a Microsoft Authenticator push notification must not satisfy the requirement.
+
+Which Conditional Access configuration should you use?
+
+- A. A grant control that requires the built-in Phishing-resistant MFA authentication strength.
+- B. A grant control that requires multifactor authentication.
+- C. A grant control that requires a compliant device.
+- D. A session control that sets sign-in frequency to every hour.
+- E. A policy that blocks legacy authentication clients.
+
+### Question 75
+
+Security requires FIDO2 passkeys only from two approved hardware vendors. The solution must verify that a passkey is genuine and must block passkeys from every other authenticator model.
+
+What should you configure?
+
+- A. A passkey (FIDO2) profile with attestation enforced and an allow list of the approved authenticator AAGUIDs.
+- B. A Conditional Access policy that requires a compliant device.
+- C. An authentication strength that requires passwordless MFA.
+- D. A named location that contains the office IP addresses.
+- E. Windows Hello for Business certificate trust.
+
+### Question 76
+
+Which three statements about Windows Hello for Business trust models are true? (Choose three.)
+
+- A. Key trust registers the public key of the Windows Hello for Business key pair with the device object in Microsoft Entra ID, so no client authentication certificate is required.
+- B. Certificate trust requires a public key infrastructure such as Active Directory Certificate Services.
+- C. Cloud Kerberos trust can provide passwordless access to on-premises resources without deploying AD CS.
+- D. Key trust requires a client authentication certificate on every device.
+- E. Certificate trust stores only the public key in Microsoft Entra ID.
+
+### Question 77
+
+An administrator must issue a Temporary Access Pass that remains valid for five days and can be used more than once.
+
+What is the maximum lifetime that can be configured for the pass?
+
+- A. 30 days.
+- B. 7 days.
+- C. 14 days.
+- D. 24 hours.
+- E. 90 days.
+
+### Question 78
+
+Users report repeated Microsoft Authenticator prompts that they did not initiate, and several users approved one of the prompts. You must reduce the risk without removing MFA.
+
+What should you enable first?
+
+- A. Number matching and additional context for Microsoft Authenticator notifications.
+- B. SMS as the only MFA method.
+- C. A Conditional Access policy that blocks all mobile devices.
+- D. A shorter smart lockout duration.
+- E. Passwordless phone sign-in for every user.
+
+### Question 79
+
+A Conditional Access policy must apply only to company-owned Windows devices that are not compliant. Personal devices must not be affected.
+
+Which condition should you configure?
+
+- A. A device filter rule of `device.deviceOwnership -eq "Company" -and device.isCompliant -eq False`, with the Windows platform selected.
+- B. A device filter rule of `device.isCompliant -eq False` only.
+- C. A device filter rule of `user.deviceOwnership -eq "Company"`.
+- D. A grant control that requires a compliant device.
+- E. A named location that contains the corporate network.
+
+### Question 80
+
+Which three statements about how Conditional Access policies are evaluated are true? (Choose three.)
+
+- A. Every policy that applies to a user and sign-in must be satisfied.
+- B. A block policy overrides grant controls from other policies.
+- C. Report-only mode evaluates a policy and records the result without enforcing it.
+- D. Excluding a user from one policy excludes the user from every policy.
+- E. When two policies require different grant controls, the user can choose either one.
+
+### Question 81
+
+Users on the corporate network egress through the public IP range `203.0.113.0/24`. They must not receive MFA prompts when they access Microsoft 365 from that network. When they work from home, MFA must still be required.
+
+What should you configure?
+
+- A. A named location that contains `203.0.113.0/24` marked as trusted, excluded from the Conditional Access MFA policy.
+- B. Per-user MFA with the corporate IP range added as a trusted IP.
+- C. A Conditional Access policy that requires a compliant device for all users.
+- D. Security defaults with MFA enforced for all users.
+- E. A sign-in frequency session control of 30 days.
+
+### Question 82
+
+Finance users on unmanaged devices must sign in again after four hours. They must not remain signed in after they close the browser.
+
+Which two session controls should you configure? (Choose two.)
+
+- A. Sign-in frequency of four hours.
+- B. Persistent browser session set to Never.
+- C. Continuous access evaluation in strict enforcement mode.
+- D. Sign-in frequency of 30 days.
+- E. Application enforced restrictions.
+
+### Question 83
+
+Which three statements about the Microsoft Entra authentication methods policy are true? (Choose three.)
+
+- A. A method can be enabled for specific groups and excluded from other groups.
+- B. Microsoft Authenticator settings include number matching and additional context.
+- C. Enabling Temporary Access Pass requires the method to be enabled in the policy.
+- D. FIDO2 security keys work for all users as soon as the tenant is created.
+- E. The policy applies only to users who hold privileged directory roles.
+
+### Question 84
+
+Users must reset their passwords by using Microsoft Authenticator or SMS. Security questions must not be available. Administrators must also be able to reset their own passwords.
+
+What should you configure?
+
+- A. Enable SSPR for all users, require two methods, enable Authenticator and SMS, and disable security questions.
+- B. Enable SSPR for users only and require one method.
+- C. Enable email one-time passcode as the only SSPR method.
+- D. Enable per-user MFA and disable SSPR for administrators.
+- E. Require users to call the helpdesk and verify their identity.
+
+### Question 85
+
+A hybrid tenant uses Microsoft Entra Connect. Users must reset their passwords in the cloud, and the new password must be written back to on-premises Active Directory.
+
+Which two components are required? (Choose two.)
+
+- A. Password writeback enabled in Microsoft Entra Connect or Cloud Sync.
+- B. Microsoft Entra ID P1 or P2 licenses for the users who reset passwords.
+- C. Active Directory Federation Services.
+- D. Seamless single sign-on.
+- E. A read-only domain controller in every site.
+
+### Question 86
+
+Users who are detected with leaked credentials must change their password before they can access Microsoft 365. Users at medium risk must not be blocked.
+
+Which policy should you configure?
+
+- A. A user risk policy set to High with the Require password change control.
+- B. A sign-in risk policy set to High with the Block access control.
+- C. The MFA registration policy for all users.
+- D. Security defaults with MFA enforced.
+- E. A Conditional Access policy that requires a compliant device.
+
+### Question 87
+
+Which three statements about certificate-based authentication (CBA) in Microsoft Entra ID are true? (Choose three.)
+
+- A. CBA can satisfy MFA when the certificate is configured as a multifactor authentication method.
+- B. You upload the root or intermediate CA certificates and enable CBA in the authentication methods policy.
+- C. Certificates are mapped to users by using the certificate principal name (UPN) or the RFC822 name.
+- D. CBA requires the domain to be federated.
+- E. CBA works only on Windows devices.
+
+### Question 88
+
+Contoso wants internet-bound traffic from managed Windows devices inspected by Microsoft's Security Service Edge. On-premises applications must remain reachable through Private Access.
+
+What should you configure?
+
+- A. Install the Global Secure Access client and enable the Internet Access traffic forwarding profile.
+- B. Deploy Azure Application Proxy connectors for every internet site.
+- C. Configure a site-to-site VPN to Microsoft Azure.
+- D. Create a Conditional Access policy that blocks unmanaged devices.
+- E. Enable Security defaults in Microsoft Entra ID.
+
+### Question 89
+
+A GitHub Actions workflow must deploy resources to Azure without storing a client secret in the repository or in Azure Key Vault.
+
+What should you configure on the app registration?
+
+- A. A federated identity credential that trusts the GitHub OpenID Connect issuer and the repository's subject claim.
+- B. A client secret with a 24-month expiration stored as a GitHub secret.
+- C. A certificate uploaded to the app registration and exported to the runner.
+- D. A system-assigned managed identity on the GitHub-hosted runner.
+- E. A service principal password stored in a pipeline variable.
+
+### Question 90
+
+Which three statements about managed identities are true? (Choose three.)
+
+- A. A system-assigned identity is deleted when the Azure resource is deleted.
+- B. A user-assigned identity can be attached to multiple Azure resources.
+- C. A managed identity can authenticate to resources that support Microsoft Entra authentication without storing credentials.
+- D. A user-assigned identity is tied to the lifecycle of a single virtual machine.
+- E. A managed identity can be used as a client secret for an app registration.
+
+### Question 91
+
+Users are created in a human resources system and must be provisioned automatically into a SaaS application. When a user leaves, the SaaS account must be disabled within an hour.
+
+Which feature should you configure?
+
+- A. Automatic provisioning with SCIM and attribute mappings for the enterprise application.
+- B. SAML single sign-on for the enterprise application.
+- C. An access review for the SaaS application.
+- D. Microsoft Entra Application Proxy.
+- E. Privileged Identity Management for the SaaS application.
+
+### Question 92
+
+A SAML-based enterprise application has just been configured. Users can authenticate, but the application returns an audience mismatch error after the SAML response is posted.
+
+What should you check first?
+
+- A. The Identifier (Entity ID) configured in the enterprise application matches the value the application expects.
+- B. The Reply URL (Assertion Consumer Service URL) matches the application's callback path.
+- C. The SAML signing certificate has not expired.
+- D. The user has been assigned to the application.
+- E. The application's implicit grant settings are enabled.
+
+### Question 93
+
+Users must be able to request access to third-party applications. A designated security team must review every request, and users must not be able to grant consent themselves.
+
+What should you configure?
+
+- A. The admin consent workflow with a reviewer group, and user consent disabled.
+- B. A Conditional Access policy that blocks third-party applications.
+- C. An access package with an approval policy.
+- D. Privileged Identity Management for the Application Administrator role.
+- E. A dynamic group that contains all users who request access.
+
+### Question 94
+
+An independent software vendor wants a verified publisher badge on its multitenant application and wants to reduce the warnings users see during consent.
+
+What should the vendor do?
+
+- A. Complete publisher verification in Partner Center with a Microsoft Partner Network account and associate the app registration with the verified publisher.
+- B. Purchase Microsoft Entra ID P2 for every customer tenant.
+- C. Add a DNS TXT record that contains the application ID.
+- D. Publish the application in the Azure Marketplace.
+- E. Convert the app registration to a managed identity.
+
+### Question 95
+
+Which three statements about user consent and app consent policies are true? (Choose three.)
+
+- A. A user consent policy can allow consent only for apps from verified publishers.
+- B. A user consent policy can block consent for applications that request high-risk permissions.
+- C. The admin consent workflow lets users request consent from a designated reviewer.
+- D. Disabling user consent prevents administrators from granting tenant-wide consent.
+- E. User consent policies apply only to guest users.
+
+### Question 96
+
+You must publish an on-premises IIS application that uses Windows Integrated Authentication. No inbound ports can be opened, and users must sign in with Microsoft Entra ID.
+
+What should you configure?
+
+- A. Microsoft Entra Application Proxy with a connector and Kerberos constrained delegation to a service account.
+- B. A site-to-site VPN between Azure and the on-premises network.
+- C. An Azure Firewall DNAT rule for the IIS server.
+- D. SAML single sign-on directly to the IIS application.
+- E. Global Secure Access Private Access without a connector.
+
+### Question 97
+
+An app registration uses a client secret that expires in 30 days. You must eliminate secret-based credentials and avoid another outage.
+
+What should you do?
+
+- A. Replace the client secret with a certificate or a federated identity credential, and monitor credential expiration.
+- B. Extend the client secret expiration to two years.
+- C. Store the client secret in Azure Key Vault and keep using it.
+- D. Assign a managed identity to the app registration.
+- E. Rotate the client secret every month.
+
+### Question 98
+
+An application must accept users from any Microsoft Entra tenant but must reject personal Microsoft accounts.
+
+Which supported account type should you select?
+
+- A. Accounts in any organizational directory (Any Microsoft Entra directory - Multitenant).
+- B. Accounts in any organizational directory and personal Microsoft accounts.
+- C. Accounts in this organizational directory only (single tenant).
+- D. Personal Microsoft accounts only.
+- E. Azure AD B2C social accounts only.
+
+### Question 99
+
+New hires must be added to their department group and have their manager notified on their first day. The process must run automatically when a new employee record appears in Microsoft Entra ID.
+
+What should you configure?
+
+- A. A lifecycle workflow with a joiner trigger and the required built-in tasks.
+- B. A dynamic group with a rule based on the department attribute.
+- C. An access package with an automatic assignment policy.
+- D. A PIM eligible assignment for the department group.
+- E. A provisioning job for the department group.
+
+### Question 100
+
+Administrators must activate a privileged role for no more than four hours. Each activation must include a justification and approval by a manager.
+
+What should you configure?
+
+- A. The PIM role settings for the role, with a four-hour maximum activation duration, approval required, and justification required.
+- B. A Conditional Access policy that requires MFA for administrators.
+- C. An access review for users assigned to the role.
+- D. An access package that expires after four hours.
+- E. A dynamic group that contains administrators.
+
+### Question 101
+
+Activation of the Global Administrator role must require phishing-resistant MFA. Other Conditional Access policies that target administrators must not affect role activation.
+
+What should you configure?
+
+- A. A PIM role setting that requires a Conditional Access authentication context, plus a Conditional Access policy that targets that authentication context and requires a phishing-resistant authentication strength.
+- B. A PIM role setting that requires MFA on activation.
+- C. A Conditional Access policy that targets all administrators and requires MFA.
+- D. An access review that requires reviewers to approve each activation.
+- E. A PIM role setting that requires approval and justification.
+
+### Question 102
+
+The security team must be notified when a privileged role is assigned outside PIM and when a role has an excessive number of permanent administrators.
+
+What should you configure?
+
+- A. PIM alerts with notification recipients configured for the relevant alert rules.
+- B. An access review for every privileged role.
+- C. A sign-in log export to Azure Monitor.
+- D. The Identity Secure Score.
+- E. A Conditional Access policy that blocks privileged roles.
+
+### Question 103
+
+Contractors must request access to a group. Their manager must approve the request, access must expire after 90 days, and access must be reviewed every quarter.
+
+What should you configure?
+
+- A. An access package assignment policy with manager approval, a 90-day expiration, and a quarterly access review.
+- B. A PIM eligible assignment for the group.
+- C. A standalone access review for the group.
+- D. A dynamic group based on the contractor attribute.
+- E. A Conditional Access policy that requires MFA.
+
+### Question 104
+
+Which three statements about Microsoft Entra access reviews are true? (Choose three.)
+
+- A. A review can be configured to recur on a schedule, such as monthly or quarterly.
+- B. Auto-apply results can remove access when a reviewer denies it or does not respond, depending on the configured behavior.
+- C. Reviewers can be the users themselves, their managers, or a specified group of reviewers.
+- D. Every review decision must be approved by a Global Administrator.
+- E. Access reviews can review only guest users.
+
+### Question 105
+
+Contoso must prevent a user from holding both the Vendor payments and Vendor approval access packages at the same time.
+
+What should you configure?
+
+- A. An incompatible access package relationship on one of the access packages.
+- B. An access review that removes one of the packages.
+- C. A Conditional Access policy that blocks the vendor application.
+- D. A PIM eligible assignment for the vendor role.
+- E. A dynamic group that contains both vendor teams.
+
+### Question 106
+
+Reviewers complete an access review and deny several users, but the users still have access the next day.
+
+What setting should you enable?
+
+- A. Auto apply results to the resource when the review completes.
+- B. A shorter review duration.
+- C. Just-in-time access for the resource.
+- D. Approval required for access requests.
+- E. A longer access package expiration.
+
+### Question 107
+
+Which three statements about Microsoft Entra audit logs and sign-in logs are true? (Choose three.)
+
+- A. Interactive sign-in logs are retained for 30 days in Microsoft Entra ID.
+- B. Diagnostic settings can stream logs to Azure Monitor Log Analytics, Azure Storage, or Azure Event Hubs.
+- C. Audit logs record changes such as user creation and role assignment.
+- D. Sign-in logs are retained for 10 years in Microsoft Entra ID without exporting them.
+- E. Audit logs are available only with Microsoft Entra ID P2.
+
+### Question 108
+
+Users must accept a legal notice before they access a cloud application. The acceptance must be recorded for audit.
+
+What should you configure?
+
+- A. A terms of use document in Microsoft Entra ID and a Conditional Access policy that requires it.
+- B. An acceptable use policy in Microsoft Intune.
+- C. An access review for the application.
+- D. An access package with an approval policy.
+- E. A user consent policy for third-party applications.
+
+### Question 109
+
+A leaver workflow must call an external REST API to disable an on-premises account. The API is implemented as an Azure Logic App.
+
+What should you configure?
+
+- A. A custom task extension in the lifecycle workflow that calls the Logic App.
+- B. An automatic provisioning job for the on-premises application.
+- C. A webhook in an access package assignment policy.
+- D. A PIM role activation notification.
+- E. A Conditional Access policy for the Logic App.
+
+### Question 110
+
+The identity team manages entitlement management. The application team must be able to create and manage its own access packages in a dedicated catalog without receiving Global Administrator.
+
+What should you do?
+
+- A. Create a catalog for the application team and add the team as catalog owners.
+- B. Assign the Application Administrator role to the application team.
+- C. Make the application team PIM-eligible for Global Administrator.
+- D. Create an access review for the catalog.
+- E. Add the application team to a dynamic security group.
+
+### Question 111
+
+A cloud security group that grants access to the finance application was deleted 10 days ago. The group had 240 members and is referenced by a Conditional Access policy. You must bring back the same group object, including its object ID and members, so the existing references keep working.
+
+What should you do?
+
+- A. Restore the group from Deleted groups in the Microsoft Entra admin center within the 30-day soft-delete window.
+- B. Recreate the group with the same display name and add the 240 members from an exported list.
+- C. Restore the group from the Active Directory Recycle Bin on a domain controller and wait for synchronization.
+- D. Open a support request to restore the group after it has been permanently deleted.
+- E. Enable hard deletion protection on the group and wait for the next synchronization cycle.
+
+### Question 112
+
+A production web application stopped signing users in after an administrator deleted its app registration. The enterprise application no longer appears, and the application's client ID and permissions are gone. The deletion happened yesterday.
+
+What should you do?
+
+- A. Restore the deleted application registration from Deleted applications within the 30-day soft-delete window.
+- B. Create a new app registration and update the client ID in the application's configuration.
+- C. Restore the enterprise application; the app registration is recreated with the same client ID.
+- D. Re-run the infrastructure deployment pipeline to recreate the registration.
+- E. Restore the application from the Azure Key Vault soft-delete store.
+
+### Question 113
+
+Contoso must protect a small set of critical cloud groups and app registrations from being permanently deleted out of the recycle bin. Administrators must still be able to delete and restore those objects normally.
+
+Which three statements about Hard Deletion Protection are true? (Choose three.)
+
+- A. It blocks permanent deletion during the first seven days after an object is soft deleted.
+- B. It can be enabled for cloud-only groups, applications, and service principals.
+- C. Enabling it for an object is permanent and cannot be undone.
+- D. It automatically restores an object when the protection window ends.
+- E. It prevents the initial soft deletion of the object.
 
 ---
 

@@ -7,6 +7,9 @@
   var PASS_MARK = 700;
   var SAVE_KEY = 'sc300-sim:attempt';
   var SETTINGS_KEY = 'sc300-sim:settings';
+  var SRS_KEY = 'sc300-sim:srs';
+  var DAY_MS = 86400000;
+  var SRS_DAYS = [3, 7, 21, 45, 90];
   var LETTERS = ['A', 'B', 'C', 'D', 'E'];
 
   var DOMAINS = {
@@ -36,6 +39,17 @@
     }
   };
   var DOMAIN_ORDER = ['identity', 'auth', 'apps', 'governance'];
+  var DOMAIN_WEIGHT = { identity: 25, auth: 30, apps: 20, governance: 25 };
+  var DEFAULT_COUNT = 50;
+
+  var PRESETS = [
+    { key: 'full', label: 'Full 50', count: 50, domains: DOMAIN_ORDER.slice() },
+    { key: 'identity', label: 'Identity 10', count: 10, domains: ['identity'] },
+    { key: 'auth', label: 'Auth 12', count: 12, domains: ['auth'] },
+    { key: 'apps', label: 'Apps 8', count: 8, domains: ['apps'] },
+    { key: 'governance', label: 'Governance 10', count: 10, domains: ['governance'] },
+    { key: 'quick', label: 'Quick 10', count: 10, domains: DOMAIN_ORDER.slice() }
+  ];
 
   var state = null;
   var phase = 'start';
@@ -148,7 +162,7 @@
   }
 
   function loadSettings() {
-    var defaults = { timer: true, instant: false, shuffle: false, domains: DOMAIN_ORDER.slice() };
+    var defaults = { timer: true, instant: false, shuffle: false, count: DEFAULT_COUNT, domains: DOMAIN_ORDER.slice() };
     try {
       var raw = localStorage.getItem(SETTINGS_KEY);
       if (!raw) return defaults;
@@ -157,10 +171,12 @@
         return Array.isArray(parsed.domains) && parsed.domains.indexOf(key) !== -1;
       });
       if (!domains.length) domains = DOMAIN_ORDER.slice();
+      var count = parseInt(parsed.count, 10);
       return {
         timer: parsed.timer !== false,
         instant: parsed.instant === true,
         shuffle: parsed.shuffle === true,
+        count: count > 0 ? count : DEFAULT_COUNT,
         domains: domains
       };
     } catch (err) {
@@ -172,6 +188,81 @@
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (err) { /* ignore */ }
   }
 
+  /* ------------------------------------------------ spaced review queue */
+
+  function loadSrs() {
+    try {
+      var raw = localStorage.getItem(SRS_KEY);
+      if (!raw) return { items: {} };
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object' || !parsed.items || typeof parsed.items !== 'object') {
+        return { items: {} };
+      }
+      return { items: parsed.items };
+    } catch (err) {
+      return { items: {} };
+    }
+  }
+
+  function storeSrs(items) {
+    try { localStorage.setItem(SRS_KEY, JSON.stringify({ v: 1, items: items })); } catch (err) { /* ignore */ }
+  }
+
+  function srsSummary(now) {
+    var items = loadSrs().items;
+    var when = now || Date.now();
+    var due = [];
+    var total = 0;
+    var next = null;
+
+    Object.keys(items).forEach(function (key) {
+      var id = Number(key);
+      var entry = items[key];
+      if (!entry || !BY_ID.has(id)) return;
+      total++;
+      if (!entry.due || entry.due <= when) due.push(id);
+      else if (next === null || entry.due < next) next = entry.due;
+    });
+
+    due.sort(function (a, b) { return a - b; });
+    return { due: due, total: total, next: next };
+  }
+
+  function recordSrs(st) {
+    var items = loadSrs().items;
+    var now = Date.now();
+    var changed = false;
+
+    st.order.forEach(function (id) {
+      var q = BY_ID.get(id);
+      if (!q) return;
+      var entry = items[id];
+
+      if (!isCorrectWith(st, q)) {
+        items[id] = { box: 0, due: now, seen: (entry ? entry.seen || 0 : 0) + 1 };
+        changed = true;
+        return;
+      }
+
+      if (!entry) return;
+      var box = (entry.box || 0) + 1;
+      if (box > SRS_DAYS.length) {
+        delete items[id];
+        changed = true;
+        return;
+      }
+      items[id] = { box: box, due: now + SRS_DAYS[box - 1] * DAY_MS, seen: (entry.seen || 0) + 1 };
+      changed = true;
+    });
+
+    if (changed) storeSrs(items);
+  }
+
+  function dueLabel(ms) {
+    var days = Math.max(1, Math.ceil((ms - Date.now()) / DAY_MS));
+    return days === 1 ? 'tomorrow' : 'in ' + days + ' days';
+  }
+
   function checkedDomains() {
     return Array.prototype.slice.call(document.querySelectorAll('input[name="domain"]:checked'))
       .map(function (el) { return el.value; });
@@ -180,12 +271,14 @@
   function readSettingsFromForm() {
     var timerEl = document.getElementById('opt-timer');
     var shuffleEl = document.getElementById('opt-shuffle');
+    var countEl = document.getElementById('opt-count');
     var modeEl = document.querySelector('input[name="mode"]:checked');
     var domains = checkedDomains();
     var settings = {
       timer: timerEl ? timerEl.checked : true,
       instant: modeEl ? modeEl.value === 'practice' : false,
       shuffle: shuffleEl ? shuffleEl.checked : false,
+      count: countEl ? Math.max(1, parseInt(countEl.value, 10) || DEFAULT_COUNT) : DEFAULT_COUNT,
       domains: domains.length ? domains : DOMAIN_ORDER.slice()
     };
     storeSettings(settings);
@@ -197,11 +290,14 @@
     var previous = loadSettings();
     var timerEl = document.getElementById('opt-timer');
     var shuffleEl = document.getElementById('opt-shuffle');
+    var countEl = document.getElementById('opt-count');
     var modeEl = document.querySelector('input[name="mode"]:checked');
+    var count = countEl ? parseInt(countEl.value, 10) : NaN;
     storeSettings({
       timer: timerEl ? timerEl.checked : previous.timer,
       instant: modeEl ? modeEl.value === 'practice' : previous.instant,
       shuffle: shuffleEl ? shuffleEl.checked : previous.shuffle,
+      count: count > 0 ? count : previous.count,
       domains: domains.length ? domains : previous.domains
     });
   }
@@ -324,15 +420,110 @@
     el.classList.toggle('is-low', !!state.settings.timer && state.remaining <= 300);
   }
 
+  function requestedCount() {
+    var el = document.getElementById('opt-count');
+    if (!el) return DEFAULT_COUNT;
+    var value = parseInt(el.value, 10);
+    return isNaN(value) ? 0 : Math.max(0, value);
+  }
+
+  function poolForDomains(domains) {
+    return QUESTIONS.filter(function (q) { return domains.indexOf(q.domain) !== -1; });
+  }
+
+  function allocateQuotas(pool, domains, requested) {
+    var available = {};
+    var ids = {};
+    domains.forEach(function (key) {
+      available[key] = 0;
+      ids[key] = [];
+    });
+    pool.forEach(function (q) {
+      if (ids[q.domain]) {
+        available[q.domain]++;
+        ids[q.domain].push(q.id);
+      }
+    });
+
+    var totalAvailable = pool.length;
+    var wanted = Math.max(0, Math.min(requested, totalAvailable));
+    var quotas = {};
+    domains.forEach(function (key) { quotas[key] = 0; });
+    if (!wanted) return { quotas: quotas, ids: ids, total: totalAvailable };
+
+    var weightSum = domains.reduce(function (sum, key) { return sum + DOMAIN_WEIGHT[key]; }, 0);
+    var shares = domains.map(function (key) {
+      return { key: key, exact: wanted * DOMAIN_WEIGHT[key] / weightSum };
+    });
+
+    var assigned = 0;
+    shares.forEach(function (share) {
+      var quota = Math.min(Math.floor(share.exact), available[share.key]);
+      quotas[share.key] = quota;
+      assigned += quota;
+    });
+
+    if (wanted >= domains.length) {
+      domains.forEach(function (key) {
+        if (!quotas[key] && available[key]) {
+          quotas[key] = 1;
+          assigned++;
+        }
+      });
+    }
+
+    while (assigned > wanted) {
+      var largest = domains.filter(function (key) { return quotas[key] > 1; })
+        .sort(function (a, b) { return quotas[b] - quotas[a]; })[0];
+      if (!largest) break;
+      quotas[largest]--;
+      assigned--;
+    }
+
+    var remaining = wanted - assigned;
+    var byRemainder = shares.slice().sort(function (a, b) {
+      return (b.exact - Math.floor(b.exact)) - (a.exact - Math.floor(a.exact));
+    });
+    var guard = 0;
+    while (remaining > 0 && guard < 1000) {
+      var placed = false;
+      for (var i = 0; i < byRemainder.length && remaining > 0; i++) {
+        var key = byRemainder[i].key;
+        if (quotas[key] < available[key]) {
+          quotas[key]++;
+          remaining--;
+          placed = true;
+        }
+      }
+      if (!placed) break;
+      guard++;
+    }
+
+    return { quotas: quotas, ids: ids, total: totalAvailable };
+  }
+
+  function sampleExam(pool, domains, requested) {
+    var alloc = allocateQuotas(pool, domains, requested);
+    var picked = [];
+    DOMAIN_ORDER.forEach(function (key) {
+      if (!alloc.ids[key]) return;
+      picked = picked.concat(shuffled(alloc.ids[key]).slice(0, alloc.quotas[key]));
+    });
+    return picked;
+  }
+
   function startExam(opts) {
     opts = opts || {};
     var settings = opts.settings || readSettingsFromForm();
     var domains = opts.domains || settings.domains || DOMAIN_ORDER.slice();
-    var base = opts.ids
-      ? opts.ids.slice()
-      : QUESTIONS.filter(function (q) { return domains.indexOf(q.domain) !== -1; }).map(function (q) { return q.id; });
-    if (!base.length) base = QUESTIONS.map(function (q) { return q.id; });
-    var order = settings.shuffle ? shuffled(base) : base;
+    var requested = opts.ids ? 0 : (opts.count != null ? opts.count : (settings.count || DEFAULT_COUNT));
+    var pool = opts.ids ? [] : poolForDomains(domains);
+    var order = opts.ids ? opts.ids.slice() : sampleExam(pool, domains, requested);
+    if (!order.length) {
+      toast('Choose at least one section and a question count.');
+      return;
+    }
+    if (settings.shuffle) order = shuffled(order);
     var limit = order.length * 90;
 
     state = {
@@ -512,9 +703,117 @@
     state.finishedAt = Date.now();
     phase = 'results';
     reviewFilter = 'all';
+    var passed = gradeOf(state).pass;
+    recordSrs(state);
     persist();
     render();
+    if (passed) launchFireworks();
     if (auto) toast('Time is up - your exam was submitted automatically.');
+  }
+
+  function launchFireworks() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (document.querySelector('.fireworks')) return;
+
+    var host = document.createElement('div');
+    host.className = 'fireworks';
+    host.setAttribute('aria-hidden', 'true');
+    var canvas = document.createElement('canvas');
+    host.appendChild(canvas);
+    document.body.appendChild(host);
+
+    var ctx = canvas.getContext('2d');
+    if (!ctx) {
+      host.remove();
+      return;
+    }
+
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    function sizeCanvas() {
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    sizeCanvas();
+
+    var colors = ['#f43f5e', '#f59e0b', '#22c55e', '#38bdf8', '#a855f7', '#facc15', '#fb7185'];
+    var particles = [];
+    var startedAt = Date.now();
+    var lastBurst = 0;
+
+    function burst(x, y) {
+      var color = colors[Math.floor(Math.random() * colors.length)];
+      var count = 70 + Math.floor(Math.random() * 40);
+      for (var i = 0; i < count; i++) {
+        var angle = Math.random() * Math.PI * 2;
+        var speed = 1.2 + Math.random() * 5.4;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: 0.007 + Math.random() * 0.011,
+          color: color,
+          size: 1.8 + Math.random() * 2.8
+        });
+      }
+      if (particles.length > 2200) particles.splice(0, particles.length - 2200);
+    }
+
+    var raf = window.requestAnimationFrame || function (cb) { return setTimeout(cb, 16); };
+
+    burst(window.innerWidth * 0.24, window.innerHeight * 0.3);
+    burst(window.innerWidth * 0.5, window.innerHeight * 0.2);
+    burst(window.innerWidth * 0.76, window.innerHeight * 0.34);
+
+    function frame() {
+      var now = Date.now();
+      if (now - startedAt >= 5000) {
+        host.remove();
+        return;
+      }
+
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'lighter';
+
+      if (now - lastBurst > 220) {
+        lastBurst = now;
+        burst(w * (0.08 + Math.random() * 0.84), h * (0.08 + Math.random() * 0.58));
+      }
+
+      for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.045;
+        p.vx *= 0.995;
+        p.vy *= 0.995;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+      ctx.globalCompositeOperation = 'source-over';
+      raf(frame);
+    }
+
+    raf(frame);
+    setTimeout(function () {
+      if (host.parentNode) host.remove();
+    }, 5400);
   }
 
   function startReview() {
@@ -543,6 +842,30 @@
     var settings = state.settings;
     startExam({ ids: missed, settings: settings });
     toast('Retaking ' + missed.length + ' missed question' + (missed.length === 1 ? '' : 's') + '.');
+  }
+
+  function startSrs() {
+    var summary = srsSummary();
+    if (!summary.due.length) {
+      toast(summary.total
+        ? 'Nothing is due yet. Next review ' + (summary.next ? dueLabel(summary.next) : 'soon') + '.'
+        : 'The review queue is empty. Missed questions are added automatically.');
+      return;
+    }
+    var ids = summary.due.slice();
+    var settings = loadSettings();
+    startExam({
+      ids: ids,
+      settings: { timer: false, instant: true, shuffle: settings.shuffle, domains: DOMAIN_ORDER.slice() }
+    });
+    toast('Reviewing ' + ids.length + ' question' + (ids.length === 1 ? '' : 's') + ' from the queue.');
+  }
+
+  function clearSrs() {
+    if (!window.confirm('Clear the spaced-review queue? Questions you miss in future attempts will still be added.')) return;
+    storeSrs({});
+    render();
+    toast('Review queue cleared.');
   }
 
   /* ------------------------------------------------------------ print view */
@@ -639,6 +962,7 @@
     }
 
     updateTimer();
+    if (phase === 'start') syncPresets();
 
     if (keep) {
       window.scrollTo(0, keep);
@@ -691,7 +1015,10 @@
     }).join('');
 
     var selectedCount = settings.domains.reduce(function (sum, key) { return sum + (counts[key] || 0); }, 0);
-    var minutes = Math.round(selectedCount * 1.5);
+    var requested = settings.count || DEFAULT_COUNT;
+    var planned = Math.min(requested, selectedCount);
+    if (selectedCount && planned < 1) planned = 1;
+    var minutes = Math.round(planned * 1.5);
 
     return '<div class="start">'
       + '<section class="hero">'
@@ -699,7 +1026,7 @@
       + '<h1>SC-300 exam simulator</h1>'
       + '<p class="lede">A full-length practice exam built from the Microsoft Learn SC-300 learning paths. Run the whole exam, or focus on the sections you want to drill, then get a score report that mirrors the real one.</p>'
       + '<dl class="facts">'
-      + '<div><dt>Questions</dt><dd id="fact-questions">' + selectedCount + '</dd></div>'
+      + '<div><dt>Questions</dt><dd id="fact-questions">' + planned + '</dd></div>'
       + '<div><dt>Time limit</dt><dd id="fact-minutes">' + (settings.timer ? minutes + ' min' : 'off') + '</dd></div>'
       + '<div><dt>Pass score</dt><dd>700</dd></div>'
       + '<div><dt>Sections</dt><dd id="fact-sections">' + settings.domains.length + '</dd></div>'
@@ -721,6 +1048,23 @@
       + '<button type="button" class="linkbtn" data-act="sections-none">None</button></span></div>'
       + '<div class="sections">' + sections + '</div>'
       + '</div>'
+      + '<div class="field">'
+      + '<div class="field-head"><label class="field-label" for="opt-count">Questions</label>'
+      + '<span class="count-max" id="count-max">' + selectedCount + ' available</span></div>'
+      + '<div class="count-row">'
+      + '<input type="number" id="opt-count" data-setup min="1" step="1" inputmode="numeric" value="' + requested + '"' + (selectedCount ? ' max="' + selectedCount + '"' : '') + '>'
+      + '<span class="count-hint">Random draw, weighted by section</span>'
+      + '</div>'
+      + '</div>'
+      + '<div class="field">'
+      + '<div class="field-head"><span class="field-label">Drill presets</span></div>'
+      + '<div class="presets" role="group" aria-label="Drill presets">'
+      + PRESETS.map(function (preset) {
+        return '<button type="button" class="chip" data-act="preset" data-preset="' + preset.key + '" aria-pressed="false">' + esc(preset.label) + '</button>';
+      }).join('')
+      + '</div>'
+      + '<p class="presets-note">Fills in the sections and question count. Adjust either one afterwards for a custom mix.</p>'
+      + '</div>'
       + '<label class="check-row"><input type="checkbox" id="opt-timer" data-setup' + (settings.timer ? ' checked' : '') + '>'
       + '<span><strong>Timer</strong><small id="timer-note">' + (settings.timer ? minutes + '-minute countdown, auto-submits at zero' : 'No time limit') + '</small></span></label>'
       + '<label class="check-row"><input type="checkbox" id="opt-shuffle"' + (settings.shuffle ? ' checked' : '') + '>'
@@ -729,6 +1073,7 @@
       + '<p class="hint" id="start-hint">Answers save in this browser automatically. Leave at any time and resume where you stopped.</p>'
       + resumeHTML(savedRecord)
       + '</section>'
+      + srsHTML()
       + '</div>';
   }
 
@@ -742,30 +1087,42 @@
     if (!boxes.length) return;
 
     var chosen = boxes.filter(function (box) { return box.checked; });
-    var count = QUESTIONS.filter(function (q) {
+    var available = QUESTIONS.filter(function (q) {
       return chosen.some(function (box) { return box.value === q.domain; });
     }).length;
+    var requested = requestedCount();
+    var count = Math.min(requested, available);
     var minutes = Math.round(count * 1.5);
     var timerEl = document.getElementById('opt-timer');
     var timerOn = timerEl ? timerEl.checked : true;
 
+    var input = document.getElementById('opt-count');
+    if (input) {
+      if (available) input.setAttribute('max', String(available));
+      else input.removeAttribute('max');
+    }
+    setText('count-max', available + ' available');
     setText('fact-questions', String(count));
     setText('fact-minutes', timerOn ? (count ? minutes + ' min' : '--') : 'off');
     setText('fact-sections', String(chosen.length));
     setText('timer-note',
-      !count ? 'Select at least one section'
-        : timerOn ? minutes + '-minute countdown, auto-submits at zero'
-          : 'No time limit - work at your own pace');
+      !available ? 'Select at least one section'
+        : !requested ? 'Enter the number of questions'
+          : timerOn ? minutes + '-minute countdown, auto-submits at zero'
+            : 'No time limit - work at your own pace');
 
     var button = document.getElementById('start-btn');
     if (button) button.disabled = count === 0;
 
     var hint = document.getElementById('start-hint');
     if (hint) {
-      hint.textContent = count === 0
-        ? 'Choose at least one section to start.'
-        : 'Answers save in this browser automatically. Leave at any time and resume where you stopped.';
+      if (!available) hint.textContent = 'Choose at least one section to start.';
+      else if (!requested) hint.textContent = 'Enter how many questions you want to answer.';
+      else if (requested > available) hint.textContent = 'Only ' + available + ' questions are available in the selected sections, so the exam will use all ' + available + '.';
+      else hint.textContent = 'Answers save in this browser automatically. Leave at any time and resume where you stopped.';
     }
+
+    syncPresets();
   }
 
   function setSections(on) {
@@ -774,6 +1131,50 @@
     });
     updateSetup();
     storeSetup();
+  }
+
+  function setupSignature(count, domains) {
+    return count + ':' + domains.slice().sort().join(',');
+  }
+
+  function activePresetKey() {
+    var signature = setupSignature(requestedCount(), checkedDomains());
+    var match = '';
+    PRESETS.some(function (preset) {
+      if (setupSignature(preset.count, preset.domains) === signature) {
+        match = preset.key;
+        return true;
+      }
+      return false;
+    });
+    return match;
+  }
+
+  function syncPresets() {
+    var active = activePresetKey();
+    Array.prototype.forEach.call(document.querySelectorAll('.chip[data-preset]'), function (chip) {
+      var on = chip.dataset.preset === active;
+      chip.classList.toggle('is-active', on);
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function applyPreset(key) {
+    var preset = null;
+    PRESETS.forEach(function (item) {
+      if (item.key === key) preset = item;
+    });
+    if (!preset) return;
+
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="domain"]'), function (box) {
+      box.checked = preset.domains.indexOf(box.value) !== -1;
+    });
+    var input = document.getElementById('opt-count');
+    if (input) input.value = String(preset.count);
+
+    updateSetup();
+    storeSetup();
+    toast(preset.label + ' preset applied.');
   }
 
   function resumeHTML(rec) {
@@ -797,6 +1198,46 @@
       + '<div class="resume-actions"><button class="btn btn-primary btn-sm" data-act="resume">Resume</button>'
       + '<button class="btn btn-ghost btn-sm" data-act="discard">Discard</button></div>'
       + '</div>';
+  }
+
+  function srsHTML() {
+    var summary = srsSummary();
+    var due = summary.due.length;
+    var note;
+
+    if (!summary.total) {
+      note = 'Miss a question and it lands here. Correct reviews push it further out, so your time goes to the items you actually got wrong.';
+    } else if (due) {
+      note = 'Questions you missed are ready for another pass. Answer them correctly and the next review moves further into the future.';
+    } else {
+      note = 'Nothing is due right now. The next review comes up ' + (summary.next ? dueLabel(summary.next) : 'soon') + '.';
+    }
+
+    return '<section class="panel srs" aria-labelledby="srs-title">'
+      + '<div class="srs-head">'
+      + '<h2 id="srs-title">Spaced review</h2>'
+      + '<span class="srs-badge' + (due ? ' is-due' : '') + '">' + (due ? due + ' due' : 'up to date') + '</span>'
+      + '</div>'
+      + '<p class="srs-note">' + note + '</p>'
+      + '<dl class="srs-stats">'
+      + '<div><dt>Due now</dt><dd>' + due + '</dd></div>'
+      + '<div><dt>Tracked</dt><dd>' + summary.total + '</dd></div>'
+      + '<div><dt>Next review</dt><dd>' + (summary.next ? dueLabel(summary.next) : due ? 'now' : '--') + '</dd></div>'
+      + '</dl>'
+      + '<div class="srs-actions">'
+      + '<button class="btn btn-primary btn-sm" data-act="srs-start"' + (due ? '' : ' disabled') + '>Review ' + (due || 'queue') + (due ? ' due' : '') + '</button>'
+      + (summary.total ? '<button class="btn btn-ghost btn-sm" data-act="srs-clear">Clear queue</button>' : '')
+      + '</div>'
+      + '</section>';
+  }
+
+  function queueNoteHTML() {
+    var summary = srsSummary();
+    if (!summary.total) {
+      return '<p class="queue-note">Missed questions join the spaced-review queue on the start screen.</p>';
+    }
+    return '<p class="queue-note"><strong>' + summary.due.length + ' due now</strong> in the spaced-review queue &middot; '
+      + summary.total + ' tracked' + (summary.next ? ' &middot; next ' + dueLabel(summary.next) : '') + '.</p>';
   }
 
   function optionsHTML(q, sel, revealed) {
@@ -1028,6 +1469,7 @@
     var answered = answeredCount();
     var wrong = Math.max(0, answered - g.correct);
     var blank = Math.max(0, g.total - answered);
+    var queue = srsSummary();
 
     return '<section class="card study" aria-labelledby="study-title">'
       + '<h2 id="study-title">Practice detail</h2>'
@@ -1043,10 +1485,12 @@
       + '<div class="stack">'
       + '<button class="btn btn-primary btn-block" data-act="review">Review all answers</button>'
       + '<button class="btn btn-ghost btn-block" data-act="retake-missed"' + (g.total - g.correct ? '' : ' disabled') + '>Retake missed (' + (g.total - g.correct) + ')</button>'
+      + (queue.due.length ? '<button class="btn btn-ghost btn-block" data-act="srs-start">Review queue (' + queue.due.length + ')</button>' : '')
       + '<button class="btn btn-ghost btn-block" data-act="print-report">Print score report</button>'
       + '<button class="btn btn-ghost btn-block" data-act="print">Print full review</button>'
       + '<button class="btn btn-ghost btn-block" data-act="home">Start a new attempt</button>'
       + '</div>'
+      + queueNoteHTML()
       + '<p class="fineprint">Practice explanations name the module each fact came from. Multi-select items are scored all-or-nothing, like the live exam.</p>'
       + '</section>';
   }
@@ -1054,6 +1498,12 @@
   function resultsHTML() {
     var g = gradeOf(state);
     var verdict = g.pass ? 'Pass' : 'Fail';
+    var sectionCount = DOMAIN_ORDER.filter(function (key) {
+      return g.per[key] && g.per[key].total > 0;
+    }).length;
+    var sectionTotal = DOMAIN_ORDER.filter(function (key) {
+      return state.settings.domains && state.settings.domains.indexOf(key) !== -1;
+    }).length || 4;
 
     return '<div class="results">'
       + '<section class="report" aria-labelledby="report-title">'
@@ -1065,7 +1515,7 @@
       + '<dl class="report-meta">'
       + '<div><dt>Date</dt><dd>' + esc(reportDate()) + '</dd></div>'
       + '<div><dt>Attempt</dt><dd>Practice exam</dd></div>'
-      + '<div><dt>Sections</dt><dd>' + (state.settings.domains ? state.settings.domains.length : 4) + ' of 4</dd></div>'
+      + '<div><dt>Sections</dt><dd>' + sectionCount + ' of ' + sectionTotal + '</dd></div>'
       + '<div><dt>Time used</dt><dd>' + fmtClock(state.used) + '</dd></div>'
       + '</dl>'
       + '<div class="report-verdict ' + (g.pass ? 'ok' : 'no') + '">'
@@ -1162,6 +1612,15 @@
       case 'sections-none':
         setSections(false);
         break;
+      case 'preset':
+        applyPreset(el.dataset.preset);
+        break;
+      case 'srs-start':
+        startSrs();
+        break;
+      case 'srs-clear':
+        clearSrs();
+        break;
       case 'print-report':
         printScoreReport();
         break;
@@ -1177,7 +1636,14 @@
     var el = event.target;
     if (!el || el.nodeType !== 1 || !el.matches) return;
     if (phase !== 'start') return;
-    if (!el.matches('input[name="domain"], #opt-timer, #opt-shuffle, input[name="mode"]')) return;
+    if (!el.matches('input[name="domain"], #opt-timer, #opt-shuffle, #opt-count, input[name="mode"]')) return;
+    updateSetup();
+    storeSetup();
+  }
+
+  function onCountInput(event) {
+    var el = event.target;
+    if (!el || el.id !== 'opt-count' || phase !== 'start') return;
     updateSetup();
     storeSetup();
   }
@@ -1234,6 +1700,7 @@
   function boot() {
     document.addEventListener('click', onClick);
     document.addEventListener('change', onChange);
+    document.addEventListener('input', onCountInput);
     document.addEventListener('keydown', onKey);
 
     window.addEventListener('beforeunload', function () {

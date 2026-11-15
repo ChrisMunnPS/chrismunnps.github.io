@@ -5,23 +5,23 @@
 | Field | Value |
 |---|---|
 | Date |  |
-| Time taken (target 90 min) |  |
-| Raw score (out of 60) |  |
-| Scaled score (raw / 60 x 1000) |  |
+| Time taken (target 113 min) |  |
+| Raw score (out of 113) |  |
+| Scaled score (raw / 113 x 1000) |  |
 | Pass target (700 scaled) |  |
 
-Microsoft does not publish the exact scoring curve. A raw score of 42/60 (70%) is a reasonable
-proxy for a passing scaled score; treat anything below 48/60 as not yet ready.
+Microsoft does not publish the exact scoring curve. A raw score of 79/113 (70%) is a reasonable
+proxy for a passing scaled score; treat anything below 90/113 as not yet ready.
 
 ## Results by domain
 
 | Domain | Questions | Correct | % | Status |
 |---|---|---|---|---|
-| Domain 1 - Identity management | 15 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15) |  |  |  |
-| Domain 2 - Authentication and access management | 18 (16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33) |  |  |  |
-| Domain 3 - Access management for apps | 12 (34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45) |  |  |  |
-| Domain 4 - Identity governance | 15 (46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60) |  |  |  |
-| **Total** | **60** |  |  |  |
+| Domain 1 - Identity management | 30 (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 111, 113) |  |  |  |
+| Domain 2 - Authentication and access management | 33 (16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88) |  |  |  |
+| Domain 3 - Access management for apps | 23 (34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 112) |  |  |  |
+| Domain 4 - Identity governance | 27 (46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110) |  |  |  |
+| **Total** | **113** |  |  |  |
 
 Status key: **Ready** = 90%+, **Review** = 80-89%, **Re-study** = below 80%.
 
@@ -91,4 +91,57 @@ Mark each question right or wrong, then re-read only the source units for the on
 | 58 | Domain 4 - Identity governance | Sign-in logs | LP4 Module 4.2. |  |
 | 59 | Domain 4 - Identity governance | Audit logs and SIEM export | LP4 Module 4.3 / 4.5. |  |
 | 60 | Domain 4 - Identity governance | Report licensing and Identity Secure Score | LP4 Module 4.6 / 4.7. |  |
+| 61 | Domain 1 - Identity management | Temporary Access Pass onboarding | LP1 Module 2.4 / 2.5 (passwordless and temporary access pass). |  |
+| 62 | Domain 1 - Identity management | Cross-tenant synchronization | LP1 Module 3.6 / 3.7 (cross-tenant access and synchronization). |  |
+| 63 | Domain 1 - Identity management | Cloud Sync vs Connect Sync | LP1 Module 4.2 (Cloud Sync). |  |
+| 64 | Domain 1 - Identity management | Seamless single sign-on | LP1 Module 4.3 (seamless single sign-on). |  |
+| 65 | Domain 1 - Identity management | External ID self-service sign-up | LP1 Module 3.6 (external identities). |  |
+| 66 | Domain 1 - Identity management | Dynamic group rule syntax | LP1 Module 3.4 (dynamic groups). |  |
+| 67 | Domain 1 - Identity management | Group-based licensing errors | LP1 Module 3.3 (group-based licensing). |  |
+| 68 | Domain 1 - Identity management | Custom security attribute roles | LP1 Module 3.8 (custom security attributes). |  |
+| 69 | Domain 1 - Identity management | Restricted management administrative units | LP1 Module 1.4 / 1.5 (administrative units). |  |
+| 70 | Domain 1 - Identity management | Entra Connect staging mode | LP1 Module 4.1 (Microsoft Entra Connect). |  |
+| 71 | Domain 1 - Identity management | License service plan conflicts | LP1 Module 3.3 (license service plans). |  |
+| 72 | Domain 1 - Identity management | Federated to managed domain conversion | LP1 Module 4.4 / 4.5 (domain management). |  |
+| 73 | Domain 1 - Identity management | Organizational unit filtering | LP1 Module 4.1 / 4.2 (synchronization scoping). |  |
+| 74 | Domain 2 - Authentication and access management | Authentication strengths | LP2 Module 3.4 (authentication strengths). |  |
+| 75 | Domain 2 - Authentication and access management | Passkey profiles and attestation | LP2 Module 2.2 / 2.3 (passkeys and FIDO2). |  |
+| 76 | Domain 2 - Authentication and access management | Windows Hello for Business trust models | LP2 Module 2.4 (Windows Hello for Business). |  |
+| 77 | Domain 2 - Authentication and access management | Temporary Access Pass lifetime | LP2 Module 2.5 (Temporary Access Pass). |  |
+| 78 | Domain 2 - Authentication and access management | Number matching and MFA fatigue | LP2 Module 2.2 / 2.3 (Microsoft Authenticator). |  |
+| 79 | Domain 2 - Authentication and access management | Conditional Access device filters | LP2 Module 3.2 / 3.3 (Conditional Access conditions). |  |
+| 80 | Domain 2 - Authentication and access management | Conditional Access policy evaluation | LP2 Module 3.1 / 3.2 (Conditional Access evaluation). |  |
+| 81 | Domain 2 - Authentication and access management | Trusted named locations | LP2 Module 3.2 / 3.5 (named locations). |  |
+| 82 | Domain 2 - Authentication and access management | Session controls | LP2 Module 3.6 (session controls). |  |
+| 83 | Domain 2 - Authentication and access management | Authentication methods policy | LP2 Module 2.1 / 2.2 (authentication methods policy). |  |
+| 84 | Domain 2 - Authentication and access management | Self-service password reset methods | LP2 Module 2.6 (self-service password reset). |  |
+| 85 | Domain 2 - Authentication and access management | Password writeback | LP2 Module 2.6 / 4.2 (password writeback). |  |
+| 86 | Domain 2 - Authentication and access management | Identity Protection user risk | LP2 Module 3.7 (Identity Protection). |  |
+| 87 | Domain 2 - Authentication and access management | Certificate-based authentication | LP2 Module 2.7 (certificate-based authentication). |  |
+| 88 | Domain 2 - Authentication and access management | Global Secure Access Internet Access | LP2 Module 5.1 / 5.2 (Global Secure Access). |  |
+| 89 | Domain 3 - Access management for apps | Workload identity federation | LP1 Module 4.6 / 4.7 (workload identity federation). |  |
+| 90 | Domain 3 - Access management for apps | Managed identity lifecycle | LP1 Module 4.6 / 4.7 (managed identities). |  |
+| 91 | Domain 3 - Access management for apps | SCIM provisioning | LP1 Module 3.7 (application provisioning). |  |
+| 92 | Domain 3 - Access management for apps | SAML identifier mismatch | LP1 Module 3.5 (SAML single sign-on). |  |
+| 93 | Domain 3 - Access management for apps | Admin consent workflow | LP1 Module 3.6 (admin consent workflow). |  |
+| 94 | Domain 3 - Access management for apps | Publisher verification | LP1 Module 3.6 / 3.9 (publisher verification and app governance). |  |
+| 95 | Domain 3 - Access management for apps | User consent policies | LP1 Module 3.6 (app consent policies). |  |
+| 96 | Domain 3 - Access management for apps | Application Proxy Kerberos delegation | LP1 Module 3.8 (Application Proxy). |  |
+| 97 | Domain 3 - Access management for apps | App credential rotation | LP1 Module 3.5 / 4.6 (app credentials). |  |
+| 98 | Domain 3 - Access management for apps | Multitenant account types | LP1 Module 3.5 / 4.6 (app registration account types). |  |
+| 99 | Domain 4 - Identity governance | Lifecycle workflows | LP4 Module 1.6 / 1.7 (lifecycle workflows). |  |
+| 100 | Domain 4 - Identity governance | PIM activation requirements | LP4 Module 3.2 / 3.3 (PIM role settings). |  |
+| 101 | Domain 4 - Identity governance | PIM authentication context | LP4 Module 3.2 / 3.4 (PIM and authentication context). |  |
+| 102 | Domain 4 - Identity governance | PIM alerts | LP4 Module 3.4 (PIM alerts). |  |
+| 103 | Domain 4 - Identity governance | Access package assignment policy | LP4 Module 2.1 / 2.2 (entitlement management). |  |
+| 104 | Domain 4 - Identity governance | Access review scheduling | LP4 Module 2.3 / 2.4 (access reviews). |  |
+| 105 | Domain 4 - Identity governance | Separation of duties | LP4 Module 2.2 (entitlement management and separation of duties). |  |
+| 106 | Domain 4 - Identity governance | Access review auto-apply | LP4 Module 2.4 (access review results). |  |
+| 107 | Domain 4 - Identity governance | Audit and sign-in log retention | LP4 Module 4.3 / 4.5 (monitoring and log export). |  |
+| 108 | Domain 4 - Identity governance | Terms of use | LP4 Module 3.5 (terms of use). |  |
+| 109 | Domain 4 - Identity governance | Lifecycle workflow custom task | LP4 Module 1.7 (lifecycle workflow extensions). |  |
+| 110 | Domain 4 - Identity governance | Catalog delegation | LP4 Module 2.1 (catalogs and delegated administration). |  |
+| 111 | Domain 1 - Identity management | Soft-deleted group recovery | LP1 Module 1.2 / 3.1 (group lifecycle and recovery). |  |
+| 112 | Domain 3 - Access management for apps | Deleted app registration recovery | LP1 Module 3.5 / 3.9 (application objects and recovery). |  |
+| 113 | Domain 1 - Identity management | Hard deletion protection | LP1 Module 1.4 / 4.1 (directory protection and recovery). |  |
 

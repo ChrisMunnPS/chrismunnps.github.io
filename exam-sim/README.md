@@ -1,6 +1,6 @@
 # SC-300 Exam Simulator
 
-An offline, single-page practice exam for Microsoft SC-300, built from the 60-question
+An offline, single-page practice exam for Microsoft SC-300, built from the 110-question
 bank in the parent folder.
 
 ## Run it
@@ -12,15 +12,18 @@ straight from `file://`.
 
 ## Features
 
-- **60 questions** with the official domain mix: identity 15, authentication 18, apps 12, governance 15.
+- **110 questions** with the official domain mix: identity 28, authentication 33, apps 22, governance 27.
+- **Random 50-question draw by default.** Each attempt samples the bank in blueprint proportion (13 identity, 15 authentication, 10 apps, 12 governance). Retakes of missed questions skip the sampling.
+- **Choose your own question count.** The *Questions* box accepts 1 through the size of the selected pool; the mix stays weighted and the time limit recalculates as you type. The number is saved with your other settings.
 - **Focus on specific sections.** Tick any of the four exam domains on the start screen to build a shorter attempt; the question count and time limit update as you choose. *All* and *None* buttons speed up the selection.
 - **Two modes.** *Exam* hides all feedback until you submit. *Practice* reveals the explanation as you answer, plus a "Check answer" step for multi-select items.
-- **Optional timer, as a checkbox.** Leave *Timer* ticked for a 90-second-per-question countdown that auto-submits at zero, or untick it to work untimed. A 60-question attempt gets 90 minutes; identity plus apps (27 questions) gets about 41.
+- **Optional timer, as a checkbox.** Leave *Timer* ticked for a 90-second-per-question countdown that auto-submits at zero, or untick it to work untimed. The default 50-question attempt gets 75 minutes.
 - **Question map** with answered and flagged states, jump-to-question, and a flag-for-review filter.
 - **Scoring like the live exam.** Multi-select is all-or-nothing. The raw score is converted to a 1–1000 scaled score with a pass mark of 700.
 - **Score report shaped like the Pearson VUE one.** Exam title and date, a PASS/FAIL result, your score next to the 700 passing score, and a "Performance by exam section" bar chart with the domain weights and a 700 marker. A separate practice-detail card keeps the raw counts and actions.
 - **Retake** only the missed questions, and review every item: correct answer, your answer, the reasoning behind each distractor, and the source module.
-- **Print** the score report on its own or the entire answer review (60 questions with explanations).
+- **Print** the score report on its own or the entire answer review, with explanations.
+- **Pass fireworks.** A passing score plays a five-second full-screen fireworks display, skipped automatically when reduced motion is requested.
 - **Autosave** to `localStorage`. Close the tab and resume later; the start screen offers to continue or discard.
 - Keyboard: `A`–`E` or `1`–`5` to answer, `←`/`→` to move, `F` to flag, `Esc` to close dialogs.
 
@@ -33,7 +36,7 @@ exam title and date, Result PASS/FAIL, *Your score* beside *Passing score 700*, 
 footnote match the published wording; the bar values are your raw correct counts.
 
 Ctrl+P on the results screen prints just that report. The *Print score report* button does
-the same, and *Print full review* builds a 60-question answer key. Both buttons hide the app
+the same, and *Print full review* builds a full answer key. Both buttons hide the app
 chrome while printing and clean up after the dialog closes.
 
 ## Scoring caveat
@@ -54,8 +57,8 @@ scaled score stays comparable.
 
 ## Editing questions
 
-`questions.js` is generated from `../01-PRACTICE-EXAM.md` and `../02-ANSWER-KEY.md`.
-Each entry looks like:
+`questions.js` is generated from the Markdown question sources, then checked for stem/answer
+consistency. Each entry looks like:
 
 ```js
 {

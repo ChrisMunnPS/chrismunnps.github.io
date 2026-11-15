@@ -10,12 +10,12 @@ exam mirrors those weights so your score is a meaningful predictor.
 
 | # | Domain | Weight | Course modules | Questions |
 |---|--------|--------|----------------|-----------|
-| 1 | Implement an identity management solution | 20–25% | Initial config, identities, external identities, hybrid identity | 15 |
-| 2 | Implement an authentication and access management solution | 25–30% | MFA, user authentication, Conditional Access, Identity Protection, Azure resources, Global Secure Access | 18 |
-| 3 | Implement access management for apps | 15–20% | Enterprise apps/SSO, app registration, app platform, app governance | 12 |
-| 4 | Plan and implement an identity governance strategy | 20–25% | Entitlement management, access reviews, PIM, monitoring | 15 |
+| 1 | Implement an identity management solution | 20–25% | Initial config, identities, external identities, hybrid identity | 28 |
+| 2 | Implement an authentication and access management solution | 25–30% | MFA, user authentication, Conditional Access, Identity Protection, Azure resources, Global Secure Access | 33 |
+| 3 | Implement access management for apps | 15–20% | Enterprise apps/SSO, app registration, app platform, app governance | 22 |
+| 4 | Plan and implement an identity governance strategy | 20–25% | Entitlement management, access reviews, PIM, monitoring | 27 |
 
-**Total: 60 questions.**
+**Total: 110 questions.**
 
 ## Question mix
 
@@ -23,24 +23,33 @@ The real exam is scenario-heavy and rarely asks for a bare definition. This bank
 
 | Format | Count | Notes |
 |--------|-------|-------|
-| Single-best-answer scenario | 39 | "You need to… Which configuration should you use?" |
-| Multiple-answer (pick two or three) | 21 | Stated explicitly in the stem; all-or-nothing scoring |
+| Single-best-answer scenario | 77 | "You need to… Which configuration should you use?" |
+| Multiple-answer (pick two or three) | 33 | Stated explicitly in the stem; all-or-nothing scoring |
 
 Every item is followed in the answer key by the correct answer, the reasoning, why each remaining
 option fails, and the course unit that covers it.
+
+## How the simulator builds an attempt
+
+The interactive exam does not simply serve all 110 items. It draws a random **50-question** paper
+by default, allocating **13 identity / 15 authentication / 10 apps / 12 governance** with a
+largest-remainder split of the blueprint weights. The **Questions** box on the start screen changes
+the size of the draw; the same weighted split is applied, each selected domain gets at least one
+question when the count allows, and a request larger than the pool returns the whole pool. Section
+focus narrows the pool before the draw, and a retake of missed questions reuses the exact items.
 
 ## Files
 
 | File | Purpose |
 |------|---------|
 | `00-EXAM-BLUEPRINT.md` | This file |
-| `01-PRACTICE-EXAM.md` | 60 questions, no answers |
+| `01-PRACTICE-EXAM.md` | 110 questions, no answers |
 | `02-ANSWER-KEY.md` | Answers, reasoning, why each distractor fails, source unit |
 | `03-SCORE-SHEET.md` | Scoring by domain + remediation pointers |
 
 ## How to use it
 
-1. Sit `01-PRACTICE-EXAM.md` closed-book, 90 minutes (real exam pace is ~2 min/question).
+1. Sit `01-PRACTICE-EXAM.md` closed-book, 110 minutes (roughly one minute per question; the live exam runs closer to two).
 2. Score with `02-ANSWER-KEY.md`. Do not read explanations for questions you got right until the end.
 3. Fill in `03-SCORE-SHEET.md`. Any domain under 80% → re-read the mapped units, not the whole path.
 4. Re-sit only the questions you missed after 48 hours.
