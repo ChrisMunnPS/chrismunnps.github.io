@@ -363,7 +363,7 @@ body {
 .chip.is-active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--card);
 }
 .presets-note { margin: 8px 0 0; font-size: .73rem; color: var(--muted); }
 .linkbtn {

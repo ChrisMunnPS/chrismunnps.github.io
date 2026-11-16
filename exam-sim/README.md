@@ -1,6 +1,6 @@
 # SC-300 Exam Simulator
 
-An offline, single-page practice exam for Microsoft SC-300, built from the 110-question
+An offline, single-page practice exam for Microsoft SC-300, built from the 113-question
 bank in the parent folder.
 
 ## Run it
@@ -12,10 +12,12 @@ straight from `file://`.
 
 ## Features
 
-- **110 questions** with the official domain mix: identity 28, authentication 33, apps 22, governance 27.
+- **113 questions** with the official domain mix in the bank: identity 30, authentication 33, apps 23, governance 27.
 - **Random 50-question draw by default.** Each attempt samples the bank in blueprint proportion (13 identity, 15 authentication, 10 apps, 12 governance). Retakes of missed questions skip the sampling.
 - **Choose your own question count.** The *Questions* box accepts 1 through the size of the selected pool; the mix stays weighted and the time limit recalculates as you type. The number is saved with your other settings.
 - **Focus on specific sections.** Tick any of the four exam domains on the start screen to build a shorter attempt; the question count and time limit update as you choose. *All* and *None* buttons speed up the selection.
+- **Drill presets.** Full 50, Identity 10, Auth 12, Apps 8, Governance 10, and Quick 10 fill in the sections and count without starting the attempt. The active preset highlights when the current settings match.
+- **Spaced review queue.** Missed or unanswered questions are due immediately; a correct review advances through 3, 7, 21, 45, and 90-day intervals and then graduates. Start or clear the queue from the start screen, or review due items from the score report.
 - **Two modes.** *Exam* hides all feedback until you submit. *Practice* reveals the explanation as you answer, plus a "Check answer" step for multi-select items.
 - **Optional timer, as a checkbox.** Leave *Timer* ticked for a 90-second-per-question countdown that auto-submits at zero, or untick it to work untimed. The default 50-question attempt gets 75 minutes.
 - **Question map** with answered and flagged states, jump-to-question, and a flag-for-review filter.
@@ -24,8 +26,18 @@ straight from `file://`.
 - **Retake** only the missed questions, and review every item: correct answer, your answer, the reasoning behind each distractor, and the source module.
 - **Print** the score report on its own or the entire answer review, with explanations.
 - **Pass fireworks.** A passing score plays a five-second full-screen fireworks display, skipped automatically when reduced motion is requested.
-- **Autosave** to `localStorage`. Close the tab and resume later; the start screen offers to continue or discard.
+- **Autosave** to `localStorage`. Close the tab and resume later; the start screen offers to continue or discard. The review queue uses its own key, `sc300-sim:srs`.
 - Keyboard: `A`–`E` or `1`–`5` to answer, `←`/`→` to move, `F` to flag, `Esc` to close dialogs.
+
+## Local storage keys
+
+| Key | Contents |
+|---|---|
+| `sc300-sim:attempt` | Saved attempt: question order, answers, flags, timer state, submitted score report |
+| `sc300-sim:settings` | Timer, feedback mode, shuffle, question count, selected sections |
+| `sc300-sim:srs` | Spaced-review queue: item id, box (0–5), due timestamp, times seen |
+
+Clearing site data resets all three. The review queue survives new attempts until you clear it.
 
 ## Score report
 

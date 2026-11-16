@@ -2,11 +2,11 @@
 
 <p align="center">
   <strong>A complete, offline study kit for Microsoft Exam SC-300: Identity and Access Administrator.</strong><br>
-  110 scenario questions, an interactive exam engine, and a Pearson VUE–style score report.
+  113 scenario questions, an interactive exam engine, and a Pearson VUE–style score report.
 </p>
 
 <p align="center">
-  <img alt="Questions: 110" src="https://img.shields.io/badge/questions-110-2563eb?style=flat-square">
+  <img alt="Questions: 113" src="https://img.shields.io/badge/questions-113-2563eb?style=flat-square">
   <img alt="Passing score: 700 of 1000" src="https://img.shields.io/badge/pass%20score-700%20%2F%201000-16a34a?style=flat-square">
   <img alt="Domains: 4" src="https://img.shields.io/badge/domains-4-7c3aed?style=flat-square">
   <img alt="Works offline" src="https://img.shields.io/badge/offline-ready-0ea5e9?style=flat-square">
@@ -18,11 +18,14 @@
 
 ## 📌 Executive summary
 
-**SC300Exam** is a self-contained practice exam for the Microsoft SC-300 certification. It turns the SC-300T00 Microsoft Learn material into 110 exam-style scenario questions, then gives you two ways to use them: a printable Markdown exam with a full answer key, or a browser-based simulator that times you, scores you, and reports your result the way the real exam does.
+**SC300Exam** is a self-contained practice exam for the Microsoft SC-300 certification. It turns the SC-300T00 Microsoft Learn material into 113 exam-style scenario questions, then gives you two ways to use them: a printable Markdown exam with a full answer key, or a browser-based simulator that times you, scores you, and reports your result the way the real exam does.
 
-- 🎯 **110 questions** weighted to the official blueprint across all four SC-300 domains.
-- 🧠 **Real exam feel** — scenario stems, 33 multiple-answer items scored all-or-nothing, 90 seconds per question.
+- 🎯 **113 questions** weighted to the official blueprint across all four SC-300 domains.
+- 🧠 **Real exam feel** — scenario stems, 34 multiple-answer items scored all-or-nothing, 90 seconds per question.
 - 🎲 **Random 50-question attempt by default** — drawn from the bank in blueprint proportion, or type any question count you want.
+- 🧩 **Drill presets** — one click for Full 50, a single-domain drill, or a quick 10-question warm-up.
+- 🔁 **Spaced review queue** — questions you miss come back on a 3 / 7 / 21 / 45 / 90-day schedule.
+- 📄 **One-page cheat sheet per domain** — dense printable refreshers for last-minute review.
 - 🖥️ **No install, no internet** — plain HTML, CSS, and JavaScript that runs from a double-click.
 - 📊 **Actionable results** — scaled score out of 1,000, 700 to pass, per-section breakdown, and a review that explains every distractor.
 - 🎛️ **Your attempt, your rules** — focus on specific sections, switch the timer off, or practise with instant feedback.
@@ -36,6 +39,8 @@
 | Read the questions on paper | [`01-PRACTICE-EXAM.md`](01-PRACTICE-EXAM.md) |
 | Mark my answers and read explanations | [`02-ANSWER-KEY.md`](02-ANSWER-KEY.md) |
 | See where I lost points and what to reread | [`03-SCORE-SHEET.md`](03-SCORE-SHEET.md) |
+| Review one domain on a single page | [`04-CHEAT-SHEET-IDENTITY.md`](04-CHEAT-SHEET-IDENTITY.md) · [`05-CHEAT-SHEET-AUTH.md`](05-CHEAT-SHEET-AUTH.md) · [`06-CHEAT-SHEET-APPS.md`](06-CHEAT-SHEET-APPS.md) · [`07-CHEAT-SHEET-GOVERNANCE.md`](07-CHEAT-SHEET-GOVERNANCE.md) |
+| Print all four cheat sheets | [`08-CHEAT-SHEETS.html`](08-CHEAT-SHEETS.html) — one A4 page per domain |
 | Understand how the bank was built | [`00-EXAM-BLUEPRINT.md`](00-EXAM-BLUEPRINT.md) |
 
 ---
@@ -64,15 +69,15 @@ The bank mirrors the published SC-300 skills outline so the score means somethin
 
 | # | Domain | Weight | Questions |
 |---|--------|:------:|:---------:|
-| 1 | Implement an identity management solution | 20–25% | 28 |
+| 1 | Implement an identity management solution | 20–25% | 30 |
 | 2 | Implement an authentication and access management solution | 25–30% | 33 |
-| 3 | Implement access management for apps | 15–20% | 22 |
+| 3 | Implement access management for apps | 15–20% | 23 |
 | 4 | Plan and implement an identity governance strategy | 20–25% | 27 |
-| | **Total** | **100%** | **110** |
+| | **Total** | **100%** | **113** |
 
-**Question mix:** 77 single-best-answer scenarios and 33 multiple-answer items (pick two or three). Multi-select is graded all-or-nothing — every required letter must be selected, and nothing else.
+**Question mix:** 79 single-best-answer scenarios and 34 multiple-answer items (pick two or three). Multi-select is graded all-or-nothing — every required letter must be selected, and nothing else.
 
-**How an attempt is drawn:** the simulator picks a random 50-question exam by default, allocating 13 identity / 15 authentication / 10 apps / 12 governance so the mix tracks the blueprint. Change the number in the **Questions** box to draw any other size; the same proportions are applied and every selected section gets at least one question when the count allows. Ask for more than the bank holds and the attempt uses everything available.
+**How an attempt is drawn:** the simulator picks a random 50-question exam by default, allocating 13 identity / 15 authentication / 10 apps / 12 governance so the mix tracks the blueprint. Change the number in the **Questions** box to draw any other size; the same proportions are applied and every selected section gets at least one question when the count allows. Ask for more than the bank holds and the attempt uses everything available. The bank itself runs slightly heavy in identity and apps compared with the weight ranges, but every attempt uses the exact blueprint split, so scores stay comparable.
 
 Every question is traceable to the Microsoft Learn unit it came from. The source module and unit are shown in the review, so a missed item tells you exactly what to reread.
 
@@ -104,6 +109,25 @@ Tick any combination of the four domains to build a shorter attempt. The questio
 ### 🔢 Choose how many questions
 The **Questions** box defaults to 50 and accepts any number from 1 to the size of the selected pool. The available count is shown beside the field, the draw is weighted by section, and the time limit recalculates as you type. The number is remembered for your next visit.
 
+### 🧩 Drill presets
+Six one-click presets fill in the sections and question count:
+
+| Preset | Sections | Questions |
+|---|---|---|
+| Full 50 | All four | 50 |
+| Identity 10 | Identity management | 10 |
+| Auth 12 | Authentication & access | 12 |
+| Apps 8 | App access management | 8 |
+| Governance 10 | Identity governance | 10 |
+| Quick 10 | All four | 10 |
+
+A preset never starts the attempt by itself. It highlights when the current sections and count match, and you can edit either field afterwards for a custom mix.
+
+### 🔁 Spaced review queue
+Every question you miss — including anything left unanswered — is added to a local review queue and is due immediately. Reviewing it correctly moves it through **3, 7, 21, 45, and 90-day** intervals; after the last interval it graduates out of the queue. Answers are graded all-or-nothing, and a wrong review resets the item to due now.
+
+The queue is stored in `localStorage` under `sc300-sim:srs`, survives reloads, and appears as a card on the start screen and as a **Review queue** action on the score report. Clear it at any time from the start screen.
+
 ### ⏱️ Optional timer, as a checkbox
 Leave **Timer** ticked for a countdown that auto-submits at zero, or untick it to work untimed — the header then shows elapsed time instead. No surprise submissions when you are studying.
 
@@ -132,7 +156,7 @@ Correct answer, your answer, the full explanation, why each distractor fails, an
 Print styles force light colours, hide the app chrome, and clean up after the dialog closes, so a dark-mode desktop still produces a readable paper report.
 
 ### 💾 Autosave and resume
-Progress is written to `localStorage` as you go. Close the tab, come back later, and the start screen offers to **resume** or **discard**. A submitted attempt can be reopened as a score report.
+Progress is written to `localStorage` as you go. Close the tab, come back later, and the start screen offers to **resume** or **discard**. A submitted attempt can be reopened as a score report. The spaced-review queue has its own key (`sc300-sim:srs`) and stays across attempts until you clear it.
 
 ### ♿ Accessibility
 - Full keyboard operation and visible focus states
@@ -159,9 +183,16 @@ SC300Exam/
 ├── README.md                 ← you are here
 ├── LICENSE                   ← MIT
 ├── 00-EXAM-BLUEPRINT.md      ← domain weights, question mix, how to use the kit
-├── 01-PRACTICE-EXAM.md       ← 110 questions, no answers
+├── 01-PRACTICE-EXAM.md       ← 113 questions, no answers
 ├── 02-ANSWER-KEY.md          ← answers, reasoning, distractor analysis, sources
 ├── 03-SCORE-SHEET.md         ← per-domain scoring and remediation map
+├── 04-CHEAT-SHEET-IDENTITY.md ← one-page identity refresher
+├── 05-CHEAT-SHEET-AUTH.md    ← one-page authentication refresher
+├── 06-CHEAT-SHEET-APPS.md    ← one-page app access refresher
+├── 07-CHEAT-SHEET-GOVERNANCE.md ← one-page governance refresher
+├── 08-CHEAT-SHEETS.html      ← four-page A4 print pack (all cheat sheets)
+├── tools/
+│   └── build-cheat-sheets.mjs ← rebuilds 08 from the Markdown sources
 └── exam-sim/
     ├── index.html            ← simulator shell
     ├── styles.css            ← layout, themes, print styles
@@ -174,16 +205,17 @@ SC300Exam/
 
 ## 📚 The Markdown study kit
 
-The four numbered documents are the paper version of the exam and still work on their own.
+The numbered documents are the paper version of the exam and still work on their own.
 
 | File | What it is for |
 |---|---|
 | **`00-EXAM-BLUEPRINT.md`** | The blueprint: domain weights, question counts, source snapshot, and a four-step study method. |
-| **`01-PRACTICE-EXAM.md`** | All 110 questions, numbered and grouped by domain, with no answers. Print it or read it closed-book. |
+| **`01-PRACTICE-EXAM.md`** | All 113 questions, numbered and grouped by domain, with no answers. Print it or read it closed-book. |
 | **`02-ANSWER-KEY.md`** | The correct letter(s), the reasoning, why each remaining option fails, and the Microsoft Learn unit to review. |
 | **`03-SCORE-SHEET.md`** | A fill-in sheet that turns your raw score into a per-domain percentage with a remediation list. |
+| **`04`–`07` cheat sheets** | One dense page per domain: the facts, role names, limits, and exam traps most likely to be tested. |
 
-A sensible loop: sit `01` closed-book at the 110-minute pace → mark it with `02` → fill in `03` → reread only the units behind the domains under 80% → retry the missed questions after 48 hours.
+A sensible loop: read the domain cheat sheet → sit `01` closed-book at the 113-minute pace → mark it with `02` → fill in `03` → reread only the units behind the domains under 80% → retry the missed questions through the simulator's spaced-review queue.
 
 ---
 
@@ -226,7 +258,8 @@ This kit was checked rather than assumed:
 - Every answer key entry cross-checked against its stem and option list
 - Lighthouse **100** for accessibility, best practices, and SEO on the start, exam, and results screens
 - Full walkthrough: start → answer → flag → submit → score → review → retake
-- Section filters, random and custom question counts, empty-filter state, shuffle, resume/discard, and auto-submit at zero all exercised
+- Section filters, drill presets, random and custom question counts, empty-filter state, shuffle, resume/discard, and auto-submit at zero all exercised
+- Spaced-review queue exercised end to end: wrong answer → due now → correct review → 3-day interval → clear
 - Fireworks overlay measured at five seconds and skipped under reduced-motion
 - Print verified for both the score report and the full-bank review
 - Keyboard-only pass and light/dark visual checks
@@ -242,9 +275,9 @@ Ideas for the next revision of the bank, grouped by the SC-300 objective they st
 - [x] Conditional Access device filters and policy evaluation order
 - [x] Password writeback and hybrid identity troubleshooting
 - [x] Workload identity federation for app registrations
-- [ ] Purge protection and soft-delete recovery for groups and apps
-- [ ] Per-domain drill presets and a spaced-repetition queue in the simulator
-- [ ] A printable one-page "cheat sheet" per domain
+- [x] Purge protection and soft-delete recovery for groups and apps
+- [x] Per-domain drill presets and a spaced-repetition queue in the simulator
+- [x] A printable one-page "cheat sheet" per domain
 
 Contributions, corrections, and new questions are welcome — please keep the stem, answer key, and `questions.js` entry consistent.
 
