@@ -1,0 +1,25 @@
+{
+  "repo": "https://github.com/ChrisMunnPS/exam-sim",
+  "site": "https://chrismunnps.github.io/exam-sim",
+  "exams": [
+    {
+      "slug": "sc-300",
+      "code": "SC-300",
+      "title": "Identity and Access Administrator",
+      "certification": "Microsoft Certified: Identity and Access Administrator Associate",
+      "level": "Associate",
+      "product": "Microsoft Entra",
+      "summary": "Design, implement and operate identity and access management with Microsoft Entra ID: users, authentication, workload identities and governance.",
+      "durationMinutes": 100,
+      "passingScore": 700,
+      "scoreMax": 1000,
+      "status": "live",
+      "domains": [
+        { "name": "Implement and manage user identities", "min": 20, "max": 25 },
+        { "name": "Implement authentication and access management", "min": 25, "max": 30 },
+        { "name": "Plan and implement workload identities", "min": 20, "max": 25 },
+        { "name": "Plan and implement identity governance", "min": 20, "max": 25 }
+      ]
+    }
+  ]
+}

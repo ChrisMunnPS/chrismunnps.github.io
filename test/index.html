@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Exam Sim | Microsoft certification practice exams</title>
+<meta name="description" content="Free practice exams for Microsoft certifications. Pick an exam, open the simulator, and see where you stand.">
+<meta property="og:title" content="Exam Sim | Microsoft certification practice exams">
+<meta property="og:description" content="Free practice exams for Microsoft certifications.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chrismunnps.github.io/exam-sim/">
+<link rel="canonical" href="https://chrismunnps.github.io/exam-sim/">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#exams">Skip to exams</a>
+<header class="top">
+  <p class="brand"><span class="mark" aria-hidden="true"></span>Exam Sim</p>
+  <button id="theme" type="button" aria-label="Switch colour theme">Theme: auto</button>
+</header>
+<main>
+  <section class="hero">
+    <h1>Sit the exam before it counts.</h1>
+    <p>Practice exams for Microsoft certifications. Choose one below, open the simulator, and find out which skill areas need more work.</p>
+  </section>
+  <section id="exams" aria-labelledby="exams-h">
+    <h2 id="exams-h" class="sr">Available exams</h2>
+    <p class="legend" aria-hidden="true"><span class="b full"></span> 5% of the exam, guaranteed <span class="b range"></span> 5% that may be added, depending on the exam version</p>
+    <div id="grid" class="grid" aria-live="polite"><p class="note">Loading exams…</p></div>
+  </section>
+</main>
+<footer>
+  <p>Independent study project. Not affiliated with or endorsed by Microsoft. Skill weightings follow Microsoft's published study guides and change over time, so confirm them on Microsoft Learn before you book.</p>
+</footer>
+</body>
+</html>
