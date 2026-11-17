@@ -1065,6 +1065,7 @@
     var minutes = Math.round(planned * 1.5);
 
     return '<div class="start">'
+      + '<div class="start-main">'
       + '<section class="hero">'
       + '<p class="eyebrow">Microsoft Certified &middot; Identity and Access Administrator</p>'
       + '<h1>SC-300 exam simulator</h1>'
@@ -1077,6 +1078,9 @@
       + '</dl>'
       + '<p class="hero-note">Every question links back to its source module in the review, so a missed item tells you exactly what to reread.</p>'
       + '</section>'
+      + caseStartHTML()
+      + '</div>'
+      + '<div class="start-side">'
       + '<section class="panel">'
       + '<h2>Start an attempt</h2>'
       + '<div class="field">'
@@ -1117,7 +1121,7 @@
       + '<p class="hint" id="start-hint">Answers save in this browser automatically. Leave at any time and resume where you stopped.</p>'
       + resumeHTML(savedRecord)
       + '</section>'
-      + caseStartHTML()
+      + '</div>'
       + srsHTML()
       + '</div>';
   }

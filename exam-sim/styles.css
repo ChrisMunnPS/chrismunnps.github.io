@@ -218,6 +218,13 @@ body {
   gap: 30px;
   align-items: start;
 }
+.start-main,
+.start-side {
+  display: grid;
+  gap: 30px;
+  align-content: start;
+  min-width: 0;
+}
 
 .eyebrow {
   margin: 6px 0 12px;
