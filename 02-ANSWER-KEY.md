@@ -6,35 +6,49 @@ Mark your answers first, then read the explanations.
 
 | Q | Ans | Q | Ans | Q | Ans | Q | Ans | Q | Ans |
 |---|-----|---|-----|---|-----|---|-----|---|-----|
-| 1 | A | 24 | A and B | 47 | B | 70 | A | 93 | A |
-| 2 | B | 25 | B | 48 | B | 71 | A | 94 | A |
-| 3 | A and C | 26 | A and C | 49 | B | 72 | A | 95 | A, B, and C |
-| 4 | C | 27 | A | 50 | B | 73 | A | 96 | A |
-| 5 | B | 28 | A | 51 | A and B | 74 | A | 97 | A |
-| 6 | A and B | 29 | B | 52 | B | 75 | A | 98 | A |
-| 7 | A | 30 | A and B | 53 | A and B | 76 | A, B, and C | 99 | A |
-| 8 | A and D | 31 | B | 54 | A and C | 77 | A | 100 | A |
-| 9 | B | 32 | A | 55 | B | 78 | A | 101 | A |
-| 10 | B | 33 | A and C | 56 | B | 79 | A | 102 | A |
-| 11 | B | 34 | A | 57 | B | 80 | A, B, and C | 103 | A |
-| 12 | A | 35 | C | 58 | A and B | 81 | A | 104 | A, B, and C |
-| 13 | A | 36 | B | 59 | A | 82 | A and B | 105 | A |
-| 14 | A | 37 | A and D | 60 | A and C | 83 | A, B, and C | 106 | A |
-| 15 | A and C | 38 | A, B, and C | 61 | A | 84 | A | 107 | A, B, and C |
-| 16 | A, B, and D | 39 | A | 62 | A and B | 85 | A and B | 108 | A |
-| 17 | A and C | 40 | B | 63 | A | 86 | A | 109 | A |
-| 18 | A | 41 | A | 64 | A | 87 | A, B, and C | 110 | A |
-| 19 | B | 42 | A and D | 65 | A | 88 | A | 111 | A |
-| 20 | A and C | 43 | A, C, and D | 66 | A | 89 | A | 112 | A |
-| 21 | B | 44 | A | 67 | A | 90 | A, B, and C | 113 | A, B, and C |
-| 22 | A, C, and D | 45 | B | 68 | A and B | 91 | A |  |  |
-| 23 | B | 46 | B | 69 | A | 92 | A |  |  |
+| 1 | A | 27 | A | 53 | A and B | 79 | A | 105 | A |
+| 2 | B | 28 | A | 54 | A and C | 80 | A, B, and C | 106 | A |
+| 3 | A and C | 29 | B | 55 | B | 81 | A | 107 | A, B, and C |
+| 4 | C | 30 | A and B | 56 | B | 82 | A and B | 108 | A |
+| 5 | B | 31 | B | 57 | B | 83 | A, B, and C | 109 | A |
+| 6 | A and B | 32 | A | 58 | A and B | 84 | A | 110 | A |
+| 7 | A | 33 | A and C | 59 | A | 85 | A and B | 111 | A |
+| 8 | A and D | 34 | A | 60 | A and C | 86 | A | 112 | A |
+| 9 | B | 35 | C | 61 | A | 87 | A, B, and C | 113 | A, B, and C |
+| 10 | B | 36 | B | 62 | A and B | 88 | A | 114 | A and B |
+| 11 | B | 37 | A and D | 63 | A | 89 | A | 115 | A |
+| 12 | A | 38 | A, B, and C | 64 | A | 90 | A, B, and C | 116 | A, B, and C |
+| 13 | A | 39 | A | 65 | A | 91 | A | 117 | A and B |
+| 14 | A | 40 | B | 66 | A | 92 | A | 118 | A |
+| 15 | A and C | 41 | A | 67 | A | 93 | A | 119 | A and B |
+| 16 | A, B, and D | 42 | A and D | 68 | A and B | 94 | A | 120 | A, B, and C |
+| 17 | A and C | 43 | A, C, and D | 69 | A | 95 | A, B, and C | 121 | A and B |
+| 18 | A | 44 | A | 70 | A | 96 | A | 122 | A |
+| 19 | B | 45 | B | 71 | A | 97 | A | 123 | A and B |
+| 20 | A and C | 46 | B | 72 | A | 98 | A | 124 | A |
+| 21 | B | 47 | B | 73 | A | 99 | A | 125 | A and B |
+| 22 | A, C, and D | 48 | B | 74 | A | 100 | A | 126 | A |
+| 23 | B | 49 | B | 75 | A | 101 | A | 127 | A, B, and C |
+| 24 | A and B | 50 | B | 76 | A, B, and C | 102 | A | 128 | A and B |
+| 25 | B | 51 | A and B | 77 | A | 103 | A | 129 | A |
+| 26 | A and C | 52 | B | 78 | A | 104 | A, B, and C |  |  |
 
 Multi-answer items list every required letter.
 
+Questions 130 to 159 (case studies and the extended set) use the grid below.
+
+| Q | Ans | Q | Ans | Q | Ans | Q | Ans | Q | Ans |
+|---|-----|---|-----|---|-----|---|-----|---|-----|
+| 130 | B | 136 | A, C, and E | 142 | A and C | 148 | A, B, and C | 154 | B |
+| 131 | B and D | 137 | B | 143 | A, B, and E | 149 | D | 155 | A and B |
+| 132 | B | 138 | A | 144 | A, B, and C | 150 | A | 156 | C |
+| 133 | C | 139 | A and C | 145 | A, C, and D | 151 | B | 157 | A and D |
+| 134 | D | 140 | C | 146 | A, B, and C | 152 | A and D | 158 | A |
+| 135 | A and C | 141 | A | 147 | A and B | 153 | A and B | 159 | A |
+
 ---
 
-## Domain 1 - Implement an identity management solution
+## Domain 1 - Implement and manage user identities
 
 ### Question 1 - Administrative units
 
@@ -228,7 +242,7 @@ Connect Health **requires Microsoft Entra ID Premium P1**; without it the config
 Related: agent prerequisites include outbound connectivity to Azure endpoints by IP, TLS inspection filtered or disabled, PowerShell 4.0 or newer, and FIPS disabled. Azure RBAC for Connect Health uses **Owner**, **Contributor**, and **Reader**; Invite Users is not supported.
 Source: LP3 Module 4.8 / 4.9.
 
-## Domain 2 - Implement an authentication and access management solution
+## Domain 2 - Implement authentication and access management
 
 ### Question 16 - Authentication method capabilities
 
@@ -456,7 +470,7 @@ Private Access connectors are lightweight agents on **Windows Server 2016+**, re
 Two more traps: in the compliant-network policy you cannot select the generic **Office 365** cloud app — choose **Office 365 Exchange Online** or **Office 365 SharePoint Online**. And tenant restrictions tagging requires **both** the Global Secure Access Administrator and Security Administrator roles; data-plane protection covers Microsoft Graph and SharePoint Online, while third-party apps such as Slack are out of scope.
 Source: LP2 Module 6.3 / 6.4 / 6.6 / 6.7.
 
-## Domain 3 - Implement access management for apps
+## Domain 3 - Plan and implement workload identities
 
 ### Question 34 - Service principal vs application object
 
@@ -608,7 +622,7 @@ App governance is an add-on feature to **Microsoft Defender for Cloud Apps** for
 Enablement requires Office 365 connected in Defender for Cloud Apps and the Office 365 Microsoft Entra ID apps enabled, then **Settings > Threat Protection > App Governance > Enable App Governance integration**.
 Source: LP1 Module 3.9.
 
-## Domain 4 - Plan and implement an identity governance strategy
+## Domain 4 - Plan and automate identity governance
 
 ### Question 46 - Catalogs and access packages
 
@@ -716,7 +730,7 @@ Source: LP4 Module 2.2 / 2.3.
 
 Correct: **A** and **C**
 
-PIM requires **Premium P2**, stated as a plain note in the course. The zero-standing-access model has exactly one documented exception: **two break-glass emergency access accounts** that keep **permanent Global Administrator** assignments.
+PIM requires **Premium P2**, stated as a plain note in the course. The zero-standing-access model has exactly one documented exception: **two emergency access accounts** that keep **permanent Global Administrator** assignments.
 
 - **B** is wrong. **Eligible roles can only be assigned in PIM**; permanent active assignments are the ordinary Entra ID and Azure role assignments created elsewhere.
 - **D** is inverted for the same reason.
@@ -800,7 +814,7 @@ Correct: **A** and **C**
 On scoring: some controls are **binary** (100% when configured as recommended), others are a **percentage of total configuration**. The course's worked example: the MFA control is worth a maximum **10.71%**, and protecting **5 of 100** users yields **5/100 × 10.71% ≈ 0.53%**. The dashboard includes the score, a comparison against tenants in the **same industry and similar size**, a **trend graph**, and a list of improvement actions. Path: **Microsoft Entra ID > Security > Identity Secure Score**.
 Source: LP4 Module 4.6 / 4.7.
 
-## Domain 1 - Implement an identity management solution
+## Domain 1 - Implement and manage user identities
 
 ### Question 61 - Temporary Access Pass onboarding
 
@@ -981,7 +995,7 @@ Correct: **A**
 
 Source: LP1 Module 4.1 / 4.2 (synchronization scoping).
 
-## Domain 2 - Implement an authentication and access management solution
+## Domain 2 - Implement authentication and access management
 
 ### Question 74 - Authentication strengths
 
@@ -1186,7 +1200,7 @@ Correct: **A**
 
 Source: LP2 Module 5.1 / 5.2 (Global Secure Access).
 
-## Domain 3 - Implement access management for apps
+## Domain 3 - Plan and implement workload identities
 
 ### Question 89 - Workload identity federation
 
@@ -1321,7 +1335,7 @@ Correct: **A**
 
 Source: LP1 Module 3.5 / 4.6 (app registration account types).
 
-## Domain 4 - Plan and implement an identity governance strategy
+## Domain 4 - Plan and automate identity governance
 
 ### Question 99 - Lifecycle workflows
 
@@ -1488,7 +1502,7 @@ Correct: **A**
 
 Source: LP4 Module 2.1 (catalogs and delegated administration).
 
-## Domain 1 - Implement an identity management solution
+## Domain 1 - Implement and manage user identities
 
 ### Question 111 - Soft-deleted group recovery
 
@@ -1504,7 +1518,7 @@ Correct: **A**
 
 Source: LP1 Module 1.2 / 3.1 (group lifecycle and recovery).
 
-## Domain 3 - Implement access management for apps
+## Domain 3 - Plan and implement workload identities
 
 ### Question 112 - Deleted app registration recovery
 
@@ -1519,7 +1533,7 @@ Correct: **A**
 
 Source: LP1 Module 3.5 / 3.9 (application objects and recovery).
 
-## Domain 1 - Implement an identity management solution
+## Domain 1 - Implement and manage user identities
 
 ### Question 113 - Hard deletion protection
 
@@ -1534,5 +1548,665 @@ Correct: **A**, **B**, and **C**
 - **E** is false: soft deletion still succeeds immediately; only the hard-delete step is blocked.
 
 Source: LP1 Module 1.4 / 4.1 (directory protection and recovery).
+
+## Domain 1 - Implement and manage user identities
+
+### Question 114 - Company branding
+
+Correct: **A**, **B**
+
+- **Company branding** appears under **Identity > Company branding** in the Microsoft Entra admin center. The menu option is present only with **Microsoft Entra ID P1, P2, or Office 365 (for Office 365 apps)**.
+- The **sign-in page background image** must be .png or .jpg, no larger than **1920x1080 pixels**, and no more than **300,000 bytes**.
+- The **banner logo** appears after the user enters a username and on the **My Apps** portal.
+
+- **C** is false: the language is **set automatically as the default and can't be changed**.
+- **D** is false: sign-in page text can be up to **1,024 characters**.
+- **E** is false: the **username hint** must be Unicode with no links or code and is capped at **64 characters**.
+
+Source: LP1 Module 1.2 (configure company branding).
+
+### Question 115 - Tenant-wide user settings
+
+Correct: **A**
+
+- Tenant-wide defaults for member users live in **Identity > Users > User settings**. Setting **Users can register applications** to **No** removes the default ability, and the **Application Developer** role grants it back to named individuals.
+- **Restrict access to the Microsoft Entra administration portal** set to **Yes** blocks non-administrators from the portal. It **does not** restrict PowerShell or other clients such as Visual Studio. To let a specific non-administrator use the portal, assign any administrative role, such as **Directory Readers**.
+
+- **B** is wrong: security defaults govern MFA and legacy authentication, not app registration.
+- **C** is wrong: Conditional Access targets resources, not the administration portal, and would not honor the per-user exception.
+- **D** is a guest setting and does not affect member app registration.
+- **E** is wrong: Directory Readers grants read access and does not remove the ability to register apps.
+
+Source: LP1 Module 1.8 (configure tenant-wide settings).
+
+## Domain 2 - Implement authentication and access management
+
+### Question 116 - Conditional Access optimization agent
+
+Correct: **A**, **B**, **C**
+
+- The agent needs at least **Microsoft Entra ID P1**, available **Security Compute Units**, and the **Security Administrator** role or higher for the first activation. **Conditional Access Administrators** can be assigned if they also have Security Copilot access.
+- **Device-based controls** (device compliance, app protection policies, and domain-joined devices) additionally require **Microsoft Intune** licenses.
+- The agent scans for users and apps that policy does not cover and offers **one-click remediation** with **Apply suggestion**. It also proposes **policy consolidation** when several policies share the same grant controls, and it can block **legacy authentication** and **device code flow**.
+
+- **D** is false: P1 is the stated minimum.
+- **E** is false: Sentinel is a SIEM and is not required.
+
+Source: LP2 Module 3.11 (Conditional Access optimization agent).
+
+### Question 117 - Workload identity risk
+
+Correct: **A**, **B**
+
+- **Workload identity risk** requires **Microsoft Entra ID P2**. The **Risky workload identities** blade and the **Workload identity detections** tab are available to **Security Administrator**, **Security Operator**, and **Security Reader**.
+- **Conditional Access for workload identities** can block a service principal that Identity Protection marks at risk. It applies to **single-tenant service principals registered in your tenant**. **Third-party SaaS, multitenant apps, and managed identities are out of scope.**
+- Detections include **Microsoft Entra threat intelligence**, **suspicious sign-ins** baselined over **2 to 60 days**, **unusual addition of credentials to an OAuth app** (surfaced by Defender for Cloud Apps), **admin confirmed account compromised**, and **leaked credentials**.
+
+- **C** is false: those identity types are explicitly out of scope.
+- **D** is false: Defender for Identity protects on-premises Active Directory and is not a prerequisite.
+
+Source: LP2 Module 4.7 (security for workload identities).
+
+### Question 118 - Microsoft Defender for Identity
+
+Correct: **A**
+
+- **Defender for Identity sensors** can be installed **directly on domain controllers**, where they monitor domain controller traffic **without a dedicated server or port mirroring**, and on **AD FS servers**, where they monitor network traffic and authentication events.
+- Defender for Identity is managed through the **Microsoft Defender portal** (`security.microsoft.com`), not the Microsoft Entra admin center. Its cloud service runs in the **US, Europe, and Asia** and is connected to Microsoft threat intelligence.
+- It uses on-premises Active Directory signals to detect advanced threats, compromised identities, and malicious insider activity.
+
+- **B** describes a standalone sensor design that this deployment does not require.
+- **C**, **D**, and **E** are not supported sensor locations for this scenario.
+
+Source: LP2 Module 4.8 (Microsoft Defender for Identity).
+
+### Question 119 - Identity Risk Management Agent
+
+Correct: **A**, **B**
+
+- The **Identity Risk Management Agent** requires **Microsoft Entra ID P2** and available **Security Compute Units**. **Security Administrator** is required to activate the agent the first time, view it, and act on suggestions. **Security Reader** and **Global Reader** can view the agent and its suggestions but **cannot take action**.
+- Triggers are **continuous monitoring** (every **5 minutes**), **daily**, or **manual**.
+- The default scope is the **most recent 100 risky users in the last 90 days**. Scope can be narrowed by user and group, by a maximum of **1 to 100** risky users, by risk level, and by a defined time frame.
+- The agent investigates risky sign-ins and detections, generates a risk summary and a recommended remediation action, answers questions in chat, and stores custom instructions in agent memory.
+
+- **C** is false: P2 is the minimum.
+- **D** is false: continuous monitoring runs every **5 minutes**, not daily.
+
+Source: LP2 Module 4.9 (Identity Risk Management Agent).
+
+### Question 120 - Global Secure Access remote networks
+
+Correct: **A**, **B**, **C**
+
+- **Remote networks** connect a branch location through an **IPsec tunnel** between the **customer premises equipment (CPE)** router and the nearest Global Secure Access endpoint. Internet-bound traffic is routed through the branch router for evaluation in the cloud, and **no client is installed on individual devices**.
+- Configuration has five steps: **Basics**, **Connectivity**, **Traffic forwarding**, **Review**, and **setup on the on-premises router**. The last step is performed in the router's management console.
+- **Traffic logs** describe **sessions** (starting with the first URL), **connections** (the 5-tuple: source and destination IP and port plus FQDN), and **transactions** (a request and response pair).
+- **Enriched Microsoft 365 logs** combine **OfficeActivity** and **NetworkAccessTraffic** data with a unique token ID. At this time only **SharePoint Online** logs are available for enrichment.
+
+- **D** is false: remote networks are clientless.
+- **E** is false: enrichment currently covers SharePoint Online only.
+
+Source: LP2 Module 6.6 / 6.8 (Global Secure Access remote networks and logs).
+
+## Domain 3 - Plan and implement workload identities
+
+### Question 121 - OAuth app policies
+
+Correct: **A**, **B**
+
+- **OAuth app policies** live in **Microsoft Defender for Cloud Apps** under **Cloud apps > OAuth apps**. Select **New policy** from the search button, or use **Control > Policies > Create policy > OAuth app policy**.
+- A permission policy can raise an alert when an app requests a **high permission level** and was authorized by more than a set number of users. Policies can be scoped to the **group membership of the users who authorized the app**, and the **Community use** filter shows whether the permission is common, uncommon, or rare.
+- Marking a permission as **banned** disables the **corresponding enterprise application**, so the app stops working.
+
+- **C** covers access, not OAuth permission risk.
+- **D** is false: banning disables the enterprise application, not just the catalog entry.
+
+Source: LP3 Module 1.8 (policies for OAuth apps).
+
+### Question 122 - Risk-based step-up consent
+
+Correct: **A**
+
+- **Risk-based step-up consent** is **enabled by default**. When Microsoft detects a risky end-user consent request, the request is stepped up to **admin consent**. The prompt tells the user that admin approval is needed, and if the **admin consent request workflow** is enabled the user can send the request to an administrator from the prompt.
+- Without the workflow, the user sees **AADSTS90094**. An audit event is recorded with **Category ApplicationManagement**, **Activity Consent to application**, and **Status Reason Risky application detected**.
+- Step-up consent changes behavior only when **end-user consent is enabled**.
+
+- **B** is false: this user was still able to start a consent request.
+- **C** and **D** describe unrelated controls.
+
+Source: LP3 Module 2.3 (consent settings and risk-based step-up consent).
+
+### Question 123 - Application collections
+
+Correct: **A**, **B**
+
+- **Application collections** require **Microsoft Entra ID P1 or P2**. A collection applies a filter to the apps a user can already access, so the user sees **only the apps in the collection that have been assigned** to them.
+- Administrators create collections in the Microsoft Entra admin center under **Identity > Applications > Enterprise applications > App Launchers > New collection**, then add applications and owners. Owners manage the collection through the Azure portal.
+- Users can also create **personal collections** in the **My Apps** portal (`https://myapps.microsoft.com`). Every app a user can access appears in the default **Apps** collection, and the user can remove apps from it.
+
+- **C** is false: a collection is a view, not an assignment.
+- **D** is false: owners can manage a collection, and users can create personal collections.
+
+Source: LP3 Module 2.8 (application collections).
+
+### Question 124 - App governance
+
+Correct: **A**
+
+- **App governance** is an **add-on to Microsoft Defender for Cloud Apps** for **OAuth-enabled apps that access Microsoft 365 data through Microsoft Graph APIs**. It provides **insights**, **governance** policies, **detection** of anomalous app behavior, and **remediation**, including automatic remediation.
+- To enable it, connect **Office 365** in Defender for Cloud Apps, enable the **Office 365 Microsoft Entra ID apps**, then select **Settings > Threat Protection > App Governance > Enable App Governance integration**. Built-in policies include **Microsoft 365 OAuth app Reputation**, **Microsoft 365 OAuth Phishing Detection**, and **Microsoft 365 OAuth App Governance**.
+
+- **B** discovers shadow IT from traffic logs.
+- **C** applies real-time session controls to SaaS apps.
+- **D** publishes on-premises web apps.
+
+Source: LP3 Module 3.9 (app governance).
+
+## Domain 4 - Plan and automate identity governance
+
+### Question 125 - Access Review Agent
+
+Correct: **A**, **B**
+
+- The **Access Review Agent** requires **Microsoft Entra ID Governance** or **Microsoft Entra Suite** licensing and onboarding to **Security Copilot with at least one SCU**. Setup requires the **Identity Governance Administrator**, **Lifecycle Workflows Administrator**, and **Security Copilot Contributor** roles.
+- Reviewers use the agent in **Microsoft Teams** and need **Security Copilot Contributor** plus an active access review assigned to them.
+- The recommendation is a **deterministic score** built from signals: **user inactivity**, **user-to-group affiliation**, **account enabled**, **employment status** (`employeeLeaveDateTime`), **lifecycle workflow history** in the past 30 days, **decisions from previous reviews**, and **access request history**.
+
+- **C** is false: once started, agents **can't be stopped or paused**.
+- **D** is false: the recommendation is deterministic, and the reviewer can see the reasoning behind it.
+
+Source: LP4 Module 2.8 (Access Review Agent).
+
+### Question 126 - PIM audit history
+
+Correct: **A**
+
+- In **Privileged Identity Management > Groups**, select the privileged access group and then **Activity > Resource audit** to see **all activity** associated with that group, filtered by a predefined date range or a custom range.
+- **My audit** shows only the **current user's personal role activity** for the group.
+- Role assignments authorized through **Azure delegated resource management** by an outsourcing provider are **not shown** in this audit history.
+
+- **B** is scoped to one user.
+- **C** reviews membership, not activation and assignment activity.
+- **D** shows sign-ins, not PIM operations.
+
+Source: LP4 Module 3.8 (PIM audit history and reports).
+
+### Question 127 - Sign-in and audit logs
+
+Correct: **A**, **B**, **C**
+
+- The **sign-ins report** displays **interactive sign-ins** only. Non-interactive sign-ins such as service-to-service authentication are not shown, and records can take **up to two hours** to appear.
+- The sign-in report is available in **all editions** of Microsoft Entra ID and through Microsoft Graph. **Security Administrator**, **Security Reader**, **Global Reader**, and **Report Reader** can read tenant data, and any user can read **their own** sign-ins.
+- **Audit logs** can be filtered by service, category, activity, status, target, initiator, and date range (**7 days**, **24 hours**, or custom). Filtered data can be downloaded as **CSV or JSON** up to **250,000 records**, bounded by report retention.
+
+- **D** is false: non-admins see only their own sign-ins.
+- **E** is false: downloads are constrained by the report retention policy.
+
+Source: LP4 Module 4.2 / 4.3 (sign-in and audit logs).
+
+### Question 128 - Microsoft Sentinel
+
+Correct: **A**, **B**
+
+- **Microsoft Sentinel** is a cloud-native **SIEM and SOAR** solution, so it both aggregates activity and automates response.
+- **Sign-in logs** require **Microsoft Entra ID P1 or P2**; any Entra ID license (Free, Office 365, P1, P2) can ingest the other log types. Additional per-gigabyte Azure Monitor and Sentinel charges can apply.
+- Access requires the **Microsoft Sentinel Contributor** role on the workspace, the **Security Administrator** role on the tenant, and read/write permission on the Entra **diagnostic settings**.
+- The built-in **Microsoft Entra ID** connector streams both **sign-in logs** and **audit logs**.
+
+- **C** is false: Sentinel includes SOAR.
+- **D** is false: the connector handles both log types.
+
+Source: LP4 Module 4.4 (connect Microsoft Entra ID to Microsoft Sentinel).
+
+### Question 129 - Identity Secure Score
+
+Correct: **A**
+
+- **Identity Secure Score** is a **percentage** that shows how closely the tenant matches Microsoft's identity security recommendations. It is available in **all editions** of Microsoft Entra ID under **Security > Identity Secure Score**.
+- Controls are scored in two ways: **binary** (full credit when the recommendation is met) or as a **percentage of the total configuration**, such as protecting 5 of 100 users with MFA earning a proportional partial score.
+- The dashboard shows the score, an **industry comparison**, a **trend** over time, and a list of **improvement actions**. Some actions, such as reading reports, also raise the score.
+
+- **B** is false: no premium license is required and scoring is not always binary.
+- **C** and **D** describe only part of the dashboard.
+
+Source: LP4 Module 4.7 (Identity Secure Score).
+
+---
+
+## Case Study 1 - Tailwind Traders acquires Fabrikam (Questions 130-136)
+
+### Question 130 - Cross-tenant synchronization design
+
+Correct: **B**
+
+- **Cross-tenant synchronization** is configured in the **source tenant (Fabrikam)** and provisions users into the **target tenant (Tailwind)** as **B2B collaboration users**. The guest object has its own object ID in Tailwind, so it can be assigned to applications and targeted by Tailwind Conditional Access, while authentication still happens in the home tenant.
+- **B2B direct connect** covers **Teams shared channels** but does **not** create an object in the resource tenant's directory, so it cannot be used for application assignment.
+
+- **A** cannot work: a verified domain can belong to only one tenant at a time, and recreating users creates a second credential.
+- **C** satisfies assignment but violates the requirement that no second credential exists.
+- **D** is the classic trap: direct connect alone leaves nothing to assign to TradeDesk.
+- **E** reverses the synchronization direction; Entra Connect synchronizes Active Directory into Entra ID, not the other way around.
+
+Source: LP1 Module 5.2 / 5.3 (cross-tenant synchronization and B2B collaboration).
+
+### Question 131 - Cross-tenant access and trust settings
+
+Correct: **B** and **D**
+
+- **Cross-tenant access settings** have three parts. **Inbound access** controls which external users and groups can access which of your applications. **Outbound access** controls what your users can reach in other organizations. **Trust settings** decide whether you accept **MFA**, **compliant device**, and **hybrid Microsoft Entra joined** claims from the other tenant.
+- Accepting the **MFA** claim in **inbound trust** means a guest who satisfied MFA at home is not challenged again by Tailwind Conditional Access. Tailwind still controls which apps and groups are allowed through **inbound access**.
+
+- **A** is the wrong direction: Tailwind users reaching Fabrikam is outbound, not what limits Fabrikam guests.
+- **C** is wrong: Fabrikam owns its policies, and deleting them does not change Tailwind's trust of Fabrikam claims.
+- **E** blocks the partner entirely, which contradicts the collaboration requirement.
+
+Source: LP1 Module 5.2 (cross-tenant access settings and trust).
+
+### Question 132 - Passkey profile restrictions
+
+Correct: **B**
+
+- **Passkey (FIDO2) profiles** are created under **Authentication methods > Passkey (FIDO2) > Configure**. A profile defines a **name**, whether **attestation is enforced**, and an **AAGUID allow or block list**.
+- **Attestation is evaluated only at registration.** When it is enforced, a key that cannot attest cannot be registered, which in practice forces **device-bound** keys because synced passkeys cannot attest.
+- **AAGUID restrictions are evaluated at registration and at every sign-in.** Removing an AAGUID from an allow list blocks sign-in for passkeys that were already registered with that AAGUID, which satisfies the "existing keys must stop working" requirement.
+- Configuring passkey profiles requires the **Authentication Policy Administrator** role.
+
+- **A** and **C** can require MFA but cannot restrict the key vendor or verify attestation.
+- **D** enables a different method instead of restricting passkeys.
+- **E** controls device compliance, not key model.
+
+Source: LP2 Module 2.2 / 2.3 (passkey profiles and authentication methods policy).
+
+### Question 133 - Temporary Access Pass onboarding
+
+Correct: **C**
+
+- A Temporary Access Pass lifetime can be set from **10 minutes to 30 days (43,200 minutes)**. The authentication methods policy defines a **default** and a **maximum** lifetime, so a seven-day pass is allowed when the policy maximum is 30 days.
+- A **one-time** pass can be used exactly once. A **multi-use** pass can be used until it expires. Only **one TAP per user** can be valid at a time, and creating a new one deletes the previous pass.
+- The pass code is **shown once** at creation. It **satisfies MFA** during sign-in but is **not phishing-resistant**, and it can be used to register passwordless methods such as a passkey or Windows Hello for Business.
+- Temporary Access Pass requires **Microsoft Entra ID P1 or P2**.
+
+- **A** is wrong: a one-time pass is exactly what a single enrollment needs.
+- **B** weakens security and is not how TAP works.
+- **D** is wrong: a user with no registered method cannot complete registration without a pass or another method.
+- **E** exceeds the 30-day maximum.
+
+Source: LP2 Module 2.4 (Temporary Access Pass).
+
+### Question 134 - Application Proxy Kerberos delegation
+
+Correct: **D**
+
+- Application Proxy supports **Kerberos Constrained Delegation (KCD)** for apps that use **integrated Windows authentication**. The connector obtains a Kerberos ticket on behalf of the signed-in user and presents it to the app.
+- KCD requires an **SPN for the application**, **delegation** granted to the connector computer accounts (or a dedicated service account) for that SPN, **domain-joined connectors** with line of sight to a domain controller, and permission to read **TokenGroupsGlobalAndUniversal** so that group SIDs are included.
+- Users still authenticate to **Microsoft Entra ID** with any enabled method, including passkeys or a Temporary Access Pass; the connector performs the on-premises impersonation.
+
+- **A** and **B** do not deliver Kerberos single sign-on, and **B** requires storing credentials.
+- **C** does not perform Windows authentication against the app.
+- **E** requires a third-party header provider and does not use Kerberos.
+
+Source: LP3 Module 2.6 (Application Proxy single sign-on and KCD).
+
+### Question 135 - App roles versus group claims
+
+Correct: **A** and **C**
+
+- **App roles** are declared in the application **manifest** (or in the app registration UI) with a display name, a **value** such as `Approver`, the allowed member types (**Users/Groups** or **Applications**), and a description.
+- Administrators assign users or groups to those roles under **Enterprise applications > Users and groups**. The token then contains a compact **roles** claim with the role values, which avoids the token bloat caused by group claims.
+- Assigning groups to app roles requires **Microsoft Entra ID P1 or P2**.
+
+- **B** is what the requirement rules out: group claims grow with membership and can overflow the token.
+- **D** gives the app directory permissions it does not need.
+- **E** sends data the other direction and does not populate the roles claim.
+
+Source: LP3 Module 2.9 (app roles and role assignments).
+
+### Question 136 - Access package design for auditors
+
+Correct: **A**, **C**, and **E**
+
+- A **catalog** is the container that holds resources and the access packages built from them. Adding the SharePoint site and the security group to the catalog makes them assignable.
+- An **access package** bundles those resources, and its **policy** defines who may request access, whether **approval** is required, the **expiration** (date, days, or hours), and whether extension is allowed. A 90-day expiration satisfies the time limit without manual cleanup.
+- **Access reviews** can target access package assignments. With **auto-apply** enabled, decisions take effect without an administrator applying them manually.
+
+- **B** fails the 90-day rule, because nothing removes access if the review is late.
+- **D** grants far more permission than the auditors need.
+
+Source: LP4 Module 1.2 / 1.3 (catalogs, access packages, and policies).
+
+---
+
+## Case Study 2 - Woodgrove Financial (Questions 137-143)
+
+### Question 137 - Hybrid authentication method selection
+
+Correct: **B**
+
+- **Pass-through authentication (PTA)** validates the password directly against **on-premises Active Directory** through lightweight **PTA agents** that make only **outbound** connections. **No password hash is stored in Microsoft Entra ID**, which satisfies the regulatory rule.
+- PTA supports **seamless single sign-on** for domain-joined devices and can be rolled out with **staged rollout of cloud authentication**, which puts pilot users in a security group before the whole tenant moves.
+- A healthy PTA deployment needs **at least three agents** for redundancy. If every agent is offline, sign-in fails, because there is no cloud hash to fall back on.
+
+- **A** is disallowed by the regulator because hashes are stored in the cloud.
+- **C** breaks the single sign-on and usability requirements.
+- **D** keeps hashes on-premises but adds federation servers and token-signing certificates, which the requirements forbid.
+- **E** is a feature, not an authentication method; password writeback only pushes cloud resets back to AD.
+
+Source: LP1 Module 2.4 / 2.6 (pass-through authentication and staged rollout).
+
+### Question 138 - Private Access remote network design
+
+Correct: **A**
+
+- A **remote network** connects a branch through an **IPsec tunnel** between the **customer premises equipment (CPE)** router and the nearest Global Secure Access endpoint. **No client is installed on individual devices**, and internet-bound traffic is evaluated in the cloud.
+- With the **Private Access** traffic forwarding profile enabled, private applications such as corebank are published through the service. **Conditional Access** can then use the **compliant network** condition, which verifies that traffic came through Global Secure Access instead of a spoofed IP address.
+- Before the compliant network check can be used, **Global Secure Access signaling for Conditional Access** must be enabled once in the tenant.
+
+- **B** misunderstands the client: it runs on user devices, not routers.
+- **C** publishes web apps and does not inspect branch traffic.
+- **D** adds a VPN path that is not the compliant network.
+- **E** relies on IP addresses, which can be spoofed and must be maintained manually.
+
+Source: LP2 Module 6.5 / 6.6 (Private Access and remote networks).
+
+### Question 139 - PIM role settings
+
+Correct: **A** and **C**
+
+- **PIM role settings** control **maximum activation duration**, **approval** (with named approvers), **MFA or authentication strength on activation**, **justification**, **ticket information**, and **notifications**.
+- Making a role **eligible** means the administrator must activate it. A permanent **active** assignment bypasses activation, so the four-hour limit, approval, and MFA requirement would all be skipped.
+- Activation requires **Microsoft Entra ID P2**, and **PIM alerts** exist to surface risky patterns such as too many Global Administrators, so disabling them is the opposite of the requirement.
+
+- **B** keeps standing access, which is exactly what the design must remove.
+- **D** removes a detection instead of a risk.
+- **E** weakens authentication and is unrelated to just-in-time access.
+
+Source: LP4 Module 2.1 / 2.3 (PIM role settings and activation).
+
+### Question 140 - Admin consent workflow design
+
+Correct: **C**
+
+- The **admin consent workflow** is enabled under **Enterprise apps > Consent and permissions > Admin consent settings**. It lets users request consent for apps they cannot consent to themselves.
+- With **user consent set to Do not allow user consent**, no end user can grant access, while the workflow still gives them a path. Requests appear in the **Admin consent requests** pane and are emailed to the configured reviewers.
+- Reviewers must already hold a role that can grant consent; being named a reviewer does not elevate privileges. Only a **Global Administrator** can approve requests for **Microsoft Graph application permissions**.
+- **Risk-based step-up consent** is on by default and escalates suspicious consent requests to admin review.
+
+- **A** still lets users consent, and grants a broad permission set.
+- **B** over-privileges marketing.
+- **D** detects problems after the fact instead of gating consent.
+- **E** removes the review the requirement demands.
+
+Source: LP3 Module 2.10 / 3.2 (admin consent workflow and consent policies).
+
+### Question 141 - Workload identity federation
+
+Correct: **A**
+
+- **Workload identity federation** creates a trust between an external identity provider and an app registration through a **federated identity credential**. The credential declares the **issuer**, the **subject**, and the **audience**.
+- The pipeline requests a short-lived **OIDC token** from GitHub, presents it to Microsoft Entra ID, and receives an access token. **No secret is stored anywhere**, and nothing expires on the Entra side.
+- The **subject** can be scoped to a repository, branch, pull request, or environment, so a compromised branch cannot impersonate the production identity.
+
+- **B** and **C** still store a credential that must be rotated.
+- **D** is impossible: managed identities are not available on GitHub-hosted runners.
+- **E** requires a password and does not support MFA.
+
+Source: LP3 Module 3.4 (app credentials and federated identity).
+
+### Question 142 - Guest access review configuration
+
+Correct: **A** and **C**
+
+- Access reviews can be scoped to **Guest users only**, which limits the review to B2B guests associated with the resource. Reviewers can be **group owners**, **selected users or groups**, **users reviewing their own access**, or **managers of users**, and a **fallback reviewer** covers users who have no manager.
+- **Auto apply results to resource** applies decisions automatically. **If reviewers don't respond** can be set to **No change**, **Remove access**, **Approve access**, or **Take recommendations**. Setting it to **Remove access** satisfies the requirement.
+- Because the review is scoped to guests only, Woodgrove can also configure the **action to apply on denied guest users**, including **block sign-in for 30 days and then remove the user from the tenant**.
+
+- **B** leaves access in place when reviewers ignore the review.
+- **D** removes every guest regardless of business need.
+- **E** is unnecessary and grants standing access.
+
+Source: LP4 Module 3.2 / 3.3 (access reviews for guests).
+
+### Question 143 - Long-term log retention
+
+Correct: **A**, **B**, and **E**
+
+- Microsoft Entra ID keeps **sign-in logs and audit logs for 30 days** with P1 or P2 (7 days on the free tier), so long-term retention always requires an export.
+- **Diagnostic settings** stream **AuditLogs**, **SignInLogs**, **NonInteractiveUserSignInLogs**, and other categories to **Log Analytics**, an **Azure storage account**, an **event hub**, or a partner SIEM.
+- A **Log Analytics workspace** supports **interactive retention up to 730 days** and **total retention up to 12 years**, so seven years is achievable.
+- **Microsoft Sentinel** analyzes data in the same workspace, which keeps the archive queryable with KQL.
+
+- **C** cannot meet seven years.
+- **D** bounds retention by the capture window and does not provide query.
+
+Source: LP4 Module 4.4 / 4.5 (log retention and SIEM export).
+
+---
+
+## Extended set (Questions 144-159)
+
+### Question 144 - Passkey attestation and AAGUID enforcement
+
+Correct: **A**, **B**, and **C**
+
+- **Attestation** proves the make and model of the authenticator. It is checked **only during registration**; enforcing it rejects keys that cannot provide an attestation statement.
+- **AAGUID** is the identifier of the authenticator model. Allow and block lists are enforced **at registration and at sign-in**, so removing an AAGUID immediately blocks existing keys of that model.
+- Because **synced passkeys cannot provide attestation**, turning on attestation enforcement effectively limits registration to **device-bound** keys.
+
+- **D** is false: synced passkeys have no hardware attestation.
+- **E** is false: profiles and passkey settings live in the **authentication methods policy**, not in per-user MFA settings.
+
+Source: LP2 Module 2.2 (passkey profiles).
+
+### Question 145 - Temporary Access Pass limits
+
+Correct: **A**, **C**, and **D**
+
+- Lifetime ranges from **10 minutes to 30 days**. The policy sets the **default** used when a pass is created and the **maximum** that an administrator may choose.
+- A user can have only **one valid TAP** at a time; creating a new one deletes the previous pass. The code is **displayed once** and cannot be retrieved later.
+- A TAP **satisfies MFA**, which is why it works for onboarding, but it is a plaintext code and therefore **not phishing-resistant**.
+- A TAP can be used to sign in and enroll passwordless methods, including passkeys and Windows Hello for Business. It requires **P1 or P2**.
+
+- **B** is false: only one pass can be valid per user.
+- **E** is false: the value is shown once at creation.
+
+Source: LP2 Module 2.4 (Temporary Access Pass).
+
+### Question 146 - Entra ID sign-in for Azure virtual machines
+
+Correct: **A**, **B**, and **C**
+
+- A VM needs a **system-assigned managed identity** and the **AADLoginForWindows** extension (or **AADSSHLoginForLinux** for Linux) before Entra sign-in works.
+- Access is controlled by **Azure RBAC**: **Virtual Machine Administrator Login** grants administrative sign-in, and **Virtual Machine User Login** grants standard sign-in. The role can be assigned on the VM or on a parent scope such as the resource group.
+- Supported platforms include **Windows Server 2022 and 2025 with Desktop Experience**, **Windows 11 24H2 or later**, and supported **Linux** distributions. Enabling Entra login makes the VM **Microsoft Entra joined**, so it cannot also be joined to on-premises AD at the same time.
+- **Guest accounts are not supported** for Azure VM sign-in.
+
+- **D** is false: Owner and Contributor manage the resource but do not grant sign-in.
+- **E** is the opposite of the supported behavior.
+
+Source: LP2 Module 2.10 (Entra user authentication for virtual machines).
+
+### Question 147 - Compliant network enforcement for Microsoft traffic
+
+Correct: **A** and **B**
+
+- **Global Secure Access signaling for Conditional Access** must be enabled once in the tenant. It is the prerequisite for the **compliant network** condition, source IP restoration, and related features.
+- For **Microsoft traffic**, Conditional Access is enforced **only when the Global Secure Access client is installed** on the device. Microsoft 365 traffic is still reachable through a **remote network without the client**, but the policy is **not enforced** on that path. A clientless branch therefore cannot satisfy a compliant network requirement for Microsoft 365 apps.
+- **Continuous Access Evaluation** works with the compliant network check to enforce **data plane** protection, which is what blocks token replay.
+
+- **C** states the opposite of the documented behavior for Microsoft traffic.
+- **D** uses IP addresses, which do not prove that traffic traversed the security edge.
+- **E** would remove the token replay protection the design depends on.
+
+Source: LP2 Module 6.5 / 6.8 (compliant network and Conditional Access).
+
+### Question 148 - Phishing-resistant authentication methods
+
+Correct: **A**, **B**, and **C**
+
+- The **phishing-resistant MFA** authentication strength accepts **FIDO2 security keys**, **Windows Hello for Business**, **certificate-based authentication configured as multi-factor**, and passkeys that are bound to a device. These methods are bound to the sign-in origin, so a proxy or look-alike site cannot replay them.
+- The method must also be **enabled in the authentication methods policy** and available to the user; the strength alone does not register anything.
+
+- **D** is passwordless MFA but is not classified as phishing-resistant, because the approval is not cryptographically bound to the site.
+- **E** satisfies MFA but is a transferable code, so it is not phishing-resistant.
+
+Source: LP2 Module 1.2 / 2.3 (authentication strengths).
+
+### Question 149 - User risk remediation
+
+Correct: **D**
+
+- Conditional Access supports a **user risk** condition. With **user risk = High** and the **Require password change** grant control, the user must complete a password change before access is granted, and the risk state is remediated.
+- The control requires **Microsoft Entra ID P2**. The same outcome can be delivered by the Identity Protection **user risk policy**, which is built on the same engine.
+
+- **A** and **B** do not force a password change.
+- **C** offers a path but does not block access; the user could simply not reset.
+- **E** removes the self-service path and does not clear the risk until the user signs in with the new password.
+
+Source: LP2 Module 3.3 (Identity Protection risk policies).
+
+### Question 150 - Hard Deletion Protection behavior
+
+Correct: **A**
+
+- **Hard Deletion Protection** prevents an object from being **permanently deleted during the first seven days after it is soft deleted**. Soft deletion itself still succeeds, and a restore is still possible during the window.
+- Restoring an object keeps the protection. If it is deleted again, a **new seven-day window starts**.
+- Protection is **permanent once enabled** and cannot be switched off. It covers **cloud-only users, cloud-only groups, applications, and service principals**, and enabling it requires the **Microsoft Entra Backup Administrator** role.
+
+- **B** is wrong: the timer restarts with every soft deletion, not with the moment protection was enabled.
+- **C** invents an approval step; PIM is not part of Hard Deletion Protection.
+- **D** confuses the 30-day soft-delete window with the seven-day hard-delete block.
+- **E** is impossible: protection cannot be disabled.
+
+Source: LP1 Module 4.1 (directory protection and recovery).
+
+### Question 151 - Guest MFA double prompt
+
+Correct: **B**
+
+- **Inbound trust settings** in cross-tenant access let Tailwind accept the **MFA claim** that the partner tenant already issued. The guest is not prompted twice, and Tailwind Conditional Access still requires MFA.
+- Trust can be configured as a **default** for all external organizations or **per organization**, and it applies only when the home tenant actually emits the claim. The guest object must still exist in Tailwind, and all other controls, such as device compliance or app restrictions, still apply.
+
+- **A** removes the requirement instead of trusting the partner claim.
+- **C** is a network-based bypass and does not reflect who performed MFA.
+- **D** creates a second credential and adds helpdesk work.
+- **E** is a tenant-wide default that cannot express per-partner trust.
+
+Source: LP1 Module 5.2 (cross-tenant access trust settings).
+
+### Question 152 - Tenant restrictions v2
+
+Correct: **A** and **D**
+
+- **Tenant restrictions v2** is configured in **cross-tenant access settings** and moves policy from on-premises proxies to the cloud. It can allow or block specific external tenants for internal identities and block external identities entirely.
+- Enforcement uses **Global Secure Access** tagging. Enabling the tagging toggle requires **both** the **Global Secure Access Administrator** and **Security Administrator** roles.
+- **Data plane protection** covers **Microsoft Graph**: a token that was issued for an allowed tenant is blocked when it is replayed against Graph, and anonymous SharePoint Online access is also blocked.
+
+- **B** affects collaboration, not sign-in to other tenants, and would break legitimate partner work.
+- **C** named locations are IP based and cannot identify the destination tenant.
+- **E** removes shared channel collaboration without restricting tenant sign-in.
+
+Source: LP2 Module 6.8 (tenant restrictions v2 and Global Secure Access enforcement).
+
+### Question 153 - Admin consent workflow behavior
+
+Correct: **A** and **B**
+
+- Reviewers work from **Enterprise apps > Activity > Admin consent requests**. The **My pending** tab shows requests assigned to the signed-in reviewer, and requesters are notified when a request is approved, denied, or expires.
+- **Consent request expires after (days)** is configurable (1 to 60 days) and defaults to **30 days**. Reviewers receive expiration reminders, and requesters see the status.
+- Naming someone a reviewer does **not** grant consent permission, and only a **Global Administrator** can approve requests for **Microsoft Graph application permissions**. Enabling the workflow can take up to an hour to take effect.
+
+- **C** confuses the reviewer designation with the permission to consent.
+- **D** is false: Conditional Access still evaluates the app.
+- **E** is false: each request is reviewed individually.
+
+Source: LP3 Module 2.10 (admin consent workflow).
+
+### Question 154 - Application Proxy connector high availability
+
+Correct: **B**
+
+- An application is assigned to **exactly one connector group**. **High availability** comes from having **multiple connectors in that group**, ideally on separate hosts and in separate networks or datacenters.
+- Connectors in a group **load balance** traffic and take over when a peer is unavailable. Each connector must be able to reach the published application and needs only **outbound 443** connectivity to the Application Proxy service.
+- Connectors should not share a server with the **Password Protection proxy**, because the two install different versions of the Agent Updater service.
+
+- **A** is not possible: an app cannot belong to two connector groups.
+- **C** duplicates the configuration and splits the audit trail.
+- **D** changes the publishing model and does not answer the availability question.
+- **E** still relies on connectors.
+
+Source: LP3 Module 2.6 (Application Proxy connectors and groups).
+
+### Question 155 - SCIM scoping filters and quarantine
+
+Correct: **A** and **B**
+
+- **Scoping filters** define which users are in scope for provisioning, using a **target attribute**, an **operator**, and a **value**. Users outside the filter are not created or updated in the target application.
+- When provisioning repeatedly fails, for example because of **invalid credentials**, the job enters **quarantine** and stops. After the credentials are corrected, the job must be **restarted** so that it resumes.
+- **Provision on demand** can be used to test a single user, and **attribute mappings** control which values are sent. Users must still be in the provisioning scope (assigned users or all users, depending on the scope setting).
+
+- **C** destroys the configuration and audit history.
+- **D** leaves the target application without the attributes it needs.
+- **E** is false: scoping filters are a supported provisioning feature.
+
+Source: LP3 Module 3.5 / 3.6 (SCIM provisioning and troubleshooting).
+
+### Question 156 - Lifecycle workflow for movers
+
+Correct: **C**
+
+- **Lifecycle workflows** in Microsoft Entra ID Governance automate joiner, mover, and leaver tasks. A mover workflow can be triggered by an **attribute change**, a **group membership change**, or **on demand**, and it can also run on a schedule.
+- Built-in tasks include **add user to group**, **remove user from group**, **add or remove access package assignment**, **disable account**, **delete account**, **send email**, and **run a custom task extension** (a Logic App) for anything else, including on-premises changes.
+- Workflows require **Microsoft Entra ID Governance** (P2). Execution is scheduled, so changes apply within the workflow run interval rather than instantly.
+
+- **A** is custom code that must be maintained and audited.
+- **B** reviews access after the fact.
+- **D** updates cloud group membership but not on-premises groups or access package assignments.
+- **E** changes how access is activated, not how it is granted or removed.
+
+Source: LP4 Module 4.1 (lifecycle workflows).
+
+### Question 157 - Access reviews for privileged roles
+
+Correct: **A** and **D**
+
+- Access reviews support **Microsoft Entra roles**, including **eligible** and **active** assignments, and **PIM for Groups** assignments for role-assignable groups.
+- **Auto apply results to resource** applies the decisions. Without it, an administrator must apply the results manually, which fails the "no manual steps" requirement.
+- Typical reviewer choices for role reviews are **selected users or groups** and **users review their own access**; recommendations and justification requirements can be enabled.
+
+- **B** is false: eligibility is exactly what a role review should examine.
+- **C** leaves unapproved access in place.
+- **E** sends information but changes nothing.
+
+Source: LP4 Module 3.2 / 3.4 (access reviews for roles and groups).
+
+### Question 158 - External user lifecycle from access packages
+
+Correct: **A**
+
+- Under **ID Governance > Entitlement management > Settings**, the **Manage the lifecycle of external users** section controls what happens when a user loses their **last access package assignment**.
+- **Block external user from signing in to this directory** set to **Yes** blocks sign-in immediately. A blocked user cannot re-request the access package or any other access in the directory, so this setting must be used with care.
+- **Remove external user** set to **Yes** deletes the guest account after the configured number of days; **0** removes it immediately.
+- Entitlement management only removes accounts that were **invited through entitlement management**. A guest that already existed before the assignment remains in the directory.
+
+- **B** applies to guests denied in a review, not to users who simply run out of assignments.
+- **C** and **D** are indiscriminate and delete guests that must be kept.
+- **E** ends the assignment but does not block sign-in or delete the account.
+
+Source: LP4 Module 1.6 (external user lifecycle settings).
+
+### Question 159 - Conditional Access troubleshooting evidence
+
+Correct: **A**
+
+- The **sign-in log** records each authentication attempt. Its **Conditional Access** tab lists the policies that **applied**, the policies that **did not apply** with the reason, and the **report-only** results, including which conditions and controls were evaluated.
+- The same entry shows the **authentication requirement**, the **grant controls** satisfied, and the **session controls** in effect, which is usually enough to explain a block without opening a support case.
+- For aggregate trends, the **Insights and reporting** workbook summarizes policy impact and report-only outcomes.
+
+- **B** records configuration changes, not policy evaluation.
+- **C** reports security posture, not a single sign-in.
+- **D** covers risk detections, not Conditional Access evaluation.
+- **E** covers access decisions, not sign-in policy.
+
+Source: LP4 Module 4.3 (sign-in log analysis and Conditional Access troubleshooting).
 
 

@@ -8,9 +8,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 
 const files = [
-  ['04-CHEAT-SHEET-IDENTITY.md', 'Identity management'],
-  ['05-CHEAT-SHEET-AUTH.md', 'Authentication and access'],
-  ['06-CHEAT-SHEET-APPS.md', 'Access management for apps'],
+  ['04-CHEAT-SHEET-IDENTITY.md', 'User identities'],
+  ['05-CHEAT-SHEET-AUTH.md', 'Authentication and access management'],
+  ['06-CHEAT-SHEET-APPS.md', 'Workload identities'],
   ['07-CHEAT-SHEET-GOVERNANCE.md', 'Identity governance']
 ];
 
@@ -159,8 +159,8 @@ const html = `<!doctype html>
     background: #fff;
     box-shadow: 0 10px 30px -18px rgba(16, 24, 40, .55);
     border: 1px solid #e2e8f0;
-    font-size: 6.8pt;
-    line-height: 1.23;
+    font-size: 6.5pt;
+    line-height: 1.16;
     column-count: 2;
     column-gap: 6mm;
     column-fill: auto;

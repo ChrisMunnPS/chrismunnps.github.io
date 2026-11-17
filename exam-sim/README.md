@@ -1,6 +1,6 @@
 # SC-300 Exam Simulator
 
-An offline, single-page practice exam for Microsoft SC-300, built from the 113-question
+An offline, single-page practice exam for Microsoft SC-300, built from the 159-question
 bank in the parent folder.
 
 ## Run it
@@ -12,11 +12,12 @@ straight from `file://`.
 
 ## Features
 
-- **113 questions** with the official domain mix in the bank: identity 30, authentication 33, apps 23, governance 27.
-- **Random 50-question draw by default.** Each attempt samples the bank in blueprint proportion (13 identity, 15 authentication, 10 apps, 12 governance). Retakes of missed questions skip the sampling.
+- **159 questions** with the official domain mix in the bank: user identities 38, authentication 48, workload identities 34, governance 39.
+- **Two case studies** with a shared background. Case Study 1 (Tailwind Traders, Q130–136) and Case Study 2 (Woodgrove Financial, Q137–143) each run as a guided drill from the start screen. The background is stored once in `window.CASE_STUDIES`, is pinned above every question in the case, appears in the answer review, and prints once before the first question of the case.
+- **Random 50-question draw by default.** Each attempt samples the bank in blueprint proportion (12 user identities, 14 authentication, 12 workload identities, 12 governance) using the October 28, 2026 weights. Retakes of missed questions skip the sampling.
 - **Choose your own question count.** The *Questions* box accepts 1 through the size of the selected pool; the mix stays weighted and the time limit recalculates as you type. The number is saved with your other settings.
 - **Focus on specific sections.** Tick any of the four exam domains on the start screen to build a shorter attempt; the question count and time limit update as you choose. *All* and *None* buttons speed up the selection.
-- **Drill presets.** Full 50, Identity 10, Auth 12, Apps 8, Governance 10, and Quick 10 fill in the sections and count without starting the attempt. The active preset highlights when the current settings match.
+- **Drill presets.** Full 50, Identity 10, Auth 12, Workload 8, Governance 10, and Quick 10 fill in the sections and count without starting the attempt. The active preset highlights when the current settings match.
 - **Spaced review queue.** Missed or unanswered questions are due immediately; a correct review advances through 3, 7, 21, 45, and 90-day intervals and then graduates. Start or clear the queue from the start screen, or review due items from the score report.
 - **Two modes.** *Exam* hides all feedback until you submit. *Practice* reveals the explanation as you answer, plus a "Check answer" step for multi-select items.
 - **Optional timer, as a checkbox.** Leave *Timer* ticked for a 90-second-per-question countdown that auto-submits at zero, or untick it to work untimed. The default 50-question attempt gets 75 minutes.
@@ -65,7 +66,7 @@ scaled score stays comparable.
 | `index.html` | Page shell |
 | `styles.css` | All styling, including dark mode, responsive layout, and print |
 | `app.js` | Exam engine: state, timer, scoring, review, persistence |
-| `questions.js` | Generated question bank (`window.QUESTIONS`) |
+| `questions.js` | Question bank (`window.CASE_STUDIES` + `window.QUESTIONS`) |
 
 ## Editing questions
 
@@ -76,6 +77,7 @@ consistency. Each entry looks like:
 {
   id: 1,
   domain: 'identity',          // identity | auth | apps | governance
+  case: 'tailwind-traders',    // optional; references window.CASE_STUDIES
   topic: 'Administrative units',
   stem: 'Scenario text…\n\nWhat should you create?',
   options: [{ letter: 'A', text: '…' }, …],
@@ -88,3 +90,7 @@ consistency. Each entry looks like:
 You can edit the file directly. Keep `answers` consistent with the stem ("Choose two" means
 two letters), because multi-select scoring compares the selection length to `answers.length`
 before checking the letters.
+
+Case-study backgrounds live in `window.CASE_STUDIES` at the top of the same file. A question
+joins a case by setting `case` to that case's `id`; the app looks the background up by id, so
+the long scenario text is never duplicated per question.

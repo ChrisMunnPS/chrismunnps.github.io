@@ -4,6 +4,8 @@
 
   var QUESTIONS = window.QUESTIONS || [];
   var BY_ID = new Map(QUESTIONS.map(function (q) { return [q.id, q]; }));
+  var CASE_LIST = window.CASE_STUDIES || [];
+  var CASE_BY_ID = new Map(CASE_LIST.map(function (c) { return [c.id, c]; }));
   var PASS_MARK = 700;
   var SAVE_KEY = 'sc300-sim:attempt';
   var SETTINGS_KEY = 'sc300-sim:settings';
@@ -14,39 +16,41 @@
 
   var DOMAINS = {
     identity: {
-      label: 'Identity management',
-      full: 'Implement an identity management solution',
+      label: 'User identities',
+      full: 'Implement and manage user identities',
       weight: '20-25%',
       color: '#4f46e5'
     },
     auth: {
       label: 'Authentication & access',
-      full: 'Implement an authentication and access management solution',
+      full: 'Implement authentication and access management',
       weight: '25-30%',
       color: '#0891b2'
     },
     apps: {
-      label: 'App access management',
-      full: 'Implement access management for apps',
-      weight: '15-20%',
+      label: 'Workload identities',
+      full: 'Plan and implement workload identities',
+      weight: '20-25%',
       color: '#b45309'
     },
     governance: {
       label: 'Identity governance',
-      full: 'Plan and implement an identity governance strategy',
+      full: 'Plan and automate identity governance',
       weight: '20-25%',
       color: '#be185d'
     }
   };
   var DOMAIN_ORDER = ['identity', 'auth', 'apps', 'governance'];
-  var DOMAIN_WEIGHT = { identity: 25, auth: 30, apps: 20, governance: 25 };
+  // Midpoints of the skills-measured ranges as of October 28, 2026:
+  // 20-25 / 25-30 / 20-25 / 20-25. A 50-question draw yields 12/14/12/12.
+  var DOMAIN_WEIGHT = { identity: 22.5, auth: 27.5, apps: 22.5, governance: 22.5 };
   var DEFAULT_COUNT = 50;
 
   var PRESETS = [
     { key: 'full', label: 'Full 50', count: 50, domains: DOMAIN_ORDER.slice() },
     { key: 'identity', label: 'Identity 10', count: 10, domains: ['identity'] },
     { key: 'auth', label: 'Auth 12', count: 12, domains: ['auth'] },
-    { key: 'apps', label: 'Apps 8', count: 8, domains: ['apps'] },
+    { key: 'apps', label: 'Workload 8', count: 8, domains: ['apps'] },
     { key: 'governance', label: 'Governance 10', count: 10, domains: ['governance'] },
     { key: 'quick', label: 'Quick 10', count: 10, domains: DOMAIN_ORDER.slice() }
   ];
@@ -429,6 +433,38 @@
 
   function poolForDomains(domains) {
     return QUESTIONS.filter(function (q) { return domains.indexOf(q.domain) !== -1; });
+  }
+
+  function caseIdsFor(caseId) {
+    return QUESTIONS.filter(function (q) { return q.case === caseId; }).map(function (q) { return q.id; });
+  }
+
+  function casePanelHTML(q) {
+    if (!q || !q.case) return '';
+    var study = CASE_BY_ID.get(q.case);
+    if (!study) return '';
+    var count = caseIdsFor(q.case).length;
+    return '<details class="case-study" open>'
+      + '<summary>'
+      + '<span class="case-tag">Case study</span>'
+      + '<span class="case-title">' + esc(study.title) + '</span>'
+      + '<span class="case-count">' + count + ' questions</span>'
+      + '</summary>'
+      + '<div class="case-body">' + study.html + '</div>'
+      + '</details>';
+  }
+
+  function startCase(caseId) {
+    var ids = caseIdsFor(caseId);
+    if (!ids.length) {
+      toast('No questions found for that case study.');
+      return;
+    }
+    var settings = readSettingsFromForm();
+    settings.shuffle = false;
+    settings.domains = ids.map(function (id) { return BY_ID.get(id).domain; })
+      .filter(function (key, i, arr) { return arr.indexOf(key) === i; });
+    startExam({ ids: ids, settings: settings });
   }
 
   function allocateQuotas(pool, domains, requested) {
@@ -916,8 +952,16 @@
       + '<p>' + g.correct + ' of ' + g.total + ' correct &middot; ' + g.pct + '% &middot; '
       + g.scaled + '/1000 scaled &middot; ' + (g.pass ? 'Pass' : 'Below the 700 pass mark') + '</p></header>';
 
+    var seenCase = {};
     var cards = state.order.map(function (id, index) {
-      return printCardHTML(BY_ID.get(id), index);
+      var q = BY_ID.get(id);
+      var intro = '';
+      if (q.case && !seenCase[q.case]) {
+        seenCase[q.case] = true;
+        var study = CASE_BY_ID.get(q.case);
+        if (study) intro = '<section class="print-case"><h2>' + esc(study.title) + '</h2>' + study.html + '</section>';
+      }
+      return intro + printCardHTML(q, index);
     }).join('');
 
     beginPrint(area, head + cards);
@@ -1073,8 +1117,25 @@
       + '<p class="hint" id="start-hint">Answers save in this browser automatically. Leave at any time and resume where you stopped.</p>'
       + resumeHTML(savedRecord)
       + '</section>'
+      + caseStartHTML()
       + srsHTML()
       + '</div>';
+  }
+
+  function caseStartHTML() {
+    if (!CASE_LIST.length) return '';
+    return '<section class="panel case-start" aria-labelledby="case-title">'
+      + '<h2 id="case-title">Case study drills</h2>'
+      + '<p class="case-note">The live exam opens with a long scenario and then asks several questions against it. Each drill below walks one case in order and keeps the background pinned above every question.</p>'
+      + CASE_LIST.map(function (study, i) {
+        var count = caseIdsFor(study.id).length;
+        return '<div class="case-row">'
+          + '<div class="case-row-text"><strong>' + esc(study.title) + '</strong>'
+          + '<span>' + count + ' questions &middot; shared background</span></div>'
+          + '<button class="btn btn-sm" data-act="case" data-case="' + esc(study.id) + '">Start case ' + (i + 1) + '</button>'
+          + '</div>';
+      }).join('')
+      + '</section>';
   }
 
   function setText(id, value) {
@@ -1306,6 +1367,7 @@
       + '<button class="flagbtn' + (flagged ? ' on' : '') + '" data-act="flag" aria-pressed="' + flagged + '">'
       + '<span aria-hidden="true">&#9873;</span><span>' + (flagged ? 'Flagged' : 'Flag for review') + '</span></button>'
       + '</div>'
+      + casePanelHTML(q)
       + '<div class="stem md">' + md(q.stem) + '</div>'
       + '<p class="selecthint">' + (multi ? 'Select ' + q.answers.length + ' answers. Every choice must be correct.' : 'Select one answer.') + '</p>'
       + '<div class="options" role="' + (multi ? 'group' : 'radiogroup') + '" aria-label="Answer choices">' + optionsHTML(q, sel, revealed) + '</div>'
@@ -1423,6 +1485,7 @@
       + '<span class="qcount">Question ' + (state.index + 1) + ' <span>of ' + state.order.length + '</span></span>'
       + '<span class="pill ' + (ok ? 'ok' : 'no') + '">' + (ok ? 'Correct' : 'Incorrect') + '</span>'
       + '</div>'
+      + casePanelHTML(q)
       + '<h1 class="qtopic">' + esc(q.topic) + '</h1>'
       + '<div class="stem md">' + md(q.stem) + '</div>'
       + '<p class="selecthint">Correct: <b>' + q.answers.join(', ') + '</b> &middot; Your answer: <b>' + (sel.length ? sel.join(', ') : 'none') + '</b></p>'
@@ -1614,6 +1677,9 @@
         break;
       case 'preset':
         applyPreset(el.dataset.preset);
+        break;
+      case 'case':
+        startCase(el.dataset.case);
         break;
       case 'srs-start':
         startSrs();

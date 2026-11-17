@@ -1,4 +1,4 @@
-# SC-300 cheat sheet 4/4 — Identity governance
+# SC-300 cheat sheet 4/4 — Plan and automate identity governance
 
 *One page. Facts snapshot 2026-11; verify current behavior on Microsoft Learn before the exam.*
 
@@ -14,6 +14,7 @@
 | Expiration | Assignments can expire after a number of days, on a date, or never. Expired access must be re-requested. |
 | External users | Connected organizations define partner tenants or domains. External users receive guest objects; lifecycle removes access when the package expires. |
 | Separation of duties | Incompatible access packages can block a user from holding conflicting access. Evaluate at request time. |
+| Per-user entitlements | Open an access package's **Assignments** to see each user, policy, and status. Filter **Delivering** for provisioning errors or **Expired**, and **Download** a CSV. Roles: Identity Governance Administrator, User Administrator, Catalog owner, Access package manager, or Assignment manager. |
 | License | Entra ID **P2** (or Entra ID Governance) for entitlement management. |
 
 ## Access reviews
@@ -25,6 +26,7 @@
 | Recurrence | One-time, weekly, monthly, quarterly, semi-annual, or annual. Set duration and whether reviewers must justify. |
 | Decisions | Approve, deny, or don't know. **Auto-apply** applies results when the review ends; without it, decisions do not change access. |
 | Recommendations | "Inactive users" recommendations flag users with no sign-in in the last 30 days. Use as input, not as the only decision. |
+| Access Review Agent | Needs **Entra ID Governance or Entra Suite** + Security Copilot (**1 SCU**). Recommends approve/deny with justification in **Teams** from a score of inactivity, affiliation, account enabled, leaver date, mover workflow, prior decisions, and request history. Reviewers need **Security Copilot Contributor**; once started it **cannot be paused**. |
 | Guest reviews | Review guest access separately; denied guests can be removed from the group, app, or tenant. |
 | Role reviews | Review privileged role assignments (PIM eligible and active) on a recurring basis to enforce least privilege. |
 | License | Entra ID **P2** / Entra ID Governance. |
@@ -39,9 +41,10 @@
 | Approval | Designate approvers. The request waits until approved; the user cannot use the role before activation completes. |
 | Notifications | PIM alerts for too many Global Administrators, roles assigned outside PIM, stale assignments, and activation anomalies. |
 | PIM for groups | Makes group membership eligible or active with activation and approval. Requires the group to be onboarded to PIM. |
+| PIM audit history | **Resource audit** shows all activity for a privileged access group; **My audit** shows only your own role activity. Filter by predefined or custom dates. Assignments made through Azure delegated resource management are excluded. |
 | PIM for Azure resources | Just-in-time access to Azure RBAC roles at management group, subscription, resource group, or resource scope. |
 | Access reviews for PIM | Recurring review of eligible/active assignments; remove assignments that are no longer justified. |
-| Break-glass | Keep two permanent Global Administrator accounts excluded from PIM and CA. Monitor sign-ins and alert on use. |
+| Emergency access accounts | Keep two permanent Global Administrator accounts excluded from PIM and CA. Monitor sign-ins and alert on use. |
 | License | Entra ID **P2** / Entra ID Governance (PIM for groups and Azure resources included). |
 
 ## Lifecycle workflows and monitoring
@@ -52,11 +55,10 @@
 | Tasks | Enable/disable account, add/remove group, send email, generate TAP, run a custom extension (Logic Apps). |
 | Scope | A workflow runs against a scope (all users or a group) and a trigger condition. Test with a small scope first. |
 | Custom extensions | Call an Azure Logic App from a workflow for tasks the built-in tasks do not cover. |
-| Audit logs | Directory changes, role assignments, app consent, and policy edits. Retained **30 days** in Entra; export to Log Analytics or Sentinel for longer. |
-| Sign-in logs | Interactive and non-interactive sign-ins, CA results, risk, and device details. P1/P2 extends retention beyond the free tier. |
+| Audit and sign-in logs | **Audit** records who changed what, filterable by service, category, activity, status, target, and initiator; download CSV/JSON up to **250,000** records. **Sign-ins** covers **interactive** sign-ins only, can lag **up to 2 hours**, and is readable by Security/Global/Report readers and each user. Retained **30 days**; export for longer. |
 | Provisioning logs | Records SCIM create/update/disable actions and failures. Use them to debug attribute mappings. |
-| Diagnostic settings | Stream audit, sign-in, provisioning, and risk logs to Log Analytics, storage, or Event Hub. |
-| Alerts and workbooks | Entra ID Governance/Monitoring workbooks summarize access, reviews, and PIM. Alert on break-glass use, risky sign-ins, and role changes. |
+| Diagnostic settings and Sentinel | Stream audit, sign-in, provisioning, and risk logs to Log Analytics, storage, or Event Hub. **Sentinel** is cloud SIEM **and SOAR**; sign-in ingestion needs **P1/P2**, access needs **Sentinel Contributor** + **Security Administrator**. A workspace holds **730 days interactive** and **12 years total**; Entra's 30-day store cannot meet a multi-year rule. |
+| Workbooks and Identity Secure Score | Workbooks summarize access, reviews, and PIM. **Identity Secure Score** is a percentage in **all editions**, scored binary or proportionally, with industry comparison and trend. |
 | Terms of use | Require acceptance with a Conditional Access grant control. Acceptance is recorded per user and version. |
 
 ## High-yield exam traps

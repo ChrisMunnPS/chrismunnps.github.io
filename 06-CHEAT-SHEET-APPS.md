@@ -1,4 +1,4 @@
-# SC-300 cheat sheet 3/4 — Access management for apps
+# SC-300 cheat sheet 3/4 — Plan and implement workload identities
 
 *One page. Facts snapshot 2026-11; verify current behavior on Microsoft Learn before the exam.*
 
@@ -12,7 +12,8 @@
 | Delegated permission | App acts as the signed-in user. Requires user or admin consent; effective access is the intersection of user rights and granted scopes. |
 | Application permission | App acts as itself, no signed-in user. Always requires **admin consent**; often needs a client secret or certificate. |
 | Admin consent workflow | Users request consent; designated reviewers approve in the Entra admin center. Configure under Enterprise applications > Consent and permissions. |
-| User consent settings | Control whether users can consent to apps. Restrict to verified publishers or low-risk scopes, or disable user consent entirely. |
+| User consent settings | Options: **disable user consent**, verified publishers + chosen **low-impact** permissions, **all apps**, or a **custom app consent policy**. **Risk-based step-up consent** is on by default and sends risky requests to admin approval; without the admin consent workflow the user sees **AADSTS90094** and the audit shows **ApplicationManagement / Consent to application / Risky application detected**. |
+| Token customization | Token lifetime policies set access/ID token, refresh token, and sliding-window lifetimes for all apps, a multitenant app, or one service principal. **Optional claims** add or change claims per app and matter most moving from v1.0 to v2.0 tokens. |
 | Redirect URI | Must exactly match the app's configured reply URL. Prefer the authorization code flow with **PKCE** for public clients. |
 | Credentials | Client secrets are strings with expiry; certificates are stronger. Store secrets in Key Vault and rotate before expiry. |
 | App roles vs groups | App roles are defined in the app manifest and assigned to users/groups. Group claims can also carry membership, but large groups require a token-size strategy. |
@@ -44,9 +45,12 @@
 | Managed identity | Azure-managed service principal with no secret to manage. **System-assigned** dies with the resource; **user-assigned** can be shared across resources. |
 | Workload identity federation | Replace secrets with a trust relationship between an external workload (GitHub, Kubernetes, Azure DevOps) and an app registration or managed identity. |
 | Service principal vs managed identity | Both are identities; a managed identity is a special service principal tied to an Azure resource and cannot be configured with a client secret. |
-| App governance | Defender for Cloud Apps capability (add-on/E5) that detects risky OAuth apps, excessive permissions, unused apps, and suspicious consent. Policies can alert or disable. |
+| App governance | Defender for Cloud Apps **add-on** for **OAuth apps using Microsoft Graph** to reach Microsoft 365 data. Provides insights, governance policies, detection, and **automatic remediation**. Enable under **Settings > Threat Protection > App Governance**. |
+| OAuth app policies | In **Defender for Cloud Apps > Cloud apps > OAuth apps**, create a permission policy to alert on high-permission apps authorized by many users, ban a permission (which **disables the enterprise app**), or scope by the group membership of users who consented. The **Community use** filter flags rare permissions. |
+| Cloud Discovery and CASB | Defender for Cloud Apps is Microsoft's **CASB**. **Cloud Discovery** reads firewall/proxy traffic logs to find shadow IT; the **Cloud app catalog** rates **16,000+** apps on **80+** risk factors. Sanction or unsanction apps from the catalog. |
+| Application collections | Requires **P1/P2**. Group related apps into tabs for users in **My Apps**; a collection only shows apps the user is already assigned. Admins create them under **Enterprise applications > App Launchers > New collection**; users can create personal collections. |
 | Restore deleted apps | App registrations and service principals are restorable for **30 days** from Deleted applications. The same client ID, permissions, and assignments return. |
-| Hard deletion protection | Can protect cloud applications and service principals from permanent deletion for seven days after soft delete. It is preview, permanent once enabled, and needs the Entra Backup Administrator role. |
+| Hard deletion protection | Can protect cloud applications and service principals from permanent deletion for **seven days after each soft delete**; restoring keeps protection and a new delete restarts the window. Preview feature, **permanent once enabled**, needs the **Entra Backup Administrator** role. |
 
 ## High-yield exam traps
 

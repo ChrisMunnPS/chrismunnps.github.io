@@ -555,6 +555,90 @@ body {
 .stem p { margin: 0 0 .8em; }
 .stem p:last-child { margin-bottom: 0; }
 
+/* ------------------------------------------------------------ case studies */
+.case-study {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--warn);
+  border-radius: 12px;
+  background: var(--warn-soft);
+  overflow: hidden;
+}
+.case-study summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: .86rem;
+  font-weight: 600;
+  line-height: 1.35;
+  list-style: none;
+}
+.case-study summary::-webkit-details-marker { display: none; }
+.case-study summary::before {
+  content: "\25BE";
+  font-size: .7rem;
+  color: var(--warn);
+}
+.case-study:not([open]) summary::before { content: "\25B8"; }
+.case-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--warn);
+  color: #fff;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.case-title { flex: 1 1 220px; }
+.case-count { font-size: .72rem; font-weight: 500; color: var(--muted); }
+.case-body {
+  padding: 0 16px 14px;
+  font-size: .88rem;
+  line-height: 1.62;
+  color: var(--text);
+  border-top: 1px solid rgba(180, 83, 9, .18);
+  padding-top: 12px;
+}
+.case-body p { margin: 0 0 .7em; }
+.case-body h4 {
+  margin: 14px 0 6px;
+  font-size: .76rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--warn);
+}
+.case-body ul { margin: 0; padding-left: 1.15em; }
+.case-body li { margin-bottom: 5px; }
+
+.case-start .case-note {
+  margin: -6px 0 16px;
+  font-size: .84rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.case-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.case-row:first-of-type { border-top: 0; padding-top: 0; }
+.case-row-text { flex: 1 1 240px; min-width: 0; }
+.case-row-text strong { display: block; font-size: .92rem; line-height: 1.35; }
+.case-row-text span { font-size: .76rem; color: var(--muted); }
+
+.print-case { break-inside: avoid; margin-bottom: 18px; }
+.print-case h2 { margin: 0 0 8px; font-size: 1rem; }
+.print-case h4 { margin: 10px 0 4px; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; }
+.print-case ul { margin: 0; padding-left: 1.1em; }
+.print-case li { margin-bottom: 4px; }
+
 .selecthint {
   margin: 18px 0 10px;
   font-size: .78rem;

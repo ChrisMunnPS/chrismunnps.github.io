@@ -1,14 +1,15 @@
 # SC-300 Practice Examination
 
-**113 questions - 113 minutes - closed book**
+**159 questions - 159 minutes - closed book**
 
 This bank is drawn from the four Microsoft Learn SC-300 learning paths (18 modules, 194 units),
-snapshot 2026-11-06. The wording and distractors follow the style of the live exam: most items are
+snapshot 2026-11-08. The wording and distractors follow the style of the live exam: most items are
 scenarios that ask you to pick the configuration, role, or behavior that fits, and several ask you
-to select two or three correct statements.
+to select two or three correct statements. Two case studies mirror the long scenario blocks on the
+live exam: one background shared by seven questions.
 
 The interactive simulator draws a random 50-question exam by default, using the blueprint weights.
-This document contains the full 113-question bank so you can study every item.
+This document contains the full 159-question bank so you can study every item.
 
 ## Instructions
 
@@ -611,7 +612,7 @@ Which statements are true? (Choose two.)
 
 - A. PIM requires Microsoft Entra ID Premium P2.
 - B. Eligible assignments can be created outside PIM, in the standard Roles and administrators blade.
-- C. Two break-glass emergency access accounts should retain permanent Global Administrator assignments.
+- C. Two emergency access accounts should retain permanent Global Administrator assignments.
 - D. Permanent assignments are created only through PIM.
 
 ### Question 55
@@ -778,7 +779,7 @@ Which two roles should you assign? (Choose two.)
 
 ### Question 69
 
-Contoso has break-glass and executive administrator accounts. Helpdesk staff must not be able to reset the passwords or change the properties of these accounts, even when they hold the User Administrator role.
+Contoso has emergency access and executive administrator accounts. Helpdesk staff must not be able to reset the passwords or change the properties of these accounts, even when they hold the User Administrator role.
 
 What should you create?
 
@@ -1299,6 +1300,608 @@ Which three statements about Hard Deletion Protection are true? (Choose three.)
 - C. Enabling it for an object is permanent and cannot be undone.
 - D. It automatically restores an object when the protection window ends.
 - E. It prevents the initial soft deletion of the object.
+
+### Question 114
+
+Contoso wants a customized sign-in page for its Microsoft 365 users, including a background image, a banner logo, and help desk text. Only the default language will be used.
+
+Which two statements about company branding are true? (Choose two.)
+
+- A. The Company branding menu option requires Microsoft Entra ID P1, P2, or an Office 365 license.
+- B. The background image can be up to 1920x1080 pixels and no larger than 300,000 bytes.
+- C. The sign-in page language can be changed after branding is configured.
+- D. Sign-in page text is limited to 256 characters.
+- E. The username hint may contain a link to a password reset page.
+
+### Question 115
+
+Contoso must stop non-administrator members from creating app registrations, but one developer must keep that ability. The company also wants to block non-administrators from using the Microsoft Entra admin center while leaving PowerShell and Visual Studio access unchanged.
+
+What should you configure?
+
+- A. In User settings, set Users can register applications to No, assign the developer the Application Developer role, and set Restrict access to the Microsoft Entra administration portal to Yes.
+- B. In User settings, set Users can register applications to No and enable security defaults.
+- C. Create a Conditional Access policy that blocks the Azure portal for all non-administrators.
+- D. Change the External collaboration settings so guests can't invite other guests.
+- E. Assign every member the Directory Readers role.
+
+### Question 116
+
+Contoso wants to use the Microsoft Entra Conditional Access optimization agent to find users who are not covered by an MFA policy, block legacy authentication and device code flow, and consolidate overlapping policies.
+
+Which three requirements apply? (Choose three.)
+
+- A. Microsoft Entra ID P1 licensing.
+- B. Available Security Compute Units (SCU).
+- C. The Security Administrator role, or higher, to activate the agent the first time.
+- D. Microsoft Entra ID P2 for every user.
+- E. A Microsoft Sentinel workspace.
+
+### Question 117
+
+Contoso wants Microsoft Entra Identity Protection to detect risky service principals and then block those identities with Conditional Access.
+
+Which two statements are true? (Choose two.)
+
+- A. Microsoft Entra ID P2 licensing is required for workload identity risk.
+- B. Conditional Access for workload identities applies to single-tenant service principals registered in the tenant.
+- C. Managed identities and multitenant third-party SaaS apps are included in workload identity Conditional Access policies.
+- D. Workload identity detections require a Microsoft Defender for Identity sensor on each domain controller.
+
+### Question 118
+
+A security analyst must deploy Microsoft Defender for Identity to monitor domain controller traffic without configuring port mirroring.
+
+Where should the sensor be installed?
+
+- A. Directly on the domain controllers.
+- B. On a dedicated member server that receives mirrored traffic from the domain controllers.
+- C. On every domain-joined workstation.
+- D. On the Microsoft Entra Connect server only.
+- E. On an Azure Arc-enabled server in a separate subnet.
+
+### Question 119
+
+Contoso is deploying the Identity Risk Management Agent. A security analyst must be able to view the agent's suggestions but must not be able to act on them.
+
+Which two statements are true? (Choose two.)
+
+- A. Security Reader and Global Reader can view the agent and its suggestions but cannot take action.
+- B. The agent requires Microsoft Entra ID P2 and available Security Compute Units.
+- C. The agent requires only Microsoft Entra ID P1.
+- D. Continuous monitoring checks for new risky users every 24 hours.
+
+### Question 120
+
+Contoso is connecting a branch office to Global Secure Access without installing a client on individual devices, and it must monitor the traffic that flows through the service.
+
+Which three statements are true? (Choose three.)
+
+- A. An IPsec tunnel is created between the branch router (customer premises equipment) and the nearest Global Secure Access endpoint.
+- B. The final configuration step is completed in the on-premises router console, not in the Microsoft Entra admin center.
+- C. Traffic logs record sessions, connections, and transactions.
+- D. A Global Secure Access client must be installed on each device in the branch.
+- E. Enriched Microsoft 365 logs currently support enrichment for every Microsoft 365 workload.
+
+### Question 121
+
+Contoso wants an automated alert when an OAuth app requests high permissions and has been authorized by more than 50 users. The security team also wants to ban a specific risky app so that it stops working.
+
+Where should the policy be created, and what does banning the app do? (Choose two.)
+
+- A. In Microsoft Defender for Cloud Apps, create an OAuth app policy.
+- B. Banning the app disables the corresponding enterprise application.
+- C. In the Microsoft Entra admin center, create an access review for the application.
+- D. Banning the app only removes it from the Cloud app catalog.
+
+### Question 122
+
+Contoso enables user consent only for verified publishers and low-impact permissions. A user tries to consent to a suspicious app and receives error AADSTS90094.
+
+Which statement describes what happened?
+
+- A. Risk-based step-up consent detected a risky request and required administrator approval, and the event was logged with category ApplicationManagement and activity Consent to application.
+- B. User consent is disabled for the whole tenant, so no user can consent to any app.
+- C. Publisher verification has expired for all applications in the tenant.
+- D. Conditional Access blocked the sign-in because the device is not compliant.
+
+### Question 123
+
+Contoso users see every app they can access on a single My Apps page. The identity team wants role-based tabs that group related apps, and department owners must be able to maintain their own collection.
+
+Which two statements are true? (Choose two.)
+
+- A. Collections require Microsoft Entra ID P1 or P2 licensing.
+- B. A collection only shows apps that the user has already been assigned.
+- C. A collection grants access to apps that the user was not assigned.
+- D. Collections can be created only by Global Administrators in the Azure portal.
+
+### Question 124
+
+Contoso needs visibility, policy alerts, and automatic remediation for OAuth apps that access Microsoft 365 data through Microsoft Graph.
+
+Which Microsoft Defender for Cloud Apps capability provides this?
+
+- A. The app governance add-on.
+- B. Cloud Discovery.
+- C. Conditional Access App Control.
+- D. Application Proxy.
+
+### Question 125
+
+Contoso wants reviewers to receive approve or deny recommendations, with justifications, inside Microsoft Teams.
+
+Which two statements are true? (Choose two.)
+
+- A. The agent requires Microsoft Entra ID Governance or Microsoft Entra Suite licensing plus Security Copilot with at least one Security Compute Unit.
+- B. Reviewers need the Security Copilot Contributor role and an active access review.
+- C. Once started, the agent can be paused from the Microsoft Entra admin center.
+- D. The agent's recommendation is random and should not be used to justify a decision.
+
+### Question 126
+
+An auditor needs a complete view of all activity for a privileged access group in Privileged Identity Management.
+
+Which view should the auditor open?
+
+- A. Resource audit under Activity for the group.
+- B. My audit under Activity for the group.
+- C. Access reviews for the group.
+- D. The sign-in log filtered to the group.
+
+### Question 127
+
+Which three statements about Microsoft Entra sign-in and audit logs are true? (Choose three.)
+
+- A. The sign-ins report shows only interactive sign-ins; non-interactive service-to-service sign-ins are not displayed.
+- B. Sign-in records can take up to two hours to appear in the portal.
+- C. Audit log data can be downloaded as CSV or JSON, up to 250,000 records.
+- D. Any user can read every sign-in record in the tenant.
+- E. Audit logs retain data indefinitely by default.
+
+### Question 128
+
+Contoso wants to stream Microsoft Entra sign-in and audit logs to Microsoft Sentinel.
+
+Which two statements are true? (Choose two.)
+
+- A. Ingesting sign-in logs requires Microsoft Entra ID P1 or P2; the other log types work with any Entra ID license.
+- B. The user needs the Microsoft Sentinel Contributor role on the workspace and the Security Administrator role on the tenant.
+- C. Microsoft Sentinel is a SIEM only and cannot automate responses.
+- D. The built-in Microsoft Entra ID connector streams audit logs but not sign-in logs.
+
+### Question 129
+
+Which statement about Identity Secure Score is true?
+
+- A. It is available in all editions of Microsoft Entra ID, and controls are scored either as binary or as a percentage of the total configuration.
+- B. It requires Microsoft Entra ID P2 and scores every control as binary.
+- C. It reports only how the tenant compares with other organizations in the same industry.
+- D. It measures only Conditional Access coverage and ignores other identity controls.
+
+---
+
+## Case Study 1 - Tailwind Traders acquires Fabrikam
+
+**Read this background before answering questions 130 to 136. The same background is used for all seven questions.**
+
+Tailwind Traders has completed its acquisition of Fabrikam. Both companies keep their own Microsoft Entra tenant and their own on-premises Active Directory forest. No forest trust and no directory synchronization exists between them.
+
+**Tailwind Traders (resource tenant)**
+
+- Tenant tailwindtraders.com. Microsoft Entra ID P2 and Microsoft 365 E5.
+- 4,200 employees. One on-premises forest, tailwind.local, synchronized by Microsoft Entra Connect with password hash synchronization and seamless single sign-on.
+- Twelve line-of-business applications run on domain-joined Windows servers and use integrated Windows authentication.
+- Conditional Access, PIM, and access reviews are already in use.
+
+**Fabrikam (acquired company)**
+
+- Tenant fabrikam.com. Microsoft Entra ID P1 and Microsoft 365 E3.
+- 900 employees and cloud-only: no on-premises directory and no Entra Connect.
+- Per-user MFA is enabled. There are no Conditional Access policies and no PIM.
+
+**Business requirements**
+
+- Fabrikam employees must use their existing fabrikam.com credentials for every Tailwind resource. Tailwind must not create or maintain a second credential for them, and Fabrikam IT must keep managing its own users and MFA.
+- About 200 project members from both companies must collaborate in Teams shared channels.
+- The Fabrikam parts portal (parts.fabrikam.local) must be published to both companies' users through Application Proxy with Kerberos single sign-on and no password vaulting. Connector servers can be installed in the Fabrikam datacenter.
+- The Tailwind custom application TradeDesk must receive Approver and Reader role assignments. Group claims must not be used, because the token is already close to its size limit.
+- An external audit firm needs access to one SharePoint site and one security group for exactly 90 days, approved by the Tailwind audit manager, with quarterly reviews.
+
+---
+
+### Question 130
+
+Fabrikam employees must be represented in the Tailwind directory so they can be assigned to TradeDesk and targeted by Tailwind Conditional Access policies, while they keep signing in with their fabrikam.com credentials. Fabrikam IT must keep managing those accounts, and no second password may be created.
+
+Which solution should you implement?
+
+- A. Move the fabrikam.com verified domain into the Tailwind tenant and recreate every user as a member account.
+- B. Configure cross-tenant synchronization in Fabrikam to provision the users into Tailwind as B2B guests, and use B2B direct connect for the Teams shared channels.
+- C. Create cloud-only member accounts in Tailwind for each Fabrikam user and issue every user a Temporary Access Pass.
+- D. Rely on B2B direct connect only, because it creates the guest objects that Tailwind needs for application assignment.
+- E. Deploy Microsoft Entra Connect in Fabrikam to synchronize its users into the tailwind.local forest.
+
+### Question 131
+
+Fabrikam guests must reach only TradeDesk and Teams, and the groups allowed in must be limited to the project group. Fabrikam users already complete MFA and use compliant devices in their own tenant, and Tailwind must not prompt them a second time for those claims.
+
+Which two configurations should you make in the Tailwind tenant? (Choose two.)
+
+- A. Configure outbound access settings in Tailwind that block Fabrikam users from Teams.
+- B. Configure inbound trust settings to accept MFA and compliant device claims from Fabrikam.
+- C. Delete Fabrikam's Conditional Access policies so that Tailwind policies apply to Fabrikam users.
+- D. Configure inbound access settings that allow only the Fabrikam project group and only TradeDesk and Teams.
+- E. Create a tenant restriction policy in Tailwind that blocks fabrikam.com.
+
+### Question 132
+
+Thirty finance users must register only FIDO2 keys whose model is on an approved vendor list. Attestation must be verified during registration, device-bound keys are required, and keys from other vendors that are already registered must stop working.
+
+Which configuration should you implement?
+
+- A. Enable security defaults and require MFA for the finance group.
+- B. Create a passkey (FIDO2) profile that enforces attestation and allows only the approved AAGUIDs, then target the finance group in the Passkey (FIDO2) authentication method policy.
+- C. Create a Conditional Access policy that requires the MFA grant control for the finance group.
+- D. Enable Microsoft Authenticator passwordless phone sign-in for the finance group.
+- E. Add the finance users to a dynamic group that uses the device is compliant rule.
+
+### Question 133
+
+Forty new hires start on Monday. Each one signs in once on a loaner Windows device and registers a passkey, then never uses the pass again. The security team requires a pass that expires within seven days and cannot be reused, and the Temporary Access Pass policy is already configured with a maximum lifetime of 30 days.
+
+What should you issue?
+
+- A. A multi-use Temporary Access Pass with a 30-day lifetime, because one-time passes cannot be used to register a passkey.
+- B. A Temporary Access Pass that is excluded from MFA, so the users only enter a password.
+- C. A one-time Temporary Access Pass with a seven-day lifetime, used once to sign in and register a passkey.
+- D. No pass at all, because new users can register a passkey from the sign-in page before their first authentication.
+- E. A one-time Temporary Access Pass with a 45-day lifetime.
+
+### Question 134
+
+Tailwind publishes parts.fabrikam.local through Application Proxy. The application uses Windows integrated authentication, and users from both companies must sign in with Kerberos single sign-on and no password vaulting. Connector servers will run on Fabrikam domain-joined servers in the Fabrikam datacenter.
+
+What should you configure?
+
+- A. SAML-based single sign-on with fabrikam.local configured as the identity provider.
+- B. Password-based single sign-on with a vaulted service account.
+- C. Passthrough authentication so that users authenticate directly against Microsoft Entra ID.
+- D. Integrated Windows authentication with Kerberos Constrained Delegation, granting the connector computer accounts delegation to the application SPN and read access to TokenGroupsGlobalAndUniversal.
+- E. Header-based single sign-on with the default connector.
+
+### Question 135
+
+TradeDesk is a Tailwind custom application that expects the values Approver and Reader in the roles claim. Group claims cannot be used because the token is already close to its size limit. Forty finance users need Approver and 300 staff need Reader.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Define the Approver and Reader app roles in the TradeDesk app registration manifest.
+- B. Emit group claims and let TradeDesk map group object IDs to role names.
+- C. Assign the finance group to the Approver app role and the all-staff group to the Reader app role in the enterprise application.
+- D. Grant TradeDesk the RoleManagement.ReadWrite.Directory application permission.
+- E. Use SCIM provisioning to push role membership from the on-premises directory.
+
+### Question 136
+
+Twenty-five auditors need access to one SharePoint site and one security group for exactly 90 days. The Tailwind audit manager must approve each request, access must expire automatically, and the assignments must be reviewed every quarter.
+
+Which three components should you create? (Choose three.)
+
+- A. A catalog that contains the SharePoint site and the security group as resources.
+- B. An access package policy that never expires and relies on the quarterly review to remove access.
+- C. A quarterly access review of the access package assignments with auto-apply enabled.
+- D. A SharePoint Administrator role assignment for the auditors.
+- E. An access package in that catalog with a policy that requires approval and expires after 90 days.
+
+---
+
+## Case Study 2 - Woodgrove Financial
+
+**Read this background before answering questions 137 to 143. The same background is used for all seven questions.**
+
+Woodgrove Financial is a regulated bank with 12,000 employees. It has used Microsoft Entra ID for four years and is planning a security and governance refresh.
+
+**Environment**
+
+- Tenant woodgrove.com. Microsoft Entra ID P2, Microsoft 365 E5, and Microsoft Sentinel.
+- Hybrid identity from two on-premises forests, corp.woodgrove.com and hb.woodgrove.com (a former acquisition). Microsoft Entra Connect synchronizes the corp forest with password hash synchronization.
+- 400 branch offices. Each branch has a customer premises equipment (CPE) router with an IPsec connection to Microsoft. No Global Secure Access client is installed on branch devices or servers.
+- The corebank application runs on-premises and must not be exposed directly to the internet.
+- Three helpdesks (US, EU, APAC) reset passwords and manage users through administrative units.
+- Fourteen privileged roles are assigned as permanent active assignments to 22 administrators.
+- 4,000 guest accounts from partner organizations. Most partners have no sponsor recorded.
+- The reporting API runs on Azure virtual machines and database administrators need RDP access with Entra credentials.
+
+**Business requirements**
+
+- Regulatory rule: password hashes must never leave the on-premises network, and on-premises Active Directory remains authoritative for passwords.
+- Branch users must reach corebank without a client installed, their traffic must be inspected at Microsoft's security edge, and Conditional Access must deny access that does not come from the compliant network.
+- Administrators must activate privileged roles just in time for a maximum of four hours, with approval and phishing-resistant MFA.
+- Marketing wants a third-party SaaS application that requests Mail.Read and Files.Read.All. Users must not be able to consent to unverified apps themselves, but they must have a way to request approval.
+- The nightly deployment pipeline in GitHub Actions must call Microsoft Graph without storing a secret in the repository.
+- Guest access must be reviewed quarterly and removed automatically when reviewers deny access or do not respond.
+- Sign-in and audit logs must be retained for seven years for the regulator and remain searchable in Microsoft Sentinel.
+
+---
+
+### Question 137
+
+Woodgrove must stop using password hash synchronization because the regulator forbids password hashes leaving the on-premises network. Passwords must still be validated against on-premises Active Directory, users must keep seamless single sign-on on domain-joined PCs, and no new federation servers or public certificates may be introduced.
+
+Which authentication method should you deploy?
+
+- A. Password hash synchronization with seamless single sign-on.
+- B. Pass-through authentication with seamless single sign-on, piloted through staged rollout groups.
+- C. Cloud-only identities, with users resetting passwords manually on-premises after each change.
+- D. Active Directory Federation Services in each forest, with Entra Connect federation.
+- E. Password writeback as the only authentication method.
+
+### Question 138
+
+Branch users must reach the on-premises corebank application through Microsoft's security edge without installing a client on branch devices. Conditional Access must deny access that does not arrive through the compliant network.
+
+Which solution should you implement?
+
+- A. Create a remote network with an IPsec tunnel from the branch CPE router, publish corebank through Private Access, and require the compliant network in Conditional Access.
+- B. Install the Global Secure Access client on every branch CPE router.
+- C. Deploy Application Proxy connectors in every branch office.
+- D. Use an Azure site-to-site VPN gateway and require hybrid Microsoft Entra join.
+- E. Add the branch public IP ranges to a named location and require MFA.
+
+### Question 139
+
+Twenty-two administrators currently hold fourteen privileged roles as permanent active assignments. Woodgrove requires just-in-time activation for a maximum of four hours, approval before activation, and phishing-resistant MFA during activation.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Make the fourteen roles eligible instead of active, with a maximum activation duration of four hours.
+- B. Keep the permanent active assignments and rely on quarterly access reviews to reduce them.
+- C. Require approval and the phishing-resistant MFA authentication strength in the role settings.
+- D. Disable PIM alerts so that the security team is not overwhelmed.
+- E. Enable security defaults and remove all Conditional Access policies.
+
+### Question 140
+
+Woodgrove forbids end users from consenting to unverified or risky applications. Marketing still needs a way to request MailerPro, which requires the Mail.Read and Files.Read.All delegated permissions, and the security team wants a review queue with an audit trail.
+
+Which configuration should you implement?
+
+- A. Allow user consent for apps from verified publishers for selected permissions and let marketing consent themselves.
+- B. Assign the marketing team the Application Administrator role so that they can consent to the app.
+- C. Enable the admin consent workflow, set user consent to Do not allow user consent, and designate a reviewers group.
+- D. Add MailerPro to an app governance policy and wait for an alert.
+- E. Grant tenant-wide admin consent from the Enterprise applications blade without review.
+
+### Question 141
+
+The nightly deployment pipeline runs in GitHub Actions and must call Microsoft Graph. Woodgrove forbids storing any secret or certificate in the repository or in GitHub secrets, and the solution must not break when a credential expires.
+
+Which solution should you implement?
+
+- A. Add a federated identity credential to the app registration for the GitHub OIDC issuer, subject, and audience, and exchange the workflow OIDC token for an Entra token.
+- B. Store a client secret in GitHub secrets and rotate it every 90 days.
+- C. Upload a self-signed certificate to the app registration and use the client credentials flow.
+- D. Assign a system-assigned managed identity to the GitHub-hosted runner.
+- E. Use the resource owner password credentials flow with a dedicated service account.
+
+### Question 142
+
+Woodgrove has 4,000 guest accounts from partner organizations and most partners have no sponsor recorded. Access must be reviewed quarterly by the partner sponsor, and access must be removed automatically when a sponsor denies it or does not respond.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Scope the review to guest users only and use the sponsor as the reviewer, with a fallback reviewer configured.
+- B. Set If reviewers do not respond to No change.
+- C. Enable Auto apply results to resource and set If reviewers do not respond to Remove access.
+- D. Use a lifecycle workflow to delete every guest account after 30 days.
+- E. Assign every guest a permanent access package so that the review has a resource to target.
+
+### Question 143
+
+The regulator requires seven years of retention for Microsoft Entra sign-in and audit logs, and the security team must keep the data queryable in Microsoft Sentinel.
+
+Which three actions should you perform? (Choose three.)
+
+- A. Configure diagnostic settings that send AuditLogs, SignInLogs, and NonInteractiveUserSignInLogs to a Log Analytics workspace.
+- B. Set total retention on the workspace to seven years.
+- C. Rely on the default 30-day retention in Microsoft Entra ID.
+- D. Send the logs only to an event hub with a seven-day capture window.
+- E. Connect the workspace to Microsoft Sentinel so that the data stays searchable.
+
+---
+
+### Question 144
+
+Woodgrove is standardizing on FIDO2 security keys and wants to prevent users from registering keys from unapproved manufacturers.
+
+Which three statements about passkey profiles are true? (Choose three.)
+
+- A. Attestation is evaluated at registration, so a key that cannot attest is rejected when attestation is enforced.
+- B. AAGUID restrictions are evaluated at registration and again at every sign-in.
+- C. Removing an AAGUID from an allow list blocks sign-in for passkeys that were already registered with that AAGUID.
+- D. Synced passkeys can satisfy attestation on any platform that supports passkeys.
+- E. Attestation can be enforced per user through the per-user MFA settings.
+
+### Question 145
+
+A helpdesk manager asks which Temporary Access Pass limits are enforced by Microsoft Entra ID.
+
+Which three statements are true? (Choose three.)
+
+- A. The maximum lifetime is 30 days, and the authentication methods policy defines both a default and a maximum lifetime.
+- B. Several passes can be active at the same time, so the helpdesk can issue a backup pass.
+- C. A pass satisfies MFA during sign-in but is not phishing-resistant.
+- D. A pass can be used to register passwordless methods such as a passkey or Windows Hello for Business.
+- E. A pass can be read again from the admin center after it is created.
+
+### Question 146
+
+Woodgrove wants database administrators to connect to the reporting API virtual machines over RDP by using their Entra credentials, with no local accounts and no domain join.
+
+Which three actions or conditions are required? (Choose three.)
+
+- A. Enable a system-assigned managed identity on the VM and install the AADLoginForWindows extension.
+- B. Assign the administrators the Virtual Machine Administrator Login role on the VM or its resource group.
+- C. The VM must run a supported operating system, such as Windows Server 2022 or 2025 with Desktop Experience, Windows 11 24H2 or later, or a supported Linux distribution.
+- D. Assign the administrators the Owner role on the subscription so that they can sign in.
+- E. Use guest accounts from a partner tenant, because only guests can sign in to Azure VMs with Entra credentials.
+
+### Question 147
+
+Woodgrove wants Conditional Access to require the compliant network for Exchange Online and SharePoint Online traffic from managed laptops. Some users work from home without VPN, and the security team wants to protect against token theft.
+
+Which two actions are required? (Choose two.)
+
+- A. Install the Global Secure Access client on managed devices so the compliant network condition can be enforced for Microsoft 365 traffic.
+- B. Enable Global Secure Access signaling for Conditional Access in the tenant before using the compliant network check.
+- C. Rely on remote network connectivity alone, because Conditional Access is enforced for Microsoft traffic through remote networks even without the client.
+- D. Replace the compliant network with a named location that contains all office IP ranges.
+- E. Disable Continuous Access Evaluation, because it conflicts with the compliant network check.
+
+### Question 148
+
+Woodgrove must require phishing-resistant MFA for administrators.
+
+Which three methods satisfy the phishing-resistant MFA authentication strength? (Choose three.)
+
+- A. FIDO2 security key
+- B. Windows Hello for Business
+- C. Certificate-based authentication configured as multi-factor
+- D. Microsoft Authenticator passwordless phone sign-in with number matching
+- E. Temporary Access Pass
+
+### Question 149
+
+Identity Protection flags a user as high risk because of leaked credentials. The user must change the password at the next sign-in before any further access is granted, without helpdesk involvement.
+
+What should you configure?
+
+- A. Enable security defaults for the tenant.
+- B. Create a Conditional Access policy that requires MFA for all users.
+- C. Configure self-service password reset and email the user a reset link.
+- D. Create a Conditional Access policy with the user risk condition set to High and the Require password change grant control.
+- E. Reset the password in the admin center and require the user to register MFA again.
+
+### Question 150
+
+Woodgrove enabled Hard Deletion Protection for 20 critical cloud-only objects six weeks ago. Yesterday an administrator accidentally soft deleted two of those objects, and a junior administrator now tries to permanently delete them to clean up the deleted items list.
+
+What happens?
+
+- A. Permanent deletion is blocked for seven days after each soft deletion, and the objects can still be restored during that window.
+- B. Permanent deletion succeeds, because the seven-day window begins only when protection is first enabled.
+- C. Permanent deletion is blocked until a Global Administrator approves a PIM activation.
+- D. Permanent deletion is blocked for 30 days, matching the standard soft-delete window.
+- E. Protection can be turned off for those objects so that permanent deletion can proceed immediately.
+
+### Question 151
+
+Guests from fabrikam.com and northwind.com already complete MFA in their own tenants. A Tailwind Conditional Access policy requires MFA for the SharePoint app, and those guests are challenged again on every new session. Tailwind must not lower its own security posture and must keep requiring MFA.
+
+What should you configure?
+
+- A. Exclude guest users from the Conditional Access policy.
+- B. In cross-tenant access settings, configure inbound trust to accept MFA claims from the partners' tenants.
+- C. Add the partners' public IP addresses as trusted named locations.
+- D. Issue every guest a Temporary Access Pass for the Tailwind tenant.
+- E. Enable security defaults in the Tailwind tenant.
+
+### Question 152
+
+Woodgrove must stop employees on managed devices from signing in to non-approved external tenants, and it must block reuse of an already issued token against Microsoft Graph and SharePoint Online. The security team refuses to maintain proxy allow lists or static IP lists.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Create a tenant restrictions policy in cross-tenant access settings and enforce it with Global Secure Access universal tenant restrictions tagging.
+- B. Block all external collaboration in the external collaboration settings.
+- C. Add each non-approved tenant to a blocked list in Conditional Access named locations.
+- D. Enable tenant restriction tagging in Global Secure Access using an account that holds both the Global Secure Access Administrator and Security Administrator roles.
+- E. Disable B2B direct connect for all users.
+
+### Question 153
+
+A helpdesk lead asks how the admin consent workflow behaves after it is enabled.
+
+Which two statements are true? (Choose two.)
+
+- A. Requests appear in the Admin consent requests pane for reviewers, and requesters can track the status of their request.
+- B. A request expires after the configured number of days, 30 by default, when reviewers do not respond.
+- C. Any user who holds the Application Developer role can approve requests for Microsoft Graph application permissions.
+- D. Enabling the workflow also exempts the approved application from Conditional Access.
+- E. Enabling the workflow automatically grants tenant-wide consent to apps from verified publishers.
+
+### Question 154
+
+The parts application is published through Application Proxy. Its connector group contains two connectors installed on the same physical host. Woodgrove must survive the loss of that host and the loss of the datacenter, and support 1,200 concurrent users.
+
+What should you do?
+
+- A. Create a second connector group and assign the application to both groups.
+- B. Install at least two additional connectors on separate servers in a different datacenter and add them to the same connector group.
+- C. Create a second app registration and split the users between the two applications.
+- D. Move the application to Global Secure Access Private Access and remove the connectors.
+- E. Enable passthrough authentication to remove the need for connectors.
+
+### Question 155
+
+Contoso provisions users to a SaaS application with SCIM. Only users whose department is Sales must be provisioned. After the application admin credentials were rotated, provisioning stopped and the job shows Quarantined.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Create a scoping filter with a clause on the department attribute.
+- B. Correct the credentials and restart the provisioning job to clear the quarantine.
+- C. Delete and recreate the enterprise application.
+- D. Disable provisioning and rely on SAML just-in-time creation.
+- E. Create a dynamic group instead, because SCIM does not support scoping filters.
+
+### Question 156
+
+One hundred and fifty employees change department every month. When the department attribute changes, the old department groups and access packages must be removed within 24 hours and the new ones added. On-premises Active Directory group membership must also change, and the process must run without tickets.
+
+Which solution should you implement?
+
+- A. A scheduled PowerShell runbook that rewrites group membership every night.
+- B. A monthly access review of all department groups.
+- C. A lifecycle workflow triggered by the attribute change, with tasks that remove the old group and access package and add the new ones.
+- D. A dynamic group rule based on department, with access packages assigned to that group.
+- E. PIM eligible assignments for the department groups.
+
+### Question 157
+
+Woodgrove must review who is eligible for fourteen privileged roles every quarter. Security leads make the decisions, assignments they do not approve must be removed without manual steps, and members of role-assignable groups must be included.
+
+Which two actions should you perform? (Choose two.)
+
+- A. Create an access review scoped to the privileged roles, and review the PIM for Groups assignments for the role-assignable groups.
+- B. Review only active assignments, because eligible assignments cannot be reviewed.
+- C. Set If reviewers do not respond to No change and rely on PIM to expire assignments.
+- D. Enable auto-apply results so that decisions take effect without manual intervention.
+- E. Use a lifecycle workflow to email the role list to the security leads every quarter.
+
+### Question 158
+
+Partners are invited to Woodgrove through access packages. When a partner loses their last access package assignment, they must be blocked from signing in to the directory immediately, and their guest account must be removed 30 days later. Guests who already existed in the directory before they received an assignment must not be deleted.
+
+What should you configure?
+
+- A. In Identity Governance settings, set Block external user from signing in to this directory to Yes and set the number of days before removing the external user to 30.
+- B. Create an access review with the action Block user from signing in for 30 days, then remove user from the tenant.
+- C. Run a PowerShell script every month that deletes guest accounts.
+- D. Create a lifecycle workflow that deletes all guest accounts after 30 days.
+- E. Set the access package policy to expire after 30 days.
+
+### Question 159
+
+A user reports that access to an application was blocked. You must identify which Conditional Access policies applied, which condition matched, and what a policy in report-only mode would have done.
+
+Where should you look?
+
+- A. The Conditional Access tab of the sign-in log entry for that sign-in.
+- B. The audit log filtered to the Policy category.
+- C. The Identity Secure Score improvement actions.
+- D. The risky sign-ins report.
+- E. The results of the latest access review.
 
 ---
 
