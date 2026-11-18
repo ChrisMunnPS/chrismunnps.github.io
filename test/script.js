@@ -150,6 +150,41 @@
     cards.forEach(c => { c.classList.add("reveal"); io.observe(c); });
   }
 
+  function norm(t) { return t.toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function setupSearch(exams, cards) {
+    const $ = id => document.getElementById(id);
+    const box = $("exam-search"), q = $("exam-q"), clear = $("exam-clear"), count = $("exam-count");
+    const empty = $("exam-empty"), eq = $("empty-q"), ec = $("empty-clear");
+    if (!box || !q || !clear || !count || !empty || !eq || !ec) return;
+    // A token matches inside the exam code (az900, 900) or at the start of a title/level word.
+    // Two-letter tokens must match a whole word, so "az" finds AZ-xxx but not "Azure ...".
+    const codes = exams.map(x => norm(x.code));
+    const words = exams.map(x => (x.title + " " + x.level).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
+    const hit = (t, i) => codes[i].includes(t) || words[i].some(w => t.length === 2 ? w === t : w.startsWith(t));
+    function run() {
+      const raw = q.value.trim();
+      const toks = raw.split(/\s+/).map(norm).filter(Boolean);
+      let shown = 0;
+      cards.forEach((c, i) => {
+        const ok = toks.every(t => hit(t, i));
+        c.hidden = !ok;
+        if (ok) shown++;
+      });
+      clear.hidden = !q.value;
+      empty.hidden = shown > 0;
+      eq.textContent = raw;
+      count.textContent = !toks.length ? cards.length + " exams"
+        : shown ? "Showing " + shown + " of " + cards.length + " exams" : "No exams found";
+    }
+    function reset() { q.value = ""; run(); q.focus(); }
+    q.addEventListener("input", run);
+    q.addEventListener("keydown", e => { if (e.key === "Escape" && q.value) { e.preventDefault(); reset(); } });
+    clear.addEventListener("click", reset);
+    ec.addEventListener("click", reset);
+    box.hidden = false;
+    run();
+  }
+
   async function load() {
     const grid = document.getElementById("exam-grid");
     if (!grid) return;
@@ -160,6 +195,8 @@
       const cards = data.exams.map(card);
       grid.replaceChildren(...cards);
       reveal(cards);
+      grid.removeAttribute("aria-live");
+      setupSearch(data.exams, cards);
     } catch (e) {
       grid.replaceChildren(h("p", "grid-note", "Could not load the exam list. If you opened this file directly, serve the folder over http (for example python -m http.server 8080) or visit the live site."));
     }

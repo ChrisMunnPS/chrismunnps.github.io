@@ -4,6 +4,7 @@
 
 ## ✨ Features
 - 📱 Responsive, accessible design with dark and light themes (follows the system setting)
+- 🔎 Live search: filters cards by exam code, title or level (`az900`, `az 900` and `AZ-900` all match; Esc clears)
 - 🃏 One card per exam with duration, passing score and skill-area weightings
 - 🚦 Per-exam status: `live` shows GitHub and simulator links, `soon` shows "Coming soon"
 - 🔒 Self-hosted fonts, inline SVG badges, no external requests

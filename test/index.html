@@ -120,7 +120,21 @@
           <p>Each simulator mirrors the real exam structure, domains, and timing.</p>
         </div>
 
+        <div class="search" id="exam-search" hidden>
+          <label class="search-label" for="exam-q">Search exams</label>
+          <div class="search-field">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="exam-q" type="search" placeholder="Try &quot;az-104&quot;, &quot;identity&quot; or &quot;security&quot;" autocomplete="off" spellcheck="false" enterkeyhint="search">
+            <button type="button" class="search-clear" id="exam-clear" aria-label="Clear search" hidden>&times;</button>
+          </div>
+          <p class="search-count" id="exam-count" role="status"></p>
+        </div>
+
         <div class="exam-grid" id="exam-grid" aria-live="polite"><p class="grid-note">Loading exams…</p></div>
+        <div class="empty" id="exam-empty" hidden>
+          <p>No exams match &ldquo;<span id="empty-q"></span>&rdquo;.</p>
+          <button type="button" class="card-link secondary" id="empty-clear">Clear search</button>
+        </div>
         <noscript><p class="grid-note">The exam list needs JavaScript. You can also browse the simulators directly at chrismunnps.github.io/exam-sim/.</p></noscript>
       </div>
     </section>

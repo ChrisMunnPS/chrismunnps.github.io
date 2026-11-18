@@ -970,3 +970,20 @@ button {
   .exam-card.reveal{opacity:0;transform:translateY(12px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1)}
   .exam-card.reveal.is-visible{opacity:1;transform:none}
 }
+
+/* --- Search --- */
+[hidden]{display:none!important}
+.search{max-width:34rem;margin:0 0 1.75rem}
+.search-label{display:block;font-size:.85rem;font-weight:600;color:var(--text-muted);margin-bottom:.4rem}
+.search-field{position:relative;display:flex;align-items:center}
+.search-icon{position:absolute;left:.9rem;color:var(--text-subtle);pointer-events:none}
+.search input{width:100%;min-height:2.75rem;font:inherit;color:var(--text);background:var(--bg-card);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:.8rem 2.75rem .8rem 2.6rem;transition:border-color .2s}
+.search input:hover,.search input:focus{border-color:var(--accent)}
+.search input::placeholder{color:var(--text-subtle)}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.search-clear{position:absolute;right:.35rem;width:2.25rem;height:2.25rem;display:grid;place-items:center;border:0;background:none;color:var(--text-subtle);border-radius:var(--radius-sm);cursor:pointer;font-size:1.4rem;line-height:1}
+.search-clear:hover{color:var(--text);background:var(--accent-dim)}
+.search-count{margin:.5rem 0 0;font-size:.85rem;color:var(--text-subtle);min-height:1.3em}
+.empty{text-align:center;padding:2.5rem 1rem;border:1px dashed var(--border-strong);border-radius:var(--radius);color:var(--text-muted)}
+.empty p{margin:0 0 1rem}
+button.card-link{font:inherit;cursor:pointer}
