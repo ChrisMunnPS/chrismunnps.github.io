@@ -280,8 +280,8 @@ button {
 
 .hero .container {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 3.5rem;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
   align-items: center;
   position: relative;
 }
@@ -353,80 +353,6 @@ button {
 .btn-ghost:hover {
   background: var(--bg-elevated);
   border-color: var(--text-subtle);
-}
-
-/* Hero visual */
-.hero-visual {
-  display: flex;
-  justify-content: center;
-}
-
-.visual-card {
-  width: 100%;
-  max-width: 320px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
-
-.visual-header {
-  display: flex;
-  gap: 6px;
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-elevated);
-}
-
-.visual-header .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-subtle);
-  opacity: 0.5;
-}
-
-.visual-body {
-  padding: 1.35rem 1.25rem 1.5rem;
-  font-family: var(--mono);
-  font-size: 0.85rem;
-}
-
-.code-line {
-  margin-bottom: 0.35rem;
-}
-
-.code-line .kw {
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.code-line.muted {
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  margin-bottom: 1.25rem;
-}
-
-.progress-bar {
-  height: 6px;
-  background: var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-  margin-bottom: 1rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--ms-blue));
-  border-radius: 3px;
-}
-
-.stats-row {
-  display: flex;
-  justify-content: space-between;
-  color: var(--text-subtle);
-  font-size: 0.75rem;
 }
 
 /* Exams section */
@@ -874,14 +800,6 @@ button {
     gap: 2.5rem;
   }
   
-  .hero-visual {
-    order: -1;
-  }
-  
-  .visual-card {
-    max-width: 280px;
-  }
-
   .how-grid {
     grid-template-columns: 1fr;
   }
@@ -962,7 +880,6 @@ button {
 
 
 /* --- Added: CSP-safe replacements and new states --- */
-.progress-fill{width:72%}
 .cert-badge{color:var(--accent)}
 .grid-note{color:var(--text-subtle);margin:0}
 .card-link.disabled{background:transparent;border:1px dashed var(--border);color:var(--text-subtle);cursor:default;pointer-events:none}
@@ -987,3 +904,26 @@ button {
 .empty{text-align:center;padding:2.5rem 1rem;border:1px dashed var(--border-strong);border-radius:var(--radius);color:var(--text-muted)}
 .empty p{margin:0 0 1rem}
 button.card-link{font:inherit;cursor:pointer}
+
+/* --- Filters, scores, request link --- */
+.search{max-width:none}
+.search-field{max-width:34rem}
+.filters{display:flex;flex-wrap:wrap;gap:1rem 2.5rem;margin-top:1.1rem}
+.chips{border:0;margin:0;padding:0;min-width:0}
+.chips legend{font-size:.85rem;font-weight:600;color:var(--text-muted);padding:0;margin-bottom:.4rem}
+.chip-row{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{position:relative;display:inline-flex}
+.chip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.chip span{display:inline-flex;align-items:center;gap:.4rem;min-height:2.25rem;padding:.35rem .9rem;border:1px solid var(--border-strong);border-radius:2rem;font-size:.9rem;color:var(--text-muted);background:var(--bg-card);transition:border-color .2s,background-color .2s}
+.chip span b{font-weight:600;color:var(--text-subtle)}
+.chip:hover span{border-color:var(--accent)}
+.chip input:checked+span{border-color:var(--accent);background:var(--accent-dim);color:var(--text)}
+.chip input:checked+span::before{content:"\2713";font-weight:700}
+.chip input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.empty-actions{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center}
+.card-score{margin:0 0 .6rem;font-size:.85rem;font-weight:600;color:var(--text)}
+.request-line{margin:1.5rem 0 0;color:var(--text-muted);font-size:.9rem}
+.request-line a{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+
+/* Domain bar widths (classes, so pre-rendered HTML needs no inline styles) */
+.w0{width:0%}.w25{width:2.5%}.w50{width:5%}.w75{width:7.5%}.w100{width:10%}.w125{width:12.5%}.w150{width:15%}.w175{width:17.5%}.w200{width:20%}.w225{width:22.5%}.w250{width:25%}.w275{width:27.5%}.w300{width:30%}.w325{width:32.5%}.w350{width:35%}.w375{width:37.5%}.w400{width:40%}.w425{width:42.5%}.w450{width:45%}.w475{width:47.5%}.w500{width:50%}.w525{width:52.5%}.w550{width:55%}.w575{width:57.5%}.w600{width:60%}.w625{width:62.5%}.w650{width:65%}.w675{width:67.5%}.w700{width:70%}.w725{width:72.5%}.w750{width:75%}.w775{width:77.5%}.w800{width:80%}.w825{width:82.5%}.w850{width:85%}.w875{width:87.5%}.w900{width:90%}.w925{width:92.5%}.w950{width:95%}.w975{width:97.5%}.w1000{width:100%}

@@ -1,4 +1,5 @@
 {
+  "requestUrl": "https://github.com/chrismunnps/exam-sim/issues/new",
   "exams": [
     {
       "slug": "az-900",
@@ -93,41 +94,26 @@
       ]
     },
     {
-      "slug": "ai-900",
-      "code": "AI-900",
+      "slug": "ai-901",
+      "code": "AI-901",
       "level": "Fundamentals",
-      "title": "Microsoft Azure AI Fundamentals",
-      "desc": "Core AI concepts and Azure AI services. Note: AI-900 retired June 2026; successor is AI-901 — content still useful for AI fundamentals prep.",
+      "title": "Azure AI Fundamentals",
+      "desc": "Responsible AI, common AI workloads, and building generative AI apps and agents with Microsoft Foundry.",
       "duration": "45 min",
       "passing": "700 / 1000",
       "status": "soon",
-      "repo": "https://github.com/chrismunnps/AI900Exam",
-      "url": "https://chrismunnps.github.io/exam-sim/ai-900",
+      "repo": "https://github.com/chrismunnps/AI901Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ai-901",
       "domains": [
         {
-          "name": "AI workloads & considerations",
-          "range": "15–20%",
-          "width": 17.5
+          "name": "Identify AI concepts and capabilities",
+          "range": "40–45%",
+          "width": 42.5
         },
         {
-          "name": "Computer vision",
-          "range": "15–20%",
-          "width": 17.5
-        },
-        {
-          "name": "NLP",
-          "range": "15–20%",
-          "width": 17.5
-        },
-        {
-          "name": "Generative AI",
-          "range": "15–20%",
-          "width": 17.5
-        },
-        {
-          "name": "ML on Azure",
-          "range": "20–25%",
-          "width": 22.5
+          "name": "Implement AI solutions by using Microsoft Foundry",
+          "range": "55–60%",
+          "width": 57.5
         }
       ]
     },
@@ -205,41 +191,36 @@
       ]
     },
     {
-      "slug": "az-204",
-      "code": "AZ-204",
+      "slug": "ai-200",
+      "code": "AI-200",
       "level": "Associate",
-      "title": "Developing Solutions for Microsoft Azure",
-      "desc": "Design, build, test, and maintain cloud applications and services on Microsoft Azure. Note: AZ-204 retired July 2026; successor is AI-200.",
-      "duration": "100 min",
+      "title": "Developing AI Cloud Solutions on Azure",
+      "desc": "Build and secure AI back-end solutions with containers, vector-enabled data services, messaging and Azure Functions.",
+      "duration": "120 min",
       "passing": "700 / 1000",
       "status": "soon",
-      "repo": "https://github.com/chrismunnps/AZ204Exam",
-      "url": "https://chrismunnps.github.io/exam-sim/az-204",
+      "repo": "https://github.com/chrismunnps/AI200Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ai-200",
       "domains": [
         {
-          "name": "Compute solutions",
-          "range": "25–30%",
-          "width": 27.5
-        },
-        {
-          "name": "Azure storage",
-          "range": "15–20%",
-          "width": 17.5
-        },
-        {
-          "name": "Security",
+          "name": "Develop containerized solutions",
           "range": "20–25%",
           "width": 22.5
         },
         {
-          "name": "Monitor & troubleshoot",
-          "range": "15–20%",
-          "width": 17.5
+          "name": "Develop AI solutions with Azure data services",
+          "range": "25–30%",
+          "width": 27.5
         },
         {
-          "name": "Connect to services",
-          "range": "15–20%",
-          "width": 17.5
+          "name": "Connect to and consume Azure services",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Secure, monitor and troubleshoot solutions",
+          "range": "20–25%",
+          "width": 22.5
         }
       ]
     },
@@ -385,75 +366,94 @@
       ]
     },
     {
-      "slug": "dp-203",
-      "code": "DP-203",
+      "slug": "dp-700",
+      "code": "DP-700",
       "level": "Associate",
-      "title": "Data Engineering on Microsoft Azure",
-      "desc": "Design and implement data solutions that use Azure data platform services for batch and real-time analytics, storage, and processing.",
+      "title": "Implementing Data Engineering Solutions Using Microsoft Fabric",
+      "desc": "Design and run data engineering solutions in Fabric: lakehouses, warehouses, pipelines, notebooks and real-time analytics.",
       "duration": "100 min",
       "passing": "700 / 1000",
       "status": "soon",
-      "repo": "https://github.com/chrismunnps/DP203Exam",
-      "url": "https://chrismunnps.github.io/exam-sim/dp-203",
+      "repo": "https://github.com/chrismunnps/DP700Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/dp-700",
       "domains": [
         {
-          "name": "Design data storage",
-          "range": "15–20%",
-          "width": 17.5
-        },
-        {
-          "name": "Design data processing",
-          "range": "40–45%",
-          "width": 42.5
-        },
-        {
-          "name": "Design data security",
-          "range": "10–15%",
-          "width": 12.5
-        },
-        {
-          "name": "Monitor & optimize",
-          "range": "10–15%",
-          "width": 12.5
-        },
-        {
-          "name": "Design & implement integration",
-          "range": "10–15%",
-          "width": 12.5
-        }
-      ]
-    },
-    {
-      "slug": "ms-102",
-      "code": "MS-102",
-      "level": "Expert",
-      "title": "Microsoft 365 Administrator",
-      "desc": "Deploy and manage a Microsoft 365 tenant, Entra identity, Defender XDR security, and Purview compliance. Retires 30 Nov 2026 — check successor AB-650.",
-      "duration": "100 min",
-      "passing": "700 / 1000",
-      "status": "soon",
-      "repo": "https://github.com/chrismunnps/MS102Exam",
-      "url": "https://chrismunnps.github.io/exam-sim/ms-102",
-      "domains": [
-        {
-          "name": "Microsoft 365 tenant",
-          "range": "25–30%",
-          "width": 27.5
-        },
-        {
-          "name": "Entra identity & access",
-          "range": "25–30%",
-          "width": 27.5
-        },
-        {
-          "name": "Defender XDR security",
+          "name": "Implement and manage an analytics solution",
           "range": "30–35%",
           "width": 32.5
         },
         {
-          "name": "Purview compliance",
+          "name": "Ingest and transform data",
+          "range": "30–35%",
+          "width": 32.5
+        },
+        {
+          "name": "Monitor and optimize an analytics solution",
+          "range": "30–35%",
+          "width": 32.5
+        }
+      ]
+    },
+    {
+      "slug": "ab-650",
+      "code": "AB-650",
+      "level": "Associate",
+      "title": "Administering Microsoft 365 and AI Services",
+      "desc": "Administer, secure and govern Microsoft 365 tenants, Copilot and AI agents, including identity, Purview data protection and usage monitoring.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AB650Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ab-650",
+      "domains": [
+        {
+          "name": "Configure and manage tenants and workloads",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Govern and secure tenants and workloads",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Manage and secure AI services",
+          "range": "35–40%",
+          "width": 37.5
+        }
+      ]
+    },
+    {
+      "slug": "dp-600",
+      "code": "DP-600",
+      "level": "Associate",
+      "title": "Implementing Analytics Solutions Using Microsoft Fabric",
+      "desc": "Prepare and serve data, build semantic models, and explore data with SQL and DAX in Microsoft Fabric.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/DP600Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/dp-600",
+      "domains": [
+        {
+          "name": "Plan, implement and manage a solution",
           "range": "10–15%",
           "width": 12.5
+        },
+        {
+          "name": "Prepare and serve data",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Implement and manage semantic models",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Explore and analyze data",
+          "range": "20–25%",
+          "width": 22.5
         }
       ]
     },
@@ -561,40 +561,6 @@
           "name": "Infrastructure as code",
           "range": "15–20%",
           "width": 17.5
-        }
-      ]
-    },
-    {
-      "slug": "dp-500",
-      "code": "DP-500",
-      "level": "Expert",
-      "title": "Designing and Implementing Enterprise-Scale Analytics Solutions",
-      "desc": "Design and implement enterprise-scale data analytics solutions using Azure and Power BI. Verify current status on Microsoft Learn — outlines change over time.",
-      "duration": "120 min",
-      "passing": "700 / 1000",
-      "status": "soon",
-      "repo": "https://github.com/chrismunnps/DP500Exam",
-      "url": "https://chrismunnps.github.io/exam-sim/dp-500",
-      "domains": [
-        {
-          "name": "Govern & implement data platform",
-          "range": "25–30%",
-          "width": 27.5
-        },
-        {
-          "name": "Explore data",
-          "range": "20–25%",
-          "width": 22.5
-        },
-        {
-          "name": "Prepare data",
-          "range": "20–25%",
-          "width": 22.5
-        },
-        {
-          "name": "Model & visualize",
-          "range": "25–30%",
-          "width": 27.5
         }
       ]
     }

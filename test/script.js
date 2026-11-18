@@ -1,22 +1,24 @@
 /**
- * Theme toggle, mobile nav, and exam cards rendered from exams.json.
- * CSP-safe: no inline styles/scripts, and all text is inserted with textContent.
+ * Theme toggle, mobile nav, exam cards (from exams.json), search and filters.
+ * CSP-safe: no inline styles/scripts; all text is inserted with textContent.
  */
 (function () {
   "use strict";
 
+  const $ = id => document.getElementById(id);
   const KEY = "practice-exams-theme";
   const root = document.documentElement;
-  const toggle = document.getElementById("themeToggle");
+  const toggle = $("themeToggle");
   const store = {
-    get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } },
-    set(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* storage blocked */ } }
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage blocked */ } }
   };
   const lightMq = window.matchMedia("(prefers-color-scheme: light)");
 
+  // ---- Theme ----
   function preferred() {
-    const s = store.get();
-    return s === "light" || s === "dark" ? s : lightMq.matches ? "light" : "dark";
+    const v = store.get(KEY);
+    return v === "light" || v === "dark" ? v : lightMq.matches ? "light" : "dark";
   }
   function apply(theme) {
     root.setAttribute("data-theme", theme);
@@ -25,14 +27,14 @@
   apply(preferred());
   if (toggle) toggle.addEventListener("click", () => {
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    store.set(next);
+    store.set(KEY, next);
     apply(next);
   });
-  lightMq.addEventListener("change", e => { if (!store.get()) apply(e.matches ? "light" : "dark"); });
+  lightMq.addEventListener("change", e => { if (!store.get(KEY)) apply(e.matches ? "light" : "dark"); });
 
-  // Mobile nav
-  const navToggle = document.getElementById("navToggle");
-  const nav = document.getElementById("primaryNav");
+  // ---- Mobile nav ----
+  const navToggle = $("navToggle");
+  const nav = $("primaryNav");
   if (navToggle && nav) {
     const setOpen = open => {
       nav.classList.toggle("is-open", open);
@@ -43,99 +45,28 @@
     nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setOpen(false)));
   }
 
-  // ---- Exam cards ----
-  const NS = "http://www.w3.org/2000/svg";
-  const SAFE = /^https:\/\/(github\.com|chrismunnps\.github\.io)\//;
-  const GH = "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z";
-
-  function h(tag, cls, text) {
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text !== undefined) n.textContent = text;
-    return n;
-  }
-  function s(tag, attrs) {
-    const n = document.createElementNS(NS, tag);
-    for (const k in attrs) n.setAttribute(k, attrs[k]);
-    return n;
-  }
-  function icon(size, mode, kids) {
-    const a = { width: size, height: size, viewBox: "0 0 24 24", "aria-hidden": "true" };
-    if (mode === "fill") a.fill = "currentColor";
-    else Object.assign(a, { fill: "none", stroke: "currentColor", "stroke-width": "2" });
-    const v = s("svg", a);
-    kids.forEach(k => v.append(s(k[0], k[1])));
-    return v;
-  }
-  const ICONS = {
-    clock: () => icon(14, "stroke", [["circle", { cx: 12, cy: 12, r: 10 }], ["path", { d: "M12 6v6l4 2" }]]),
-    check: () => icon(14, "stroke", [["path", { d: "M22 11.08V12a10 10 0 1 1-5.93-9.14" }], ["polyline", { points: "22 4 12 14.01 9 11.01" }]]),
-    github: () => icon(16, "fill", [["path", { d: GH }]]),
-    arrow: () => icon(16, "stroke", [["path", { d: "M5 12h14M12 5l7 7-7 7" }]])
-  };
-
-  // Level badge: hexagon with 1/2/3 rising bars for Fundamentals/Associate/Expert.
-  function badge(level) {
-    const n = { fundamentals: 1, associate: 2, expert: 3 }[level.toLowerCase()] || 1;
-    const v = s("svg", { class: "cert-badge", width: 56, height: 56, viewBox: "0 0 56 56", role: "img", "aria-label": "Microsoft Certified " + level });
-    v.append(s("path", { d: "M28 4l20 11.5v23L28 50 8 38.5v-23z", fill: "currentColor", "fill-opacity": ".14", stroke: "currentColor", "stroke-width": "2", "stroke-linejoin": "round" }));
-    for (let i = 0; i < n; i++) {
-      const hgt = 8 + i * 6;
-      v.append(s("rect", { x: 28 - n * 4.5 + i * 9 + 0.5, y: 38 - hgt, width: 7, height: hgt, rx: 1.5, fill: "currentColor" }));
-    }
-    return v;
-  }
-  function metaItem(title, text, name) {
-    const m = h("span", "meta-item");
-    m.title = title;
-    m.append(ICONS[name](), document.createTextNode(" " + text));
-    return m;
-  }
-  function link(href, cls, label, iconName, iconFirst) {
-    if (!SAFE.test(href)) return null;
-    const a = h("a", "card-link " + cls);
-    a.href = href;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    const t = document.createTextNode(label);
-    if (iconFirst) a.append(ICONS[iconName](), t); else a.append(t, ICONS[iconName]());
-    return a;
-  }
-  function card(x) {
-    const live = x.status === "live";
-    const c = h("article", "exam-card");
-    c.dataset.exam = x.slug;
-    const wrap = h("div", "cert-badge-wrap");
-    wrap.append(badge(x.level));
-    const top = h("div", "card-top"), eb = h("div", "exam-badge"), meta = h("div", "exam-meta");
-    eb.append(h("span", "exam-code", x.code), h("span", "exam-level", x.level));
-    meta.append(metaItem("Exam duration", x.duration, "clock"), metaItem("Passing score", x.passing, "check"));
-    top.append(eb, meta);
-    const list = h("div", "domain-list");
-    x.domains.forEach(d => {
-      const row = h("div", "domain"), head = h("div", "domain-header"), bar = h("div", "domain-bar"), fill = h("div");
-      head.append(h("span", null, d.name), h("span", "pct", d.range));
-      fill.style.width = d.width + "%";
-      bar.append(fill);
-      row.append(head, bar);
-      list.append(row);
-    });
-    const foot = h("div", "card-footer");
-    if (live) {
-      foot.append(...[link(x.repo, "secondary", "GitHub", "github", true), link(x.url, "primary", "Start practice exam", "arrow", false)].filter(Boolean));
-    } else {
-      const off = h("span", "card-link primary disabled", "Coming soon");
-      off.setAttribute("aria-disabled", "true");
-      foot.append(off);
-    }
-    c.append(wrap, top, h("h3", "exam-title", x.title), h("p", "exam-desc", x.desc), list,
-      h("p", "card-status", live ? "Based on Microsoft Learn · No account required" : "In development · Based on Microsoft Learn"), foot);
-    return c;
+  // ---- Last score saved by a simulator (same origin, stays on this device) ----
+  // Contract: localStorage["exam-sim:<slug>:last"] = JSON {score, scoreMax, passed, date(ISO)}
+  function lastScore(x) {
+    try {
+      const raw = store.get("exam-sim:" + x.slug + ":last");
+      if (!raw) return null;
+      const v = JSON.parse(raw);
+      const max = Number.isFinite(v.scoreMax) && v.scoreMax > 0 ? v.scoreMax : 1000;
+      if (!Number.isFinite(v.score) || v.score < 0 || v.score > max) return null;
+      const d = v.date ? new Date(v.date) : null;
+      return {
+        score: Math.round(v.score), scoreMax: max,
+        passed: typeof v.passed === "boolean" ? v.passed : v.score >= 700,
+        date: d && !isNaN(d) ? d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : ""
+      };
+    } catch (e) { return null; }
   }
 
+  // ---- Card entrance animation (classes live in styles.css) ----
   function reveal(cards) {
     if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
         if (!e.isIntersecting) return;
         e.target.style.transitionDelay = i * 60 + "ms";
@@ -150,55 +81,96 @@
     cards.forEach(c => { c.classList.add("reveal"); io.observe(c); });
   }
 
+  // ---- Search + filters ----
   function norm(t) { return t.toLowerCase().replace(/[^a-z0-9]/g, ""); }
-  function setupSearch(exams, cards) {
-    const $ = id => document.getElementById(id);
-    const box = $("exam-search"), q = $("exam-q"), clear = $("exam-clear"), count = $("exam-count");
-    const empty = $("exam-empty"), eq = $("empty-q"), ec = $("empty-clear");
-    if (!box || !q || !clear || !count || !empty || !eq || !ec) return;
-    // A token matches inside the exam code (az900, 900) or at the start of a title/level word.
+  function setupFilters(data, cards) {
+    const exams = data.exams;
+    const q = $("exam-q"), clear = $("exam-clear"), count = $("exam-count"), box = $("exam-search");
+    const fLive = $("f-live"), fSoon = $("f-soon");
+    const levels = [...document.querySelectorAll("[data-level-filter]")];
+    const empty = $("exam-empty"), msg = $("empty-msg"), act = $("empty-action"), req = $("empty-request");
+    const reqLine = $("request-line"), reqLink = $("request-link");
+    if (!q || !clear || !count || !box || !fLive || !fSoon || !empty || !msg || !act) return;
+
+    // Matches inside the exam code (az900, 900) or at the start of a title/level word.
     // Two-letter tokens must match a whole word, so "az" finds AZ-xxx but not "Azure ...".
     const codes = exams.map(x => norm(x.code));
     const words = exams.map(x => (x.title + " " + x.level).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
     const hit = (t, i) => codes[i].includes(t) || words[i].some(w => t.length === 2 ? w === t : w.startsWith(t));
+    const nLive = exams.filter(x => x.status === "live").length;
+    $("n-live").textContent = nLive;
+    $("n-soon").textContent = exams.length - nLive;
+
+    function requestHref(text) {
+      const base = data.requestUrl || "";
+      const u = base + "?title=" + encodeURIComponent("Exam request: " + text);
+      return cards[0] && /^https:\/\/github\.com\//.test(base) ? u : "";
+    }
+    let action = null;
+
     function run() {
       const raw = q.value.trim();
       const toks = raw.split(/\s+/).map(norm).filter(Boolean);
-      let shown = 0;
+      const lv = levels.filter(c => c.checked).map(c => c.value);
+      let shown = 0, soonOnlyMatches = 0, liveOnlyMatches = 0;
       cards.forEach((c, i) => {
-        const ok = toks.every(t => hit(t, i));
-        c.hidden = !ok;
-        if (ok) shown++;
+        const x = exams[i];
+        const base = toks.every(t => hit(t, i)) && (!lv.length || lv.includes(x.level.toLowerCase()));
+        const statusOk = x.status === "live" ? fLive.checked : fSoon.checked;
+        c.hidden = !(base && statusOk);
+        if (!c.hidden) shown++;
+        else if (base && x.status !== "live") soonOnlyMatches++;
+        else if (base) liveOnlyMatches++;
       });
       clear.hidden = !q.value;
+      count.textContent = "Showing " + shown + " of " + exams.length + " exams";
       empty.hidden = shown > 0;
-      eq.textContent = raw;
-      count.textContent = !toks.length ? cards.length + " exams"
-        : shown ? "Showing " + shown + " of " + cards.length + " exams" : "No exams found";
+      if (shown > 0) return;
+
+      const hiddenBy = !fLive.checked && !fSoon.checked ? "none" : soonOnlyMatches ? "soon" : liveOnlyMatches ? "live" : "";
+      if (hiddenBy === "none") { msg.textContent = "Select Live or Coming soon to see exams."; action = null; act.hidden = true; }
+      else if (hiddenBy) {
+        const n = hiddenBy === "soon" ? soonOnlyMatches : liveOnlyMatches;
+        msg.textContent = n + " " + (hiddenBy === "soon" ? "coming-soon" : "live") + " exam" + (n > 1 ? "s" : "") + " match your search.";
+        act.textContent = hiddenBy === "soon" ? "Show coming soon" : "Show live";
+        action = () => { (hiddenBy === "soon" ? fSoon : fLive).checked = true; run(); };
+        act.hidden = false;
+      } else {
+        msg.textContent = "No exams match" + (raw ? " \u201c" + raw + "\u201d" : " these filters") + ".";
+        act.textContent = "Clear search and filters";
+        action = () => { q.value = ""; levels.forEach(c => { c.checked = false; }); fLive.checked = true; fSoon.checked = false; run(); };
+        act.hidden = false;
+      }
+      const href = requestHref(raw || "new exam");
+      if (req) { req.hidden = !href; if (href) req.href = href; }
     }
-    function reset() { q.value = ""; run(); q.focus(); }
+
+    act.addEventListener("click", () => { if (action) { action(); q.focus(); } });
     q.addEventListener("input", run);
-    q.addEventListener("keydown", e => { if (e.key === "Escape" && q.value) { e.preventDefault(); reset(); } });
-    clear.addEventListener("click", reset);
-    ec.addEventListener("click", reset);
+    q.addEventListener("keydown", e => { if (e.key === "Escape" && q.value) { e.preventDefault(); q.value = ""; run(); } });
+    clear.addEventListener("click", () => { q.value = ""; run(); q.focus(); });
+    [fLive, fSoon, ...levels].forEach(c => c.addEventListener("change", run));
+
+    const rh = requestHref("");
+    if (reqLine && reqLink && rh) { reqLink.href = data.requestUrl + "?title=" + encodeURIComponent("Exam request: "); reqLine.hidden = false; }
     box.hidden = false;
     run();
   }
 
   async function load() {
-    const grid = document.getElementById("exam-grid");
-    if (!grid) return;
+    const grid = $("exam-grid");
+    if (!grid || !window.ExamCards) return;
     try {
       const r = await fetch("exams.json", { credentials: "omit" });
       if (!r.ok) throw new Error(r.status);
       const data = await r.json();
-      const cards = data.exams.map(card);
+      const cards = data.exams.map(x => window.ExamCards.card(x, x.status === "live" ? lastScore(x) : null));
       grid.replaceChildren(...cards);
-      reveal(cards);
       grid.removeAttribute("aria-live");
-      setupSearch(data.exams, cards);
+      setupFilters(data, cards);
+      reveal(cards.filter(c => !c.hidden));
     } catch (e) {
-      grid.replaceChildren(h("p", "grid-note", "Could not load the exam list. If you opened this file directly, serve the folder over http (for example python -m http.server 8080) or visit the live site."));
+      grid.replaceChildren(Object.assign(document.createElement("p"), { className: "grid-note", textContent: "Could not load the exam list. If you opened this file directly, serve the folder over http (for example python -m http.server 8080) or visit the live site." }));
     }
   }
   load();
