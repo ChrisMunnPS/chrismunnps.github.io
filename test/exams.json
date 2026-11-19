@@ -159,7 +159,7 @@
       "desc": "Implement, manage, and monitor an Azure environment — identities and governance, storage, compute, virtual networking, and monitoring.",
       "duration": "100 min",
       "passing": "700 / 1000",
-      "status": "soon",
+      "status": "live",
       "repo": "https://github.com/chrismunnps/AZ104Exam",
       "url": "https://chrismunnps.github.io/exam-sim/az-104",
       "domains": [
@@ -465,7 +465,7 @@
       "desc": "Design identity, governance, storage, business continuity, and infrastructure solutions on Azure. Requires Azure Administrator Associate (AZ-104).",
       "duration": "100 min",
       "passing": "700 / 1000",
-      "status": "live",
+      "status": "soon",
       "repo": "https://github.com/chrismunnps/AZ305Exam",
       "url": "https://chrismunnps.github.io/exam-sim/az-305",
       "domains": [
