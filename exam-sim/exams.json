@@ -1,0 +1,568 @@
+{
+  "requestUrl": "https://github.com/chrismunnps/exam-sim/issues/new",
+  "exams": [
+    {
+      "slug": "az-900",
+      "code": "AZ-900",
+      "level": "Fundamentals",
+      "title": "Microsoft Azure Fundamentals",
+      "desc": "Foundational knowledge of cloud concepts and Azure services, including compute, networking, storage, and management and governance tools.",
+      "duration": "45 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AZ900Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/az-900",
+      "domains": [
+        {
+          "name": "Cloud concepts",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Architecture & services",
+          "range": "35–40%",
+          "width": 37.5
+        },
+        {
+          "name": "Management & governance",
+          "range": "30–35%",
+          "width": 32.5
+        }
+      ]
+    },
+    {
+      "slug": "ab-900",
+      "code": "AB-900",
+      "level": "Fundamentals",
+      "title": "Microsoft 365 Copilot and Agent Administration Fundamentals",
+      "desc": "Foundational skills for administering Microsoft 365 Copilot and agents, including core Microsoft 365 services and agent governance basics.",
+      "duration": "45 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AB900Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ab-900",
+      "domains": [
+        {
+          "name": "Microsoft 365 core services",
+          "range": "30–35%",
+          "width": 32.5
+        },
+        {
+          "name": "Copilot administration",
+          "range": "35–40%",
+          "width": 37.5
+        },
+        {
+          "name": "Agents & governance",
+          "range": "25–30%",
+          "width": 27.5
+        }
+      ]
+    },
+    {
+      "slug": "sc-900",
+      "code": "SC-900",
+      "level": "Fundamentals",
+      "title": "Security, Compliance, and Identity Fundamentals",
+      "desc": "Foundational concepts of security, compliance, and identity across Microsoft cloud services, including Entra, Defender, and Purview.",
+      "duration": "45 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/SC900Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/sc-900",
+      "domains": [
+        {
+          "name": "Security concepts",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Microsoft identity",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Compliance concepts",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Security solutions",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "ai-901",
+      "code": "AI-901",
+      "level": "Fundamentals",
+      "title": "Azure AI Fundamentals",
+      "desc": "Responsible AI, common AI workloads, and building generative AI apps and agents with Microsoft Foundry.",
+      "duration": "45 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AI901Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ai-901",
+      "domains": [
+        {
+          "name": "Identify AI concepts and capabilities",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Implement AI solutions by using Microsoft Foundry",
+          "range": "55–60%",
+          "width": 57.5
+        }
+      ]
+    },
+    {
+      "slug": "dp-900",
+      "code": "DP-900",
+      "level": "Fundamentals",
+      "title": "Microsoft Azure Data Fundamentals",
+      "desc": "Core data concepts and related Microsoft Azure data services, including relational, non-relational, analytics, and visualization.",
+      "duration": "45 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/DP900Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/dp-900",
+      "domains": [
+        {
+          "name": "Core data concepts",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Relational data on Azure",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Non-relational data",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Analytics workload",
+          "range": "25–30%",
+          "width": 27.5
+        }
+      ]
+    },
+    {
+      "slug": "az-104",
+      "code": "AZ-104",
+      "level": "Associate",
+      "title": "Microsoft Azure Administrator",
+      "desc": "Implement, manage, and monitor an Azure environment — identities and governance, storage, compute, virtual networking, and monitoring.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "live",
+      "repo": "https://github.com/chrismunnps/AZ104Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/az-104",
+      "domains": [
+        {
+          "name": "Identities & governance",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Compute resources",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Storage",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Virtual networking",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Monitor & maintain",
+          "range": "10–15%",
+          "width": 12.5
+        }
+      ]
+    },
+    {
+      "slug": "ai-200",
+      "code": "AI-200",
+      "level": "Associate",
+      "title": "Developing AI Cloud Solutions on Azure",
+      "desc": "Build and secure AI back-end solutions with containers, vector-enabled data services, messaging and Azure Functions.",
+      "duration": "120 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AI200Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ai-200",
+      "domains": [
+        {
+          "name": "Develop containerized solutions",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Develop AI solutions with Azure data services",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Connect to and consume Azure services",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Secure, monitor and troubleshoot solutions",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "az-802",
+      "code": "AZ-802",
+      "level": "Associate",
+      "title": "Administering Windows Server",
+      "desc": "Deploy, manage, and troubleshoot Windows Server in on-premises, cloud, and hybrid environments with AD DS, Hyper-V, storage, and Azure Arc.",
+      "duration": "120 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AZ802Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/az-802",
+      "domains": [
+        {
+          "name": "AD DS",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Storage & file services",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Monitor & troubleshoot",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Hybrid workloads",
+          "range": "10–15%",
+          "width": 12.5
+        },
+        {
+          "name": "VMs · Networking · Security",
+          "range": "10–15% each",
+          "width": 12.5
+        }
+      ]
+    },
+    {
+      "slug": "sc-200",
+      "code": "SC-200",
+      "level": "Associate",
+      "title": "Microsoft Security Operations Analyst",
+      "desc": "Investigate, respond to, and hunt for threats using Microsoft Sentinel, Microsoft Defender XDR, and related security technologies.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/SC200Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/sc-200",
+      "domains": [
+        {
+          "name": "Security operations environment",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Respond to incidents",
+          "range": "35–40%",
+          "width": 37.5
+        },
+        {
+          "name": "Threat hunting",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "sc-300",
+      "code": "SC-300",
+      "level": "Associate",
+      "title": "Microsoft Identity and Access Administrator",
+      "desc": "Design, implement, and operate identity and access management with Microsoft Entra — user lifecycle, authentication, Conditional Access, and governance.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "live",
+      "repo": "https://github.com/chrismunnps/SC300Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/sc-300",
+      "domains": [
+        {
+          "name": "User identities",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Authentication & access",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Workload identities",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Identity governance",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "md-102",
+      "code": "MD-102",
+      "level": "Associate",
+      "title": "Endpoint Administrator",
+      "desc": "Manage and secure Microsoft 365 endpoints with Intune — enrollment, Autopilot, configuration profiles, protection, and app management.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/MD102Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/md-102",
+      "domains": [
+        {
+          "name": "Manage & maintain devices",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Prepare infrastructure",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Protect devices",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Manage & secure apps",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Automation & reporting",
+          "range": "10–15%",
+          "width": 12.5
+        }
+      ]
+    },
+    {
+      "slug": "dp-700",
+      "code": "DP-700",
+      "level": "Associate",
+      "title": "Implementing Data Engineering Solutions Using Microsoft Fabric",
+      "desc": "Design and run data engineering solutions in Fabric: lakehouses, warehouses, pipelines, notebooks and real-time analytics.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/DP700Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/dp-700",
+      "domains": [
+        {
+          "name": "Implement and manage an analytics solution",
+          "range": "30–35%",
+          "width": 32.5
+        },
+        {
+          "name": "Ingest and transform data",
+          "range": "30–35%",
+          "width": 32.5
+        },
+        {
+          "name": "Monitor and optimize an analytics solution",
+          "range": "30–35%",
+          "width": 32.5
+        }
+      ]
+    },
+    {
+      "slug": "ab-650",
+      "code": "AB-650",
+      "level": "Associate",
+      "title": "Administering Microsoft 365 and AI Services",
+      "desc": "Administer, secure and govern Microsoft 365 tenants, Copilot and AI agents, including identity, Purview data protection and usage monitoring.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AB650Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/ab-650",
+      "domains": [
+        {
+          "name": "Configure and manage tenants and workloads",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Govern and secure tenants and workloads",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Manage and secure AI services",
+          "range": "35–40%",
+          "width": 37.5
+        }
+      ]
+    },
+    {
+      "slug": "dp-600",
+      "code": "DP-600",
+      "level": "Associate",
+      "title": "Implementing Analytics Solutions Using Microsoft Fabric",
+      "desc": "Prepare and serve data, build semantic models, and explore data with SQL and DAX in Microsoft Fabric.",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/DP600Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/dp-600",
+      "domains": [
+        {
+          "name": "Plan, implement and manage a solution",
+          "range": "10–15%",
+          "width": 12.5
+        },
+        {
+          "name": "Prepare and serve data",
+          "range": "40–45%",
+          "width": 42.5
+        },
+        {
+          "name": "Implement and manage semantic models",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Explore and analyze data",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "az-305",
+      "code": "AZ-305",
+      "level": "Expert",
+      "title": "Designing Microsoft Azure Infrastructure Solutions",
+      "desc": "Design identity, governance, storage, business continuity, and infrastructure solutions on Azure. Requires Azure Administrator Associate (AZ-104).",
+      "duration": "100 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AZ305Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/az-305",
+      "domains": [
+        {
+          "name": "Identity, governance & monitoring",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Data storage solutions",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Business continuity",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Infrastructure solutions",
+          "range": "30–35%",
+          "width": 32.5
+        }
+      ]
+    },
+    {
+      "slug": "sc-100",
+      "code": "SC-100",
+      "level": "Expert",
+      "title": "Microsoft Cybersecurity Architect",
+      "desc": "Design Zero Trust strategies and security architecture across identity, operations, infrastructure, applications, and data. Requires an associate security cert.",
+      "duration": "120 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/SC100Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/sc-100",
+      "domains": [
+        {
+          "name": "Security best practices & priorities",
+          "range": "20–25%",
+          "width": 22.5
+        },
+        {
+          "name": "Security ops, identity & compliance",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Infrastructure security",
+          "range": "25–30%",
+          "width": 27.5
+        },
+        {
+          "name": "Apps & data security",
+          "range": "20–25%",
+          "width": 22.5
+        }
+      ]
+    },
+    {
+      "slug": "az-400",
+      "code": "AZ-400",
+      "level": "Expert",
+      "title": "Designing and Implementing Microsoft DevOps Solutions",
+      "desc": "Design and implement DevOps practices for processes, source control, continuous integration, delivery, infrastructure as code, and monitoring.",
+      "duration": "120 min",
+      "passing": "700 / 1000",
+      "status": "soon",
+      "repo": "https://github.com/chrismunnps/AZ400Exam",
+      "url": "https://chrismunnps.github.io/exam-sim/az-400",
+      "domains": [
+        {
+          "name": "DevOps processes",
+          "range": "10–15%",
+          "width": 12.5
+        },
+        {
+          "name": "Source control",
+          "range": "10–15%",
+          "width": 12.5
+        },
+        {
+          "name": "CI / build strategy",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Release strategy & CD",
+          "range": "15–20%",
+          "width": 17.5
+        },
+        {
+          "name": "Infrastructure as code",
+          "range": "15–20%",
+          "width": 17.5
+        }
+      ]
+    }
+  ]
+}

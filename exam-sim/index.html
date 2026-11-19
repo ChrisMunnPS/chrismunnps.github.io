@@ -1,31 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SC-300 Exam Simulator</title>
-<meta name="description" content="Full-length SC-300 practice exam with timer, scoring, and per-question answer review.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='32' y='43' font-family='Segoe UI,Arial,sans-serif' font-size='25' font-weight='700' fill='white' text-anchor='middle'%3ESC%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Free timed Microsoft practice exams by Chris Munn — Fundamentals through Expert. AZ-900, SC-900, AZ-104, SC-300, AZ-305, and more. Based on Microsoft Learn.">
+  <meta name="author" content="Chris Munn">
+  <meta name="theme-color" content="#0a1628">
+  <meta name="color-scheme" content="dark light">
+  <title>Microsoft Practice Exams by Chris Munn · Realistic Exam Simulators</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Microsoft Practice Exams by Chris Munn">
+  <meta property="og:description" content="Free timed simulators for Microsoft certifications — Fundamentals, Associate, and Expert. Based on Microsoft Learn modules.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://chrismunnps.github.io/">
+  <meta property="og:image" content="https://chrismunnps.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Microsoft Practice Exams: free practice exams for Microsoft certifications">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://chrismunnps.github.io/og-image.png">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body>
-<a class="skip-link" href="#view">Skip to content</a>
-<div class="app">
-  <header class="topbar">
-    <a class="brand" href="#" data-act="home">
-      <span class="brand-mark" aria-hidden="true">SC</span>
-      <span class="brand-text"><strong>SC-300</strong><span>Exam simulator</span></span>
-    </a>
-    <div class="hud" id="hud"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo" aria-label="Microsoft Practice Exams home">
+        <span class="logo-mark" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="2" fill="currentColor" opacity="0.9"/>
+            <rect x="18" y="2" width="12" height="12" rx="2" fill="currentColor" opacity="0.7"/>
+            <rect x="2" y="18" width="12" height="12" rx="2" fill="currentColor" opacity="0.7"/>
+            <rect x="18" y="18" width="12" height="12" rx="2" fill="currentColor" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Practice<span>Exams</span></span>
+      </a>
+      
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <a href="#exams">Exams</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/chrismunnps" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://buymeacoffee.com/chrismunnps" class="nav-coffee" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          Buy me a coffee
+        </a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://buymeacoffee.com/chrismunnps" class="mobile-coffee" target="_blank" rel="noopener noreferrer" aria-label="Buy me a coffee">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme" type="button">
+          <span class="theme-icon sun" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </span>
+          <span class="theme-icon moon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
   </header>
-  <main class="view" id="view" tabindex="-1"></main>
-  <footer class="foot">
-    <p>Unofficial study tool built from the Microsoft Learn SC-300 learning paths. Not affiliated with or endorsed by Microsoft.</p>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <p class="eyebrow">Free · Timed · Built by Chris Munn</p>
+          <h1>Microsoft certification<br>practice that feels real</h1>
+          <p class="hero-lead">
+            Free timed simulators across Fundamentals, Associate, and Expert tracks — from AZ-900 and SC-900 
+            through AZ-104, SC-300, and AZ-305. Aligned with official Microsoft Learn modules and study guides.
+          </p>
+          <div class="hero-actions">
+            <a href="#exams" class="btn btn-primary">Browse exams</a>
+            <a href="https://chrismunnps.github.io/" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+              chrismunnps.github.io
+            </a>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- Exam cards -->
+    <section id="exams" class="exams-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Available practice exams</h2>
+          <p>Each simulator mirrors the real exam structure, domains, and timing.</p>
+        </div>
+
+        <div class="search" id="exam-search" hidden>
+          <label class="search-label" for="exam-q">Search exams</label>
+          <div class="search-field">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="exam-q" type="search" placeholder="Try &quot;az-104&quot;, &quot;identity&quot; or &quot;security&quot;" autocomplete="off" spellcheck="false" enterkeyhint="search">
+            <button type="button" class="search-clear" id="exam-clear" aria-label="Clear search" hidden>&times;</button>
+          </div>
+          <div class="filters">
+            <fieldset class="chips"><legend>Status</legend>
+              <div class="chip-row">
+                <label class="chip"><input type="checkbox" id="f-live" checked><span>Live <b id="n-live"></b></span></label>
+                <label class="chip"><input type="checkbox" id="f-soon"><span>Coming soon <b id="n-soon"></b></span></label>
+              </div>
+            </fieldset>
+            <fieldset class="chips"><legend>Level</legend>
+              <div class="chip-row">
+                <label class="chip"><input type="checkbox" data-level-filter value="fundamentals"><span>Fundamentals</span></label>
+                <label class="chip"><input type="checkbox" data-level-filter value="associate"><span>Associate</span></label>
+                <label class="chip"><input type="checkbox" data-level-filter value="expert"><span>Expert</span></label>
+              </div>
+            </fieldset>
+          </div>
+          <p class="search-count" id="exam-count" role="status"></p>
+        </div>
+
+        <div class="exam-grid" id="exam-grid" aria-live="polite">
+<!-- cards:start -->
+<article class="exam-card" data-exam="az-900" data-status="soon" data-level="fundamentals"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Fundamentals"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="24" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AZ-900</span><span class="exam-level">Fundamentals</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 45 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Azure Fundamentals</h3><p class="exam-desc">Foundational knowledge of cloud concepts and Azure services, including compute, networking, storage, and management and governance tools.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Cloud concepts</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Architecture &amp; services</span><span class="pct">35–40%</span></div><div class="domain-bar"><div class="w375"></div></div></div><div class="domain"><div class="domain-header"><span>Management &amp; governance</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="ab-900" data-status="soon" data-level="fundamentals"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Fundamentals"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="24" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AB-900</span><span class="exam-level">Fundamentals</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 45 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft 365 Copilot and Agent Administration Fundamentals</h3><p class="exam-desc">Foundational skills for administering Microsoft 365 Copilot and agents, including core Microsoft 365 services and agent governance basics.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Microsoft 365 core services</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div><div class="domain"><div class="domain-header"><span>Copilot administration</span><span class="pct">35–40%</span></div><div class="domain-bar"><div class="w375"></div></div></div><div class="domain"><div class="domain-header"><span>Agents &amp; governance</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="sc-900" data-status="soon" data-level="fundamentals"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Fundamentals"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="24" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">SC-900</span><span class="exam-level">Fundamentals</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 45 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Security, Compliance, and Identity Fundamentals</h3><p class="exam-desc">Foundational concepts of security, compliance, and identity across Microsoft cloud services, including Entra, Defender, and Purview.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Security concepts</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Microsoft identity</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Compliance concepts</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Security solutions</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="ai-901" data-status="soon" data-level="fundamentals"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Fundamentals"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="24" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AI-901</span><span class="exam-level">Fundamentals</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 45 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Azure AI Fundamentals</h3><p class="exam-desc">Responsible AI, common AI workloads, and building generative AI apps and agents with Microsoft Foundry.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Identify AI concepts and capabilities</span><span class="pct">40–45%</span></div><div class="domain-bar"><div class="w425"></div></div></div><div class="domain"><div class="domain-header"><span>Implement AI solutions by using Microsoft Foundry</span><span class="pct">55–60%</span></div><div class="domain-bar"><div class="w575"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="dp-900" data-status="soon" data-level="fundamentals"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Fundamentals"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="24" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">DP-900</span><span class="exam-level">Fundamentals</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 45 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Azure Data Fundamentals</h3><p class="exam-desc">Core data concepts and related Microsoft Azure data services, including relational, non-relational, analytics, and visualization.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Core data concepts</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Relational data on Azure</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Non-relational data</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Analytics workload</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="az-104" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AZ-104</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Azure Administrator</h3><p class="exam-desc">Implement, manage, and monitor an Azure environment — identities and governance, storage, compute, virtual networking, and monitoring.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Identities &amp; governance</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Compute resources</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Storage</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Virtual networking</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Monitor &amp; maintain</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="ai-200" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AI-200</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 120 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Developing AI Cloud Solutions on Azure</h3><p class="exam-desc">Build and secure AI back-end solutions with containers, vector-enabled data services, messaging and Azure Functions.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Develop containerized solutions</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Develop AI solutions with Azure data services</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Connect to and consume Azure services</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Secure, monitor and troubleshoot solutions</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="az-802" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AZ-802</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 120 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Administering Windows Server</h3><p class="exam-desc">Deploy, manage, and troubleshoot Windows Server in on-premises, cloud, and hybrid environments with AD DS, Hyper-V, storage, and Azure Arc.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>AD DS</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Storage &amp; file services</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Monitor &amp; troubleshoot</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Hybrid workloads</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div><div class="domain"><div class="domain-header"><span>VMs · Networking · Security</span><span class="pct">10–15% each</span></div><div class="domain-bar"><div class="w125"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="sc-200" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">SC-200</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Security Operations Analyst</h3><p class="exam-desc">Investigate, respond to, and hunt for threats using Microsoft Sentinel, Microsoft Defender XDR, and related security technologies.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Security operations environment</span><span class="pct">40–45%</span></div><div class="domain-bar"><div class="w425"></div></div></div><div class="domain"><div class="domain-header"><span>Respond to incidents</span><span class="pct">35–40%</span></div><div class="domain-bar"><div class="w375"></div></div></div><div class="domain"><div class="domain-header"><span>Threat hunting</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="sc-300" data-status="live" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">SC-300</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Identity and Access Administrator</h3><p class="exam-desc">Design, implement, and operate identity and access management with Microsoft Entra — user lifecycle, authentication, Conditional Access, and governance.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>User identities</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Authentication &amp; access</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Workload identities</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Identity governance</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">Based on Microsoft Learn · No account required</p><div class="card-footer"><a class="card-link secondary" href="https://github.com/chrismunnps/SC300Exam" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>GitHub</a><a class="card-link primary" href="https://chrismunnps.github.io/exam-sim/sc-300" target="_blank" rel="noopener noreferrer">Start practice exam<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a></div></article><article class="exam-card" data-exam="md-102" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">MD-102</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Endpoint Administrator</h3><p class="exam-desc">Manage and secure Microsoft 365 endpoints with Intune — enrollment, Autopilot, configuration profiles, protection, and app management.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Manage &amp; maintain devices</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Prepare infrastructure</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Protect devices</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Manage &amp; secure apps</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Automation &amp; reporting</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="dp-700" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">DP-700</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Implementing Data Engineering Solutions Using Microsoft Fabric</h3><p class="exam-desc">Design and run data engineering solutions in Fabric: lakehouses, warehouses, pipelines, notebooks and real-time analytics.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Implement and manage an analytics solution</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div><div class="domain"><div class="domain-header"><span>Ingest and transform data</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div><div class="domain"><div class="domain-header"><span>Monitor and optimize an analytics solution</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="ab-650" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AB-650</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Administering Microsoft 365 and AI Services</h3><p class="exam-desc">Administer, secure and govern Microsoft 365 tenants, Copilot and AI agents, including identity, Purview data protection and usage monitoring.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Configure and manage tenants and workloads</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Govern and secure tenants and workloads</span><span class="pct">40–45%</span></div><div class="domain-bar"><div class="w425"></div></div></div><div class="domain"><div class="domain-header"><span>Manage and secure AI services</span><span class="pct">35–40%</span></div><div class="domain-bar"><div class="w375"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="dp-600" data-status="soon" data-level="associate"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Associate"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="19.5" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="28.5" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">DP-600</span><span class="exam-level">Associate</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Implementing Analytics Solutions Using Microsoft Fabric</h3><p class="exam-desc">Prepare and serve data, build semantic models, and explore data with SQL and DAX in Microsoft Fabric.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Plan, implement and manage a solution</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div><div class="domain"><div class="domain-header"><span>Prepare and serve data</span><span class="pct">40–45%</span></div><div class="domain-bar"><div class="w425"></div></div></div><div class="domain"><div class="domain-header"><span>Implement and manage semantic models</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Explore and analyze data</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="az-305" data-status="soon" data-level="expert"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Expert"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="15" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="24" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect><rect x="33" y="18" width="7" height="20" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AZ-305</span><span class="exam-level">Expert</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 100 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Designing Microsoft Azure Infrastructure Solutions</h3><p class="exam-desc">Design identity, governance, storage, business continuity, and infrastructure solutions on Azure. Requires Azure Administrator Associate (AZ-104).</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Identity, governance &amp; monitoring</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Data storage solutions</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Business continuity</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Infrastructure solutions</span><span class="pct">30–35%</span></div><div class="domain-bar"><div class="w325"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="sc-100" data-status="soon" data-level="expert"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Expert"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="15" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="24" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect><rect x="33" y="18" width="7" height="20" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">SC-100</span><span class="exam-level">Expert</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 120 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Microsoft Cybersecurity Architect</h3><p class="exam-desc">Design Zero Trust strategies and security architecture across identity, operations, infrastructure, applications, and data. Requires an associate security cert.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>Security best practices &amp; priorities</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div><div class="domain"><div class="domain-header"><span>Security ops, identity &amp; compliance</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Infrastructure security</span><span class="pct">25–30%</span></div><div class="domain-bar"><div class="w275"></div></div></div><div class="domain"><div class="domain-header"><span>Apps &amp; data security</span><span class="pct">20–25%</span></div><div class="domain-bar"><div class="w225"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article><article class="exam-card" data-exam="az-400" data-status="soon" data-level="expert"><div class="cert-badge-wrap"><svg class="cert-badge" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Microsoft Certified Expert"><path d="M28 4l20 11.5v23L28 50 8 38.5v-23z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path><rect x="15" y="30" width="7" height="8" rx="1.5" fill="currentColor"></rect><rect x="24" y="24" width="7" height="14" rx="1.5" fill="currentColor"></rect><rect x="33" y="18" width="7" height="20" rx="1.5" fill="currentColor"></rect></svg></div><div class="card-top"><div class="exam-badge"><span class="exam-code">AZ-400</span><span class="exam-level">Expert</span></div><div class="exam-meta"><span class="meta-item" title="Exam duration"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> 120 min</span><span class="meta-item" title="Passing score"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 700 / 1000</span></div></div><h3 class="exam-title">Designing and Implementing Microsoft DevOps Solutions</h3><p class="exam-desc">Design and implement DevOps practices for processes, source control, continuous integration, delivery, infrastructure as code, and monitoring.</p><div class="domain-list"><div class="domain"><div class="domain-header"><span>DevOps processes</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div><div class="domain"><div class="domain-header"><span>Source control</span><span class="pct">10–15%</span></div><div class="domain-bar"><div class="w125"></div></div></div><div class="domain"><div class="domain-header"><span>CI / build strategy</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Release strategy &amp; CD</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div><div class="domain"><div class="domain-header"><span>Infrastructure as code</span><span class="pct">15–20%</span></div><div class="domain-bar"><div class="w175"></div></div></div></div><p class="card-status">In development · Based on Microsoft Learn</p><div class="card-footer"><span class="card-link primary disabled" aria-disabled="true">Coming soon</span></div></article>
+<!-- cards:end -->
+        </div>
+        <div class="empty" id="exam-empty" hidden>
+          <p id="empty-msg"></p>
+          <div class="empty-actions">
+            <button type="button" class="card-link secondary" id="empty-action"></button>
+            <a class="card-link secondary" id="empty-request" target="_blank" rel="noopener noreferrer" hidden>Request this exam on GitHub</a>
+          </div>
+        </div>
+        <p class="request-line" id="request-line" hidden>Missing an exam? <a id="request-link" target="_blank" rel="noopener noreferrer">Request it on GitHub</a>.</p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="how-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>How the simulators work</h2>
+          <p>Built so practice matches the real exam experience.</p>
+        </div>
+        <div class="how-grid">
+          <div class="how-item">
+            <span class="how-num" aria-hidden="true">01</span>
+            <h3>Timed, exam-length runs</h3>
+            <p>Full sessions that mirror official duration so you build stamina and time management under pressure.</p>
+          </div>
+          <div class="how-item">
+            <span class="how-num" aria-hidden="true">02</span>
+            <h3>Official domain weightings</h3>
+            <p>Skill areas and percentages follow the current Microsoft study guides for each certification.</p>
+          </div>
+          <div class="how-item">
+            <span class="how-num" aria-hidden="true">03</span>
+            <h3>Based on Microsoft Learn</h3>
+            <p>Content is aligned with Microsoft Learn modules and the skills measured on each exam page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-content">
+            <h2>Created by Chris Munn</h2>
+            <p>
+              These practice exams are built by <strong>Chris Munn</strong> — a systems administrator 
+              with over 20 years of experience in identity, Active Directory, PowerShell automation, 
+              and Microsoft cloud environments.
+            </p>
+            <p>
+              Content is based on the official <strong>Microsoft Learn</strong> modules and study guides 
+              for each certification. Questions follow the published skill domains and weightings so 
+              practice matches what the real exam measures.
+            </p>
+            <p>
+              Homepage: <a href="https://chrismunnps.github.io/" target="_blank" rel="noopener noreferrer" class="inline-link">chrismunnps.github.io</a>
+            </p>
+            <ul class="feature-list">
+              <li>
+                <strong>Aligned with Microsoft Learn</strong>
+                <span>Skill areas and weightings follow the official study guides and Learn modules.</span>
+              </li>
+              <li>
+                <strong>Exam-length sessions</strong>
+                <span>Full timed runs so you build stamina and time management.</span>
+              </li>
+              <li>
+                <strong>Open source</strong>
+                <span>Source and simulators live on GitHub. Inspect, fork, or contribute.</span>
+              </li>
+            </ul>
+          </div>
+          <aside class="about-aside">
+            <div class="aside-card">
+              <h3>About these practice exams</h3>
+              <dl>
+                <div>
+                  <dt>Source material</dt>
+                  <dd>Microsoft Learn modules and official study guides</dd>
+                </div>
+                <div>
+                  <dt>Exam structure</dt>
+                  <dd>Domain weightings match the skills measured on each certification</dd>
+                </div>
+                <div>
+                  <dt>Passing score</dt>
+                  <dd>700 / 1000 (Microsoft scaled score)</dd>
+                </div>
+                <div>
+                  <dt>Renewal</dt>
+                  <dd>Free annual assessment on Microsoft Learn for most Associate credentials</dd>
+                </div>
+              </dl>
+              <a href="https://learn.microsoft.com/en-us/credentials/certifications/" 
+                 class="aside-link" 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                Microsoft certifications →
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">Practice<span>Exams</span></span>
+        <p>Created by <strong>Chris Munn</strong> · <a href="https://chrismunnps.github.io/" target="_blank" rel="noopener noreferrer">chrismunnps.github.io</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/chrismunnps" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://chrismunnps.github.io/" target="_blank" rel="noopener noreferrer">Homepage</a>
+        <a href="https://buymeacoffee.com/chrismunnps" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+        <a href="https://learn.microsoft.com/en-us/credentials/certifications/" target="_blank" rel="noopener noreferrer">Microsoft Learn</a>
+      </div>
+      <p class="footer-note">
+        Based on official Microsoft Learn modules and study guides. Skill outlines checked against Microsoft Learn, November 2026.
+        Independent practice material — not affiliated with Microsoft. Always verify the current skills measured on Microsoft Learn before you sit the exam.
+      </p>
+    </div>
   </footer>
-</div>
-<div id="print-area" aria-hidden="true"></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="questions.js"></script>
-<script src="app.js"></script>
+
+  <script src="cards.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

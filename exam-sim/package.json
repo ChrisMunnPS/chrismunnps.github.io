@@ -1,0 +1,7 @@
+{
+  "name": "practice-exams-site",
+  "private": true,
+  "description": "Static landing site for Microsoft practice exams. jsdom is only used by the build script.",
+  "scripts": { "build": "node build.cjs" },
+  "devDependencies": { "jsdom": "^26.0.0" }
+}
