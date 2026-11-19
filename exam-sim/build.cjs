@@ -1,12 +1,12 @@
 /**
  * Pre-renders the exam cards into index.html (for crawlers and no-JS visitors)
- * and regenerates sitemap.xml and robots.txt. Run after editing exams.json:
+ * and regenerates sitemap.xml (robots.txt must live at the host root, so it is not generated here). Run after editing exams.json:
  *   npm install && npm run build
  * Needs jsdom (dev dependency only; the site itself has no dependencies).
  */
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
-const SITE = "https://chrismunnps.github.io";
+const SITE = "https://chrismunnps.github.io/exam-sim";
 
 const data = JSON.parse(fs.readFileSync("exams.json", "utf8"));
 const dom = new JSDOM("<!doctype html><body></body>");
@@ -24,5 +24,4 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [SITE + "/"].concat(data.exams.filter(x => x.status === "live").map(x => x.url));
 fs.writeFileSync("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   urls.map(u => "  <url><loc>" + u + "</loc><lastmod>" + today + "</lastmod></url>").join("\n") + "\n</urlset>\n");
-fs.writeFileSync("robots.txt", "User-agent: *\nAllow: /\n\nSitemap: " + SITE + "/sitemap.xml\n");
 console.log("Pre-rendered " + data.exams.length + " cards; sitemap lists " + urls.length + " URLs.");
