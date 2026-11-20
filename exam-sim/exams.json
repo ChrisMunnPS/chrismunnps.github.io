@@ -9,7 +9,7 @@
       "desc": "Foundational knowledge of cloud concepts and Azure services, including compute, networking, storage, and management and governance tools.",
       "duration": "45 min",
       "passing": "700 / 1000",
-      "status": "soon",
+      "status": "live",
       "repo": "https://github.com/chrismunnps/AZ900Exam",
       "url": "https://chrismunnps.github.io/exam-sim/az-900",
       "domains": [
