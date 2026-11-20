@@ -94,9 +94,10 @@
 
     // Matches inside the exam code (az900, 900) or at the start of a title/level word.
     // Two-letter tokens must match a whole word, so "az" finds AZ-xxx but not "Azure ...".
+    // Tokens of 5+ letters may match inside a word ("security" finds "Cybersecurity").
     const codes = exams.map(x => norm(x.code));
     const words = exams.map(x => (x.title + " " + x.level).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
-    const hit = (t, i) => codes[i].includes(t) || words[i].some(w => t.length === 2 ? w === t : w.startsWith(t));
+    const hit = (t, i) => codes[i].includes(t) || words[i].some(w => t.length === 2 ? w === t : t.length >= 5 ? w.includes(t) : w.startsWith(t));
     const nLive = exams.filter(x => x.status === "live").length;
     $("n-live").textContent = nLive;
     $("n-soon").textContent = exams.length - nLive;

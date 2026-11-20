@@ -14,25 +14,26 @@
 ## 📚 Exams
 | Exam | Title | Level | Status |
 |------|-------|-------|--------|
-| AZ-900 | Microsoft Azure Fundamentals | Fundamentals | 🛠️ Coming soon |
+| AZ-900 | Microsoft Azure Fundamentals | Fundamentals | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/az-900) |
 | AB-900 | Microsoft 365 Copilot and Agent Administration Fundamentals | Fundamentals | 🛠️ Coming soon |
 | SC-900 | Security, Compliance, and Identity Fundamentals | Fundamentals | 🛠️ Coming soon |
 | AI-901 | Azure AI Fundamentals | Fundamentals | 🛠️ Coming soon |
 | DP-900 | Microsoft Azure Data Fundamentals | Fundamentals | 🛠️ Coming soon |
-| AZ-104 | Microsoft Azure Administrator | Associate | 🛠️ Coming soon |
+| AZ-104 | Microsoft Azure Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/az-104) |
 | AI-200 | Developing AI Cloud Solutions on Azure | Associate | 🛠️ Coming soon |
 | AZ-802 | Administering Windows Server | Associate | 🛠️ Coming soon |
 | SC-200 | Microsoft Security Operations Analyst | Associate | 🛠️ Coming soon |
 | SC-300 | Microsoft Identity and Access Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-300) |
+| SC-500 | Implementing End-to-End Security Controls for Cloud and AI Workloads | Associate | 🛠️ Coming soon |
 | MD-102 | Endpoint Administrator | Associate | 🛠️ Coming soon |
 | DP-700 | Implementing Data Engineering Solutions Using Microsoft Fabric | Associate | 🛠️ Coming soon |
 | AB-650 | Administering Microsoft 365 and AI Services | Associate | 🛠️ Coming soon |
 | DP-600 | Implementing Analytics Solutions Using Microsoft Fabric | Associate | 🛠️ Coming soon |
 | AZ-305 | Designing Microsoft Azure Infrastructure Solutions | Expert | 🛠️ Coming soon |
 | SC-100 | Microsoft Cybersecurity Architect | Expert | 🛠️ Coming soon |
-| AZ-400 | Designing and Implementing Microsoft DevOps Solutions | Expert | 🛠️ Coming soon |
+| AZ-401 | Designing and Implementing Microsoft Agentic DevOps Solutions | Expert | 🛠️ Coming soon |
 
-### 🔄 Retired exams replaced (checked 18 Nov 2026)
+### 🔄 Retired exams replaced (checked 20 Nov 2026)
 | Retired or retiring | Replaced by | Notes |
 |---|---|---|
 | AI-900 | AI-901 | AI-900 retired in 2026 |
@@ -40,8 +41,9 @@
 | MS-102 | AB-650 | MS-102 retires 30 Nov 2026 |
 | DP-203 | DP-700 | DP-203 retired 31 Mar 2025 |
 | DP-500 | DP-600 | DP-500 retired in early 2025 |
+| AZ-400 | AZ-401 | AZ-400 retires 1 Feb 2027; AZ-401 (Agentic DevOps) is in beta, general availability expected Dec 2026 |
 
-Skill weightings come from Microsoft's published study guides. AB-650 and AI-200 durations came from third-party summaries, not Microsoft's study guides, so confirm them before you rely on them.
+SC-500 was added as a popular current security exam; it replaced AZ-500 (retired 31 Aug 2026), which was not on the page. Skill weightings come from Microsoft's published study guides, except AZ-401's, which I took from a third-party summary of the guide because the official page could not be opened. AZ-401 is still in beta, so its topics may change, and its duration is not yet published (shown as TBC). The AB-650, AI-200 and SC-500 durations came from third-party summaries, so confirm them before you rely on them.
 
 ## ➕ Add an exam or mark one live
 1. Edit `exams.json`: copy an entry, set `"slug"` to the simulator's folder name (its URL is `https://chrismunnps.github.io/exam-sim/<slug>`).
