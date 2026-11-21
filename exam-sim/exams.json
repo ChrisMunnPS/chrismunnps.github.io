@@ -67,7 +67,7 @@
       "desc": "Foundational concepts of security, compliance, and identity across Microsoft cloud services, including Entra, Defender, and Purview.",
       "duration": "45 min",
       "passing": "700 / 1000",
-      "status": "soon",
+      "status": "live",
       "repo": "https://github.com/chrismunnps/SC900Exam",
       "url": "https://chrismunnps.github.io/exam-sim/sc-900",
       "domains": [
