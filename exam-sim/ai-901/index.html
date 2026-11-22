@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-901 Exam Simulator</title>
+<meta name="description" content="Full-length AI-901 practice exam with AI architecture diagrams, timer, scoring, and per-question answer review.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c3aed'/%3E%3Ctext x='32' y='42' font-family='Segoe UI,Arial,sans-serif' font-size='21' font-weight='700' fill='white' text-anchor='middle'%3EAI%3C/text%3E%3C/svg%3E">
+<script>
+/* Pick the theme before first paint: saved choice, else the OS setting. */
+(function () {
+  var theme = '';
+  try { theme = localStorage.getItem('ai901-sim:theme') || ''; } catch (e) {}
+  if (!theme) theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#view">Skip to content</a>
+<div class="boot-error" id="boot-error" hidden></div>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" href="#" data-act="home">
+      <span class="brand-mark" aria-hidden="true">AI</span>
+      <span class="brand-text"><strong>AI-901</strong><span>Exam simulator</span></span>
+    </a>
+    <div class="hud" id="hud"></div>
+  </header>
+  <main class="view" id="view" tabindex="-1"></main>
+  <footer class="foot">
+    <p>Unofficial study tool built from the Microsoft Learn AI-901 learning paths. Not affiliated with or endorsed by Microsoft.</p>
+  </footer>
+</div>
+<div id="print-area" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="exam.config.js"></script>
+<script src="diagrams.js"></script>
+<script src="questions.js"></script>
+<script src="md-loader.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
