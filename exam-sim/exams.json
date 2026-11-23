@@ -38,7 +38,7 @@
       "desc": "Foundational skills for administering Microsoft 365 Copilot and agents, including core Microsoft 365 services and agent governance basics.",
       "duration": "45 min",
       "passing": "700 / 1000",
-      "status": "soon",
+      "status": "live",
       "repo": "https://github.com/chrismunnps/AB900Exam",
       "url": "https://chrismunnps.github.io/exam-sim/ab-900",
       "domains": [
