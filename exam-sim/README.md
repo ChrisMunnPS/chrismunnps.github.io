@@ -15,14 +15,14 @@
 | Exam | Title | Level | Status |
 |------|-------|-------|--------|
 | AZ-900 | Microsoft Azure Fundamentals | Fundamentals | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/az-900) |
-| AB-900 | Microsoft 365 Copilot and Agent Administration Fundamentals | Fundamentals | 🛠️ Coming soon |
-| SC-900 | Security, Compliance, and Identity Fundamentals | Fundamentals | 🛠️ Coming soon |
-| AI-901 | Azure AI Fundamentals | Fundamentals | 🛠️ Coming soon |
+| AB-900 | Microsoft 365 and AI Administration | Fundamentals | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/ab-900) |
+| SC-900 | Security, Compliance, and Identity Fundamentals | Fundamentals | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-900) |
+| AI-901 | Azure AI Fundamentals | Fundamentals | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/ai-901) |
 | DP-900 | Microsoft Azure Data Fundamentals | Fundamentals | 🛠️ Coming soon |
 | AZ-104 | Microsoft Azure Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/az-104) |
 | AI-200 | Developing AI Cloud Solutions on Azure | Associate | 🛠️ Coming soon |
 | AZ-802 | Administering Windows Server | Associate | 🛠️ Coming soon |
-| SC-200 | Microsoft Security Operations Analyst | Associate | 🛠️ Coming soon |
+| SC-200 | Microsoft Security Operations Analyst | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-200) |
 | SC-300 | Microsoft Identity and Access Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-300) |
 | SC-500 | Implementing End-to-End Security Controls for Cloud and AI Workloads | Associate | 🛠️ Coming soon |
 | MD-102 | Endpoint Administrator | Associate | 🛠️ Coming soon |

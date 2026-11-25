@@ -205,5 +205,6 @@
     }
   };
 
+  window.EXAM_DIAGRAMS = DIAGRAMS;
   window.DIAGRAMS = DIAGRAMS;
 }());
