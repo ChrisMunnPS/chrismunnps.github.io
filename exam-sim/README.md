@@ -25,7 +25,7 @@
 | SC-200 | Microsoft Security Operations Analyst | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-200) |
 | SC-300 | Microsoft Identity and Access Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/sc-300) |
 | SC-500 | Implementing End-to-End Security Controls for Cloud and AI Workloads | Associate | 🛠️ Coming soon |
-| MD-102 | Endpoint Administrator | Associate | 🛠️ Coming soon |
+| MD-102 | Endpoint Administrator | Associate | ✅ Live: [Launch](https://chrismunnps.github.io/exam-sim/md-102) |
 | DP-700 | Implementing Data Engineering Solutions Using Microsoft Fabric | Associate | 🛠️ Coming soon |
 | AB-650 | Administering Microsoft 365 and AI Services | Associate | 🛠️ Coming soon |
 | DP-600 | Implementing Analytics Solutions Using Microsoft Fabric | Associate | 🛠️ Coming soon |
